@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Know Your Body - PinkPetal</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link th:href="@{/css/style.css}" href="../static/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" th:href="@{/dashboard}">
+                <img th:src="@{/images/logo.png}" src="../static/images/logo.png" alt="PinkPetal Logo">
+                <span class="fw-bold" style="background: var(--gradient-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PinkPetal</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}"><i class="fa-solid fa-chart-line me-1"></i>Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/education}"><i class="fa-solid fa-book-open me-1"></i>Know Your Body</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/selfcare}"><i class="fa-solid fa-spa me-1"></i>Self-Care</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/compassion}"><i class="fa-solid fa-heart me-1"></i>Affirmations</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/community}"><i class="fa-solid fa-users me-1"></i>Community</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/chatbot}"><i class="fa-solid fa-robot me-1"></i>Support Bot</a></li>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-nav-logout" th:href="@{/logout}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-book-open-reader me-2"></i>Educational Health Center</span>
+                <h3 class="fw-bold" style="color: var(--primary-pink)">Know Your Body</h3>
+                <p class="text-muted">Understand your anatomy, hormones, and conditions. Knowledge is empowerment. 🌸</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Navigation Tabs for Articles -->
+            <div class="col-12 mb-4">
+                <div class="edu-nav justify-content-center">
+                    <button id="btn-uterus" class="edu-btn active" onclick="switchEduTab('uterus')">
+                        <i class="fa-solid fa-person-breastfeeding me-2"></i>Uterus Structure
+                    </button>
+                    <button id="btn-hormones" class="edu-btn" onclick="switchEduTab('hormones')">
+                        <i class="fa-solid fa-chart-line me-2"></i>Hormonal Changes
+                    </button>
+                    <button id="btn-pcos" class="edu-btn" onclick="switchEduTab('pcos')">
+                        <i class="fa-solid fa-virus me-2"></i>PCOS Insights
+                    </button>
+                    <button id="btn-endo" class="edu-btn" onclick="switchEduTab('endo')">
+                        <i class="fa-solid fa-circle-exclamation me-2"></i>Endometriosis
+                    </button>
+                </div>
+            </div>
+
+            <!-- Article Panels -->
+            <div class="col-lg-10 mx-auto">
+                <!-- Panel 1: Uterus Structure -->
+                <div id="panel-uterus" class="edu-content-panel active pink-card">
+                    <h4 class="fw-bold mb-4" style="color: var(--primary-pink); border-bottom: 2px solid var(--light-pink); padding-bottom: 10px;">
+                        <i class="fa-solid fa-person-breastfeeding me-2"></i>Uterus Anatomy & Structure
+                    </h4>
+                    <p class="mb-4">The female reproductive system is complex, beautiful, and highly synchronized. Here is a breakdown of the key anatomical structures:</p>
+                    
+                    <div class="row align-items-center mb-4">
+                        <div class="col-md-7">
+                            <ul class="list-group list-group-flush" style="background: transparent">
+                                <li class="list-group-item bg-transparent border-0 py-2"><i class="fa-regular fa-star me-2 text-danger"></i><strong>Ovaries:</strong> Two small glands that house and release eggs (ovum) and produce essential sex hormones (estrogen and progesterone).</li>
+                                <li class="list-group-item bg-transparent border-0 py-2"><i class="fa-regular fa-star me-2 text-danger"></i><strong>Fallopian Tubes:</strong> Narrow ducts connecting ovaries to the uterus, where egg fertilization normally occurs.</li>
+                                <li class="list-group-item bg-transparent border-0 py-2"><i class="fa-regular fa-star me-2 text-danger"></i><strong>Uterus (Womb):</strong> A pear-shaped, muscular organ where a fetus grows. Its inner lining, the endometrium, thickens and sheds during each cycle.</li>
+                                <li class="list-group-item bg-transparent border-0 py-2"><i class="fa-regular fa-star me-2 text-danger"></i><strong>Cervix:</strong> The lower, narrow canal connecting the uterus body with the vagina.</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-5 text-center mt-3 mt-md-0">
+                            <!-- Schematic Diagram placeholder using elegant CSS details -->
+                            <div class="p-4 bg-white border border-light-pink rounded-3 d-flex flex-column align-items-center shadow-sm">
+                                <div class="rounded-circle bg-light-pink d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; border: 2px solid var(--primary-pink)">
+                                    <i class="fa-solid fa-baby-carriage text-danger" style="font-size: 2.5rem;"></i>
+                                </div>
+                                <span class="d-block mt-3 fw-bold text-sm" style="color: var(--primary-pink)">The Womb & Ovaries</span>
+                                <span class="text-xs text-muted">Core reproductive anatomy details</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 2: Hormonal Changes -->
+                <div id="panel-hormones" class="edu-content-panel pink-card">
+                    <h4 class="fw-bold mb-4" style="color: var(--primary-pink); border-bottom: 2px solid var(--light-pink); padding-bottom: 10px;">
+                        <i class="fa-solid fa-chart-line me-2"></i>Hormonal Cycles & Phases
+                    </h4>
+                    <p class="mb-4">The menstrual cycle is driven by cyclical fluctuations in four key hormones: Estrogen, Progesterone, LH, and FSH. The cycle has 4 distinct phases:</p>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-hover text-sm border">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Phase Name</th>
+                                    <th>Estimated Days</th>
+                                    <th>Hormone Profile</th>
+                                    <th>What Happens in Your Body</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="fw-bold text-danger">Menstrual Phase</td>
+                                    <td>Days 1 - 5</td>
+                                    <td>Low Estrogen & Progesterone</td>
+                                    <td>The thickened endometrium lining sheds, causing menstrual bleeding.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-warning">Follicular Phase</td>
+                                    <td>Days 6 - 13</td>
+                                    <td>Rising Estrogen</td>
+                                    <td>Estrogen thickens the lining again. Ovarian follicles mature an egg.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-success">Ovulatory Phase</td>
+                                    <td>Day 14</td>
+                                    <td>LH Surge, Peak Estrogen</td>
+                                    <td>The ovary releases the mature egg into the fallopian tube. Fertile peak.</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold text-primary">Luteal Phase</td>
+                                    <td>Days 15 - 28</td>
+                                    <td>Peak Progesterone</td>
+                                    <td>Progesterone maintains lining for potential pregnancy. Drops if no fertilization occurs.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Panel 3: PCOS -->
+                <div id="panel-pcos" class="edu-content-panel pink-card">
+                    <h4 class="fw-bold mb-4" style="color: var(--primary-pink); border-bottom: 2px solid var(--light-pink); padding-bottom: 10px;">
+                        <i class="fa-solid fa-virus me-2"></i>Understanding PCOS
+                    </h4>
+                    <p><strong>Polycystic Ovary Syndrome (PCOS)</strong> is a highly common hormonal condition that affects 1 in 10 women of reproductive age. It is characterized by imbalances in reproductive hormones.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
+                                <h6 class="fw-bold" style="color: var(--primary-pink)"><i class="fa-solid fa-triangle-exclamation me-2"></i>Common Symptoms</h6>
+                                <ul class="text-xs text-muted mb-0 ps-3">
+                                    <li>Irregular or missing periods</li>
+                                    <li>High levels of androgen hormones (excess facial/body hair, severe acne)</li>
+                                    <li>Enlarged ovaries containing fluid-filled sacs (follicles)</li>
+                                    <li>Weight gain and difficulty losing weight</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
+                                <h6 class="fw-bold" style="color: var(--primary-lavender)"><i class="fa-solid fa-hand-holding-heart me-2"></i>Management & Care</h6>
+                                <ul class="text-xs text-muted mb-0 ps-3">
+                                    <li>Balanced diet targeting insulin sensitivity</li>
+                                    <li>Regular moderate exercises</li>
+                                    <li>Medications (metformin or contraceptives prescribed by gynecologist)</li>
+                                    <li>Support and stress management</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 4: Endometriosis -->
+                <div id="panel-endo" class="edu-content-panel pink-card">
+                    <h4 class="fw-bold mb-4" style="color: var(--primary-pink); border-bottom: 2px solid var(--light-pink); padding-bottom: 10px;">
+                        <i class="fa-solid fa-circle-exclamation me-2"></i>Understanding Endometriosis
+                    </h4>
+                    <p><strong>Endometriosis</strong> is a condition where tissue similar to the lining of the uterus (endometrium) grows outside the womb. This tissue behaves like endometrium—it thickens, breaks down, and bleeds with each menstrual cycle, but has no way to exit the body, causing pain and inflammation.</p>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
+                                <h6 class="fw-bold text-danger"><i class="fa-solid fa-crutch me-2"></i>Key Warning Signs</h6>
+                                <ul class="text-xs text-muted mb-0 ps-3">
+                                    <li>Extremely painful cramps (dysmenorrhea)</li>
+                                    <li>Chronic pelvic pain throughout the month</li>
+                                    <li>Pain during or after sexual intercourse</li>
+                                    <li>Excessive bleeding or spot bleeding between cycles</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
+                                <h6 class="fw-bold text-success"><i class="fa-solid fa-stethoscope me-2"></i>When to see a Doctor</h6>
+                                <p class="text-xs text-muted mb-0">If your menstrual cycle pain is so severe that it prevents you from doing daily activities, or if pain does not respond to common heating pad and OTC remedies, seek professional consultation. Early diagnosis helps manage pelvic scar tissue.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container text-center text-muted">
+            <div class="mb-3 d-flex align-items-center justify-content-center">
+                <img th:src="@{/images/logo.png}" src="../static/images/logo.png" alt="PinkPetal logo small" style="height: 24px; margin-right: 8px;">
+                <span class="fw-bold" style="color: var(--dark-text)">PinkPetal</span>
+            </div>
+            <p class="mb-1">&copy; 2026 PinkPetal. Designed with love for women's health and wellness.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script th:src="@{/js/script.js}" src="../static/js/script.js"></script>
+</body>
+</html>

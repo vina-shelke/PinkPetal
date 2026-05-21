@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Care Zone - PinkPetal</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link th:href="@{/css/style.css}" href="../static/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg custom-navbar navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" th:href="@{/dashboard}">
+                <img th:src="@{/images/logo.png}" src="../static/images/logo.png" alt="PinkPetal Logo">
+                <span class="fw-bold" style="background: var(--gradient-brand); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PinkPetal</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}"><i class="fa-solid fa-chart-line me-1"></i>Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/education}"><i class="fa-solid fa-book-open me-1"></i>Know Your Body</a></li>
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/selfcare}"><i class="fa-solid fa-spa me-1"></i>Self-Care</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/compassion}"><i class="fa-solid fa-heart me-1"></i>Affirmations</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/community}"><i class="fa-solid fa-users me-1"></i>Community</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/chatbot}"><i class="fa-solid fa-robot me-1"></i>Support Bot</a></li>
+                    <li class="nav-item ms-2">
+                        <a class="btn btn-nav-logout" th:href="@{/logout}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <!-- Banner -->
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-spa me-2"></i>Calm Oasis</span>
+                <h3 class="fw-bold" style="color: var(--primary-pink)">Self-Care Sanctuary</h3>
+                <p class="text-muted">Take a moment for yourself. Align your breath, stretch out the discomfort, and listen to soothing sounds.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Column: Breathing bubble -->
+            <div class="col-lg-5 mb-4">
+                <div class="pink-card text-center" style="height: 100%;">
+                    <div class="pink-card-header text-center justify-content-center">
+                        <i class="fa-solid fa-wind" style="color: var(--primary-pink)"></i>
+                        Mindful Breathing Coach
+                    </div>
+                    <p class="text-sm text-muted">Synchronize your breathing with the expanding bubble. Breathe in as it expands, hold, and breathe out as it contracts.</p>
+                    
+                    <div class="breathing-container">
+                        <div class="breathing-circle">
+                            <span id="breathing-instruction">Inhale deeply...</span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-xs text-muted mb-0"><i class="fa-regular fa-clock me-1"></i>A simple 8-second cycle: 2s Inhale, 2s Hold, 2s Exhale, 2s Hold.</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Meditation and Yoga -->
+            <div class="col-lg-7 mb-4">
+                <!-- Meditation Audio Section -->
+                <div class="pink-card mb-4">
+                    <div class="pink-card-header">
+                        <i class="fa-solid fa-music" style="color: var(--primary-lavender)"></i>
+                        Ambient Soundscapes & Meditations
+                    </div>
+                    <p class="text-sm text-muted">Select an audio stream to play calming background frequency sounds for cramps and emotional relief.</p>
+                    
+                    <!-- Calming Sound Player -->
+                    <div class="p-3 bg-white border border-light-pink rounded-3 d-flex flex-column gap-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="fw-bold d-block">Soft Rainfall & Calming Music</span>
+                                <span class="text-xs text-muted"><i class="fa-solid fa-compact-disc fa-spin me-2 text-danger"></i>Relaxation Loop</span>
+                            </div>
+                            <span class="badge-pink py-1 px-2 text-xs">Audio Stream</span>
+                        </div>
+                        <audio controls class="w-100" style="border-radius: var(--border-radius-sm);">
+                            <!-- Royalty free ambient rain sample -->
+                            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+
+                <!-- Yoga Videos for Cramps -->
+                <div class="pink-card">
+                    <div class="pink-card-header">
+                        <i class="fa-brands fa-youtube" style="color: #ff0000"></i>
+                        Yoga & Stretches for Cramp Relief
+                    </div>
+                    <p class="text-sm text-muted">Curated gentle menstrual yoga exercises to reduce muscle tension and soothe painful cramps.</p>
+                    
+                    <!-- Video Embed -->
+                    <div class="ratio ratio-16x9 border border-light-pink rounded-3 overflow-hidden shadow-sm">
+                        <!-- Gentle Yoga for Period Cramps -->
+                        <iframe src="https://www.youtube.com/embed/8J7mS9uLwT4" title="Yoga for Period Pain" allowfullscreen></iframe>
+                    </div>
+                    
+                    <div class="mt-3 text-xs text-muted">
+                        <i class="fa-solid fa-circle-info me-1"></i>
+                        <strong>Tip:</strong> Always focus on slow, steady chest breathing. Try child's pose, cat-cow, and reclining bound angle stretches for best results.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-section">
+        <div class="container text-center text-muted">
+            <div class="mb-3 d-flex align-items-center justify-content-center">
+                <img th:src="@{/images/logo.png}" src="../static/images/logo.png" alt="PinkPetal logo small" style="height: 24px; margin-right: 8px;">
+                <span class="fw-bold" style="color: var(--dark-text)">PinkPetal</span>
+            </div>
+            <p class="mb-1">&copy; 2026 PinkPetal. Designed with love for women's health and wellness.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script th:src="@{/js/script.js}" src="../static/js/script.js"></script>
+</body>
+</html>
