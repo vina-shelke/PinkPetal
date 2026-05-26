@@ -27,6 +27,24 @@ public class Reminder {
     @Column(length = 20)
     private String status = "Active";
 
+    @Column(length = 255)
+    private String notes;
+
+    @Column(name = "repeat_schedule", length = 50)
+    private String repeatSchedule = "Once";
+
+    @Column(name = "sound_enabled")
+    private boolean soundEnabled = true;
+
+    @Column(name = "vibration_enabled")
+    private boolean vibrationEnabled = true;
+
+    @Column(name = "interval_minutes")
+    private Integer intervalMinutes = 0;
+
+    @Column(name = "snoozed")
+    private boolean snoozed = false;
+
     public Reminder() {}
 
     public Reminder(String userId, String type, String time, String status) {
@@ -34,6 +52,19 @@ public class Reminder {
         this.type = type;
         this.time = time;
         this.status = status;
+    }
+
+    public Reminder(String userId, String type, String time, String status, String notes, String repeatSchedule, boolean soundEnabled, boolean vibrationEnabled, Integer intervalMinutes, boolean snoozed) {
+        this.userId = userId;
+        this.type = type;
+        this.time = time;
+        this.status = status;
+        this.notes = notes;
+        this.repeatSchedule = repeatSchedule;
+        this.soundEnabled = soundEnabled;
+        this.vibrationEnabled = vibrationEnabled;
+        this.intervalMinutes = intervalMinutes;
+        this.snoozed = snoozed;
     }
 
     public Integer getId() {
@@ -74,5 +105,53 @@ public class Reminder {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    public String getRepeatSchedule() {
+        return repeatSchedule;
+    }
+
+    public void setRepeatSchedule(String repeatSchedule) {
+        this.repeatSchedule = repeatSchedule;
+    }
+
+    public boolean isSoundEnabled() {
+        return soundEnabled;
+    }
+
+    public void setSoundEnabled(boolean soundEnabled) {
+        this.soundEnabled = soundEnabled;
+    }
+
+    public boolean isVibrationEnabled() {
+        return vibrationEnabled;
+    }
+
+    public void setVibrationEnabled(boolean vibrationEnabled) {
+        this.vibrationEnabled = vibrationEnabled;
+    }
+
+    public Integer getIntervalMinutes() {
+        return intervalMinutes;
+    }
+
+    public void setIntervalMinutes(Integer intervalMinutes) {
+        this.intervalMinutes = intervalMinutes;
+    }
+
+    public boolean isSnoozed() {
+        return snoozed;
+    }
+
+    public void setSnoozed(boolean snoozed) {
+        this.snoozed = snoozed;
     }
 }

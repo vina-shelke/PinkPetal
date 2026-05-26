@@ -92,6 +92,22 @@
         <div class="row">
             <!-- Left Column: Settings and Predictions -->
             <div class="col-lg-8">
+                <!-- 🌸 Caring Companion Smart Check-ins Feed -->
+                <div class="pink-card py-3 px-4 mb-4" th:if="${not #lists.isEmpty(smartNotifications)}">
+                    <h5 class="fw-bold text-pink mb-2"><i class="fa-solid fa-leaf me-2"></i>Your Caring Companion's Check-ins Today</h5>
+                    <div class="d-flex flex-column gap-2">
+                        <div th:each="notif : ${smartNotifications}" class="p-3 bg-white border rounded-3 d-flex align-items-center gap-3" style="border-color: var(--border-pink) !important;">
+                            <div style="font-size: 1.5rem; width: 40px;" class="text-center">
+                                <i th:class="${#strings.toLowerCase(notif.type) == 'emotional' ? 'fa-solid fa-heart text-danger' : (#strings.toLowerCase(notif.type) == 'hydration' ? 'fa-solid fa-droplet text-info' : (#strings.toLowerCase(notif.type) == 'hygiene' ? 'fa-solid fa-sparkles text-warning' : (#strings.toLowerCase(notif.type) == 'comfort' ? 'fa-solid fa-spa text-pink' : (#strings.toLowerCase(notif.type) == 'rest' ? 'fa-solid fa-moon text-primary' : 'fa-solid fa-carrot text-success'))))}"></i>
+                            </div>
+                            <div>
+                                <span class="badge-pink py-0 px-2 text-xxs fw-semibold mb-1" th:text="${notif.type}">Type</span>
+                                <p class="mb-0 text-sm fw-medium text-dark" th:text="${notif.content}">Content</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Predictions Block -->
                 <div class="row" th:if="${forecast != null}">
                     <!-- Period forecast card -->
@@ -213,53 +229,98 @@
                     </div>
                 </div>
 
-                <!-- Symptom Tracker Logger -->
+                <!-- Daily Wellness & Comfort Tracker Card -->
                 <div class="pink-card">
-                    <div class="pink-card-header">
-                        <i class="fa-solid fa-notes-medical" style="color: var(--primary-pink)"></i>
-                        Log Your Symptoms
+                    <div class="pink-card-header justify-content-between align-items-center">
+                        <div>
+                            <i class="fa-solid fa-spa text-pink me-2"></i>
+                            Daily Wellness & Comfort Tracker
+                        </div>
+                        <span class="badge-pink py-1 px-2 text-xs">Symptom & Mood Logging</span>
                     </div>
-                    <form th:action="@{/dashboard/log-symptom}" method="POST">
-                        <div class="mb-3">
-                            <label for="symptom-date" class="form-label fw-bold text-sm">Logging Date</label>
-                            <input type="date" class="form-control" id="symptom-date" name="date" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" required>
-                        </div>
+
+                    <!-- Navigation Tabs -->
+                    <ul class="nav nav-tabs mb-3" id="wellnessLogTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active fw-bold text-sm" id="symptoms-log-tab" data-bs-toggle="tab" data-bs-target="#symptoms-log-panel" type="button" role="tab"><i class="fa-solid fa-notes-medical me-1"></i>Symptoms</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-bold text-sm" id="mood-log-tab" data-bs-toggle="tab" data-bs-target="#mood-log-panel" type="button" role="tab"><i class="fa-solid fa-heart me-1"></i>Mood Check-in</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="wellnessLogTabsContent">
                         
-                        <label class="form-label fw-bold text-sm">Select Today's Symptoms</label>
-                        <div class="d-flex flex-wrap gap-2 mb-3">
-                            <!-- Symptom Tags toggled dynamically in JS -->
-                            <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-cramps')">Cramps</span>
-                            <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-bloating')">Bloating</span>
-                            <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-headache')">Headache</span>
-                            <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-mood')">Mood Swings</span>
-                            <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-fatigue')">Fatigue</span>
-                            <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-acne')">Acne</span>
-                            <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-cravings')">Food Cravings</span>
-                            <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-backache')">Backache</span>
+                        <!-- TAB 1: Symptoms Log -->
+                        <div class="tab-pane fade show active" id="symptoms-log-panel" role="tabpanel">
+                            <form th:action="@{/dashboard/log-symptom}" method="POST">
+                                <div class="mb-3">
+                                    <label for="symptom-date" class="form-label fw-bold text-sm">Logging Date</label>
+                                    <input type="date" class="form-control" id="symptom-date" name="date" th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" required>
+                                </div>
+                                
+                                <label class="form-label fw-bold text-sm">Select Today's Symptoms</label>
+                                <div class="d-flex flex-wrap gap-2 mb-3">
+                                    <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-cramps')">Cramps</span>
+                                    <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-bloating')">Bloating</span>
+                                    <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-headache')">Headache</span>
+                                    <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-mood')">Mood Swings</span>
+                                    <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-fatigue')">Fatigue</span>
+                                    <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-acne')">Acne</span>
+                                    <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-cravings')">Food Cravings</span>
+                                    <span class="badge badge-lavender cursor-pointer py-2 px-3" onclick="toggleSymptomCheckbox(this, 's-backache')">Backache</span>
+                                </div>
+
+                                <div class="visually-hidden">
+                                    <input type="checkbox" class="symptom-tag-input" id="s-cramps" value="Cramps">
+                                    <input type="checkbox" class="symptom-tag-input" id="s-bloating" value="Bloating">
+                                    <input type="checkbox" class="symptom-tag-input" id="s-headache" value="Headache">
+                                    <input type="checkbox" class="symptom-tag-input" id="s-mood" value="Mood Swings">
+                                    <input type="checkbox" class="symptom-tag-input" id="s-fatigue" value="Fatigue">
+                                    <input type="checkbox" class="symptom-tag-input" id="s-acne" value="Acne">
+                                    <input type="checkbox" class="symptom-tag-input" id="s-cravings" value="Food Cravings">
+                                    <input type="checkbox" class="symptom-tag-input" id="s-backache" value="Backache">
+                                    <input type="text" id="symptoms-compiled" name="symptoms" required>
+                                </div>
+
+                                <button type="submit" class="btn btn-brand w-100"><i class="fa-solid fa-notes-medical me-2"></i>Save Symptoms Log</button>
+                            </form>
                         </div>
 
-                        <!-- Hidden Form Elements -->
-                        <div class="visually-hidden">
-                            <input type="checkbox" class="symptom-tag-input" id="s-cramps" value="Cramps">
-                            <input type="checkbox" class="symptom-tag-input" id="s-bloating" value="Bloating">
-                            <input type="checkbox" class="symptom-tag-input" id="s-headache" value="Headache">
-                            <input type="checkbox" class="symptom-tag-input" id="s-mood" value="Mood Swings">
-                            <input type="checkbox" class="symptom-tag-input" id="s-fatigue" value="Fatigue">
-                            <input type="checkbox" class="symptom-tag-input" id="s-acne" value="Acne">
-                            <input type="checkbox" class="symptom-tag-input" id="s-cravings" value="Food Cravings">
-                            <input type="checkbox" class="symptom-tag-input" id="s-backache" value="Backache">
-                            <input type="text" id="symptoms-compiled" name="symptoms" required>
+                        <!-- TAB 2: Mood Log -->
+                        <div class="tab-pane fade" id="mood-log-panel" role="tabpanel">
+                            <form th:action="@{/dashboard/log-mood}" method="POST">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold text-sm">How are you feeling today? 🌸</label>
+                                    <div class="d-flex flex-wrap gap-2 mb-3">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary px-3 py-2 text-sm rounded-pill mood-btn" onclick="selectMood(this, 'Sad 😢')">Sad 😢</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary px-3 py-2 text-sm rounded-pill mood-btn" onclick="selectMood(this, 'Tired 😴')">Tired 😴</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary px-3 py-2 text-sm rounded-pill mood-btn" onclick="selectMood(this, 'Irritated 😠')">Irritated 😠</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary px-3 py-2 text-sm rounded-pill mood-btn" onclick="selectMood(this, 'Anxious 😰')">Anxious 😰</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary px-3 py-2 text-sm rounded-pill mood-btn" onclick="selectMood(this, 'Emotional 🥺')">Emotional 🥺</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary px-3 py-2 text-sm rounded-pill mood-btn" onclick="selectMood(this, 'Happy 😊')">Happy 😊</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary px-3 py-2 text-sm rounded-pill mood-btn" onclick="selectMood(this, 'Low energy 🔋')">Low energy 🔋</button>
+                                    </div>
+                                    <input type="hidden" id="mood-input" name="mood" required>
+                                </div>
+                                <div class="mb-3" th:if="${not #strings.isEmpty(moodToday)}">
+                                    <span class="badge-lavender py-1 px-2 text-xs d-inline-block">Logged mood today: <strong th:text="${moodToday}">Sad</strong></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="mood-notes" class="form-label fw-bold text-sm">Feelings / Notes (Optional)</label>
+                                    <textarea class="form-control text-sm" id="mood-notes" name="notes" rows="2" placeholder="Write down any notes about your emotional state..." th:text="${moodNotesToday}"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-brand w-100"><i class="fa-solid fa-heart me-2"></i>Log Mood</button>
+                            </form>
                         </div>
-
-                        <button type="submit" class="btn btn-brand w-100"><i class="fa-solid fa-notes-medical me-2"></i>Save Log</button>
-                    </form>
+                    </div>
 
                     <!-- History Display Table -->
                     <div class="mt-4" th:if="${not #lists.isEmpty(symptoms)}">
                         <h6 class="fw-bold mb-3"><i class="fa-solid fa-history me-2 text-muted"></i>Cycle Symptom Logs History</h6>
                         <div class="table-responsive">
-                            <table class="table table-hover text-sm">
-                                <thead>
+                            <table class="table table-hover text-sm border align-middle mb-0">
+                                <thead class="table-light">
                                     <tr>
                                         <th>Date</th>
                                         <th>Symptoms Logged</th>
@@ -282,6 +343,15 @@
 
             <!-- Right Column: Reminders Panel -->
             <div class="col-lg-4">
+                <!-- Calm Mode Button Launcher -->
+                <div class="pink-card text-center mb-4" style="background: linear-gradient(135deg, rgba(255, 133, 162, 0.1) 0%, rgba(157, 141, 241, 0.1) 100%); text-align: center;">
+                    <h5 class="fw-bold mb-2 text-pink"><i class="fa-solid fa-circle-info me-1"></i>Emotional Support Oasis</h5>
+                    <p class="text-xs text-muted mb-3">Feeling overwhelmed, heavy, or in pain? Enter our quiet sanctuary immediately.</p>
+                    <button type="button" class="btn btn-brand w-100 py-3 rounded-pill fw-bold btn-lg animate-pulse" style="font-size: 0.95rem;" data-bs-toggle="modal" data-bs-target="#calmModeModal">
+                        🌸 I'm Not Feeling Okay
+                    </button>
+                </div>
+
                 <!-- Alerts / Reminders Panel -->
                 <div class="pink-card">
                     <div class="pink-card-header">
@@ -294,18 +364,43 @@
                         <p class="mb-0 text-sm">No reminders configured. Create one below!</p>
                     </div>
 
-                    <div th:each="rem : ${reminders}" th:classappend="${#strings.toLowerCase(rem.type) == 'water' ? 'water' : (#strings.toLowerCase(rem.type) == 'medicine' ? 'medicine' : (#strings.toLowerCase(rem.type) == 'doctor' ? 'appointment' : (#strings.toLowerCase(rem.type) == 'pad/tampon' ? 'pad' : '')))}" class="reminder-item">
-                        <div>
-                            <div class="reminder-text">
+                    <div th:each="rem : ${reminders}" th:classappend="${#strings.toLowerCase(rem.type) == 'water' ? 'water' : (#strings.toLowerCase(rem.type) == 'medicine' ? 'medicine' : (#strings.toLowerCase(rem.type) == 'doctor' ? 'appointment' : (#strings.toLowerCase(rem.type) == 'pad/tampon' ? 'pad' : '')))}" class="reminder-item flex-column align-items-start gap-1 p-3">
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="reminder-text fw-bold">
                                 <i th:class="${#strings.toLowerCase(rem.type) == 'water' ? 'fa-solid fa-glass-water text-info' : (#strings.toLowerCase(rem.type) == 'medicine' ? 'fa-solid fa-pills text-warning' : (#strings.toLowerCase(rem.type) == 'doctor' ? 'fa-solid fa-user-doctor text-primary' : (#strings.toLowerCase(rem.type) == 'pad/tampon' ? 'fa-solid fa-droplet text-danger' : 'fa-solid fa-bell text-secondary')))}" class="fa-solid fa-bell me-2"></i>
                                 <span th:text="${rem.type}">Reminder Type</span>
                             </div>
-                            <div class="reminder-time" th:text="${rem.time}">Time</div>
+                            <div class="d-flex align-items-center gap-2">
+                                <!-- Status Toggle Button -->
+                                <form th:action="@{/dashboard/toggle-reminder}" method="POST" class="mb-0 d-inline">
+                                    <input type="hidden" name="id" th:value="${rem.id}">
+                                    <button type="submit" class="btn btn-xs py-0 px-2 rounded border" th:classappend="${rem.status == 'Active' ? 'btn-success text-white text-xs' : 'btn-secondary text-white text-xs'}" th:text="${rem.status}">Active</button>
+                                </form>
+
+                                <!-- Dismiss Button -->
+                                <form th:action="@{/dashboard/delete-reminder}" method="POST" class="mb-0 d-inline">
+                                    <input type="hidden" name="id" th:value="${rem.id}">
+                                    <button type="submit" class="btn btn-link text-danger p-0 border-0" title="Dismiss Alert"><i class="fa-regular fa-circle-xmark" style="font-size: 1.15rem"></i></button>
+                                </form>
+                            </div>
                         </div>
-                        <form th:action="@{/dashboard/delete-reminder}" method="POST" class="mb-0">
-                            <input type="hidden" name="id" th:value="${rem.id}">
-                            <button type="submit" class="btn btn-link text-danger p-0 border-0" title="Dismiss Alert"><i class="fa-regular fa-circle-xmark" style="font-size: 1.15rem"></i></button>
-                        </form>
+                        <div class="d-flex justify-content-between align-items-center w-100 text-xs text-muted mt-1">
+                            <div>
+                                <i class="fa-regular fa-clock me-1"></i><span th:text="${rem.time}">Time</span>
+                                <span class="ms-2 badge bg-light text-dark py-0" th:text="${rem.repeatSchedule}">Once</span>
+                            </div>
+                            <!-- Snooze option if active -->
+                            <form th:if="${rem.status == 'Active' and !rem.snoozed}" th:action="@{/dashboard/snooze-reminder}" method="POST" class="mb-0 d-inline">
+                                <input type="hidden" name="id" th:value="${rem.id}">
+                                <button type="submit" class="btn btn-link text-xs p-0 text-pink border-0" title="Snooze 10 mins"><i class="fa-solid fa-clock-rotate-left me-1"></i>Snooze</button>
+                            </form>
+                        </div>
+                        <div class="text-xs text-muted mt-1 fst-italic" th:if="${not #strings.isEmpty(rem.notes)}" th:text="${'Note: ' + rem.notes}">Notes</div>
+                        <!-- Sound & Vibration status -->
+                        <div class="d-flex gap-2 text-xxs text-muted mt-1">
+                            <span th:if="${rem.soundEnabled}"><i class="fa-solid fa-volume-high me-1"></i>Sound</span>
+                            <span th:if="${rem.vibrationEnabled}"><i class="fa-solid fa-mobile-screen-button me-1"></i>Vibration</span>
+                        </div>
                     </div>
 
                     <!-- Add Reminder Form -->
@@ -320,23 +415,111 @@
                                     <option value="Water">Water Intake</option>
                                     <option value="Pad/Tampon">Change Pad/Tampon</option>
                                     <option value="Doctor">Doctor Appointment</option>
+                                    <option value="Sleep">Sleep Reminder</option>
+                                    <option value="Exercise">Exercise Reminder</option>
+                                    <option value="Self-care">Self-care Task</option>
+                                    <option value="Meal">Meal Reminder</option>
+                                    <option value="Supplement">Supplement Reminder</option>
                                 </select>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-2">
                                 <label for="rem-time" class="form-label text-sm fw-bold">Time / Schedule</label>
                                 <input type="text" class="form-control text-sm" id="rem-time" name="time" placeholder="e.g. 08:00 AM or May 25, 10:00 AM" required>
+                            </div>
+                            <div class="mb-2">
+                                <label for="rem-notes" class="form-label text-sm fw-bold">Reminder Notes</label>
+                                <input type="text" class="form-control text-sm" id="rem-notes" name="notes" placeholder="e.g. Take with warm water">
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-6">
+                                    <label for="rem-schedule" class="form-label text-sm fw-bold">Repeat</label>
+                                    <select class="form-select text-sm" id="rem-schedule" name="repeatSchedule">
+                                        <option value="Once">Once</option>
+                                        <option value="Daily">Daily</option>
+                                        <option value="Weekly">Weekly</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label for="rem-interval" class="form-label text-sm fw-bold">Interval (Mins)</label>
+                                    <input type="number" class="form-control text-sm" id="rem-interval" name="intervalMinutes" value="0" min="0">
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3 mb-3 mt-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rem-sound" name="soundEnabled" value="true" checked>
+                                    <label class="form-check-label text-sm" for="rem-sound">Sound</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="rem-vibe" name="vibrationEnabled" value="true" checked>
+                                    <label class="form-check-label text-sm" for="rem-vibe">Vibration</label>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-brand w-100 btn-sm"><i class="fa-solid fa-plus me-2"></i>Add Alert</button>
                         </form>
                     </div>
                 </div>
 
-                <!-- Support Bot card link -->
-                <div class="pink-card text-center" style="background: linear-gradient(135deg, rgba(164,142,242,0.1) 0%, rgba(255,133,162,0.1) 100%);">
-                    <h5 class="fw-bold">Need Emotional Support?</h5>
-                    <p class="text-sm text-muted">Talk to our rule-based supportive bot for comfort, exercises, and positive affirmations.</p>
-                    <a th:href="@{/chatbot}" class="btn btn-brand btn-sm w-100 mt-2"><i class="fa-solid fa-heart me-2"></i>Talk to Bot</a>
+                <!-- Wellness & Notification Preferences Card -->
+                <div class="pink-card">
+                    <div class="pink-card-header">
+                        <i class="fa-solid fa-user-gear text-pink me-2"></i>
+                        Companion Preferences
+                    </div>
+                    <p class="text-sm text-muted">Customize how your emotional companion checks in and alerts you during your cycle phases.</p>
+                    
+                    <form th:action="@{/dashboard/update-preferences}" method="POST">
+                        <div class="mb-2">
+                            <label for="pref-intensity" class="form-label text-sm fw-bold">Care Check-ins Intensity</label>
+                            <select class="form-select text-sm" id="pref-intensity" name="smartNotifIntensity">
+                                <option value="Minimal" th:selected="${prefs.smartNotifIntensity == 'Minimal'}">Minimal Care (1/day)</option>
+                                <option value="Balanced" th:selected="${prefs.smartNotifIntensity == 'Balanced'}">Balanced Care (3/day)</option>
+                                <option value="Frequent Care" th:selected="${prefs.smartNotifIntensity == 'Frequent Care'}">Frequent Care (5/day)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-2">
+                            <label for="pref-frequency" class="form-label text-sm fw-bold">Reminder Frequency</label>
+                            <select class="form-select text-sm" id="pref-frequency" name="reminderFrequency">
+                                <option value="Minimal" th:selected="${prefs.reminderFrequency == 'Minimal'}">Minimal (Only Alert)</option>
+                                <option value="Balanced" th:selected="${prefs.reminderFrequency == 'Balanced'}">Balanced (Snoozable)</option>
+                            </select>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-6">
+                                <label for="pref-qh-start" class="form-label text-xs fw-bold">Quiet Hours Start</label>
+                                <input type="text" class="form-control text-xs" id="pref-qh-start" name="quietHoursStart" th:value="${prefs.quietHoursStart}" placeholder="e.g. 22:00">
+                            </div>
+                            <div class="col-6">
+                                <label for="pref-qh-end" class="form-label text-xs fw-bold">Quiet Hours End</label>
+                                <input type="text" class="form-control text-xs" id="pref-qh-end" name="quietHoursEnd" th:value="${prefs.quietHoursEnd}" placeholder="e.g. 08:00">
+                            </div>
+                        </div>
+
+                        <div class="form-check form-switch mb-1">
+                            <input class="form-check-input" type="checkbox" id="pref-mood" name="moodSupportEnabled" value="true" th:checked="${prefs.moodSupportEnabled}">
+                            <label class="form-check-label text-xs" for="pref-mood">Enable Mood-based Support</label>
+                        </div>
+
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="pref-sug" name="wellnessSuggestionsEnabled" value="true" th:checked="${prefs.wellnessSuggestionsEnabled}">
+                            <label class="form-check-label text-xs" for="pref-sug">Enable Wellness Suggestions</label>
+                        </div>
+
+                        <div class="form-check form-switch mb-1">
+                            <input class="form-check-input" type="checkbox" id="pref-sound" name="soundEnabled" value="true" th:checked="${prefs.soundEnabled}">
+                            <label class="form-check-label text-xs" for="pref-sound">Enable Alert Sounds</label>
+                        </div>
+
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="pref-vibe" name="vibrationEnabled" value="true" th:checked="${prefs.vibrationEnabled}">
+                            <label class="form-check-label text-xs" for="pref-vibe">Enable Alert Vibrations</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-brand w-100 btn-sm"><i class="fa-solid fa-save me-2"></i>Save Preferences</button>
+                    </form>
                 </div>
+            </div>
             </div>
         </div>
     </div>
@@ -351,6 +534,80 @@
             <p class="mb-1">&copy; 2026 PinkPetal. Designed with love for women's health and wellness.</p>
         </div>
     </footer>
+
+    <!-- 🌸 Premium Calm Mode Modal Overlay -->
+    <div class="modal fade" id="calmModeModal" tabindex="-1" aria-labelledby="calmModeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content calm-modal-content border-0">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-pink d-flex align-items-center gap-2" id="calmModeModalLabel">
+                        <span>🌸</span> PinkPetal Calm & Comfort Oasis
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div class="row">
+                        <!-- Left Column: Breathing Coach & Affirmation -->
+                        <div class="col-md-6 text-center border-end">
+                            <div class="calm-breathing-container">
+                                <div class="calm-breathing-circle">
+                                    <span id="modal-breathing-instruction">Inhale deeply...</span>
+                                </div>
+                                <p class="text-xs text-muted mb-4">Follow the circle: Inhale (2s) &rarr; Hold (2s) &rarr; Exhale (2s) &rarr; Hold (2s)</p>
+                            </div>
+                            
+                            <div class="calm-affirmation-box">
+                                <span id="calm-affirmation-text">I am safe, and this feeling will pass. 🤍</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Column: Ambient sounds, suggestions, emergency alert -->
+                        <div class="col-md-6 ps-md-4 mt-4 mt-md-0 d-flex flex-column justify-content-between">
+                            <div>
+                                <h6 class="fw-bold mb-2 text-lavender"><i class="fa-solid fa-music me-2"></i>Ambient Soundscapes</h6>
+                                <p class="text-xs text-muted mb-2">Select a soothing background track to play during your breathing exercise:</p>
+                                <div class="mb-3">
+                                    <select class="form-select text-sm rounded-pill" id="ambient-sound-select" onchange="changeAmbientSound(this)">
+                                        <option value="">Silence 🌸</option>
+                                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">Lullaby Piano Melody 🎹</option>
+                                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3">Gentle Acoustic Comfort 🎸</option>
+                                        <option value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3">Soothing Chill Vibe 🎧</option>
+                                    </select>
+                                    <audio id="ambient-audio-player" loop class="visually-hidden"></audio>
+                                </div>
+
+                                <h6 class="fw-bold mt-4 mb-2 text-pink"><i class="fa-solid fa-hand-holding-heart me-2"></i>Comfort Checklist</h6>
+                                <ul class="text-xs text-muted ps-3 mb-4" style="line-height: 1.6;">
+                                    <li>Place a heating pad or hot water bag on your abdomen/lower back.</li>
+                                    <li>Prepare a cup of hot chamomile, peppermint, or ginger tea.</li>
+                                    <li>Dim the room lights and try to rest your eyes for 10-15 minutes.</li>
+                                    <li>Wear comfortable, loose-fitting cotton clothing.</li>
+                                    <li>Listen to your body and give yourself permission to step away.</li>
+                                </ul>
+                            </div>
+
+                            <div class="border-top pt-3 mt-auto">
+                                <h6 class="fw-bold mb-2 text-danger"><i class="fa-solid fa-circle-nodes me-2"></i>Trusted Circle Assistance</h6>
+                                <p class="text-xs text-muted mb-3">Feeling severe discomfort or need someone to check on you? Simulate alerting your emergency contact.</p>
+                                <button type="button" id="notify-contact-btn" class="btn btn-brand-outline w-100 py-3 rounded-pill fw-bold" onclick="simulateNotifyTrustedContact()">
+                                    <i class="fa-solid fa-paper-plane me-2"></i>Simulate Alert to Trusted Contact
+                                </button>
+                                <div id="notify-contact-status" style="display: none;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0 justify-content-center">
+                    <button type="button" class="btn btn-sm btn-outline-secondary px-4 py-2 rounded-pill text-xs" data-bs-dismiss="modal">Close Sanctuary</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Support Action Button -->
+    <button type="button" class="btn btn-brand float-comfort-btn animate-pulse" data-bs-toggle="modal" data-bs-target="#calmModeModal">
+        Need Comfort? 🌸
+    </button>
 
     <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

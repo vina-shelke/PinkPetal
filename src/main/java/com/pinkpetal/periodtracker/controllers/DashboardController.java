@@ -8,9 +8,14 @@ import com.pinkpetal.periodtracker.repositories.CycleRepository;
 import com.pinkpetal.periodtracker.repositories.ReminderRepository;
 import com.pinkpetal.periodtracker.repositories.SymptomRepository;
 import com.pinkpetal.periodtracker.repositories.UserRepository;
+import com.pinkpetal.periodtracker.models.*;
+import com.pinkpetal.periodtracker.repositories.*;
+import com.pinkpetal.periodtracker.services.CareNotificationService;
 import com.pinkpetal.periodtracker.services.TrackingService;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +42,18 @@ public class DashboardController {
 
     @Autowired
     private TrackingService trackingService;
+
+    @Autowired
+    private MoodLogRepository moodLogRepository;
+
+    @Autowired
+    private UserPreferenceRepository userPreferenceRepository;
+
+    @Autowired
+    private NotificationHistoryRepository notificationHistoryRepository;
+
+    @Autowired
+    private CareNotificationService careNotificationService;
 
     @GetMapping("/dashboard")
     public String showDashboard(HttpSession session, Model model) {
@@ -80,6 +97,60 @@ public class DashboardController {
 
         List<Reminder> reminders = reminderRepository.findByUserId(username);
         model.addAttribute("reminders", reminders);
+
+        // --- 🌸 Smart Care & Comfort Reminder System additions ---
+        // 1. Fetch or initialize UserPreferences
+        UserPreference prefs = userPreferenceRepository.findById(username)
+                .orElseGet(() -> {
+                    UserPreference p = new UserPreference(username);
+                    return userPreferenceRepository.save(p);
+                });
+        model.addAttribute("prefs", prefs);
+
+        // 2. Fetch today's logged mood
+        LocalDate today = LocalDate.now();
+        List<MoodLog> moodTodayList = moodLogRepository.findByUserIdAndDate(username, today);
+        String moodToday = "";
+        String moodNotesToday = "";
+        if (!moodTodayList.isEmpty()) {
+            moodToday = moodTodayList.get(0).getMood();
+            moodNotesToday = moodTodayList.get(0).getNotes();
+        }
+        model.addAttribute("moodToday", moodToday);
+        model.addAttribute("moodNotesToday", moodNotesToday);
+
+        // 3. Fetch today's logged symptoms list
+        List<Symptom> symptomsTodayList = symptomRepository.findByUserIdAndDate(username, today);
+        List<String> symptomsList = new ArrayList<>();
+        if (!symptomsTodayList.isEmpty()) {
+            String syms = symptomsTodayList.get(0).getSymptoms();
+            if (syms != null && !syms.trim().isEmpty()) {
+                for (String s : syms.split(",")) {
+                    symptomsList.add(s.trim());
+                }
+            }
+        }
+        model.addAttribute("symptomsList", symptomsList);
+
+        // 4. Calculate dynamic cycle phase
+        TrackingService.CycleForecast forecast = null;
+        if (latestPeriodDate != null) {
+            forecast = trackingService.calculateForecast(latestPeriodDate, avgCycleLength);
+        }
+        String cyclePhase = calculateCyclePhase(today, latestPeriodDate, forecast != null ? forecast.getNextPeriodDate() : null, forecast != null ? forecast.getOvulationDate() : null);
+        model.addAttribute("cyclePhase", cyclePhase);
+
+        // 5. Generate / Retrieve today's smart care notifications
+        LocalDateTime startOfDay = today.atStartOfDay();
+        List<NotificationHistory> todayNotifs = notificationHistoryRepository.findByUserIdAndDateAfterOrderByDateDesc(username, startOfDay);
+        if (todayNotifs.isEmpty()) {
+            List<NotificationHistory> newNotifs = careNotificationService.generateDailyNotifications(username, cyclePhase, symptomsList, moodToday, prefs);
+            if (!newNotifs.isEmpty()) {
+                notificationHistoryRepository.saveAll(newNotifs);
+                todayNotifs = newNotifs;
+            }
+        }
+        model.addAttribute("smartNotifications", todayNotifs);
 
         return "dashboard";
     }
@@ -191,6 +262,11 @@ public class DashboardController {
     public String addReminder(
             @RequestParam("type") String type,
             @RequestParam("time") String time,
+            @RequestParam(value = "notes", required = false) String notes,
+            @RequestParam(value = "repeatSchedule", required = false, defaultValue = "Once") String repeatSchedule,
+            @RequestParam(value = "soundEnabled", required = false, defaultValue = "true") boolean soundEnabled,
+            @RequestParam(value = "vibrationEnabled", required = false, defaultValue = "true") boolean vibrationEnabled,
+            @RequestParam(value = "intervalMinutes", required = false, defaultValue = "0") Integer intervalMinutes,
             HttpSession session) {
         String username = (String) session.getAttribute("user");
         if (username == null) {
@@ -198,10 +274,125 @@ public class DashboardController {
         }
 
         if (type != null && !type.isEmpty() && time != null && !time.isEmpty()) {
-            Reminder reminder = new Reminder(username, type, time, "Active");
+            Reminder reminder = new Reminder(username, type, time, "Active", 
+                    notes == null ? "" : notes, repeatSchedule, soundEnabled, vibrationEnabled, intervalMinutes, false);
             reminderRepository.save(reminder);
         }
         return "redirect:/dashboard";
+    }
+
+    @PostMapping("/dashboard/snooze-reminder")
+    public String snoozeReminder(@RequestParam("id") Integer id, HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return "redirect:/login";
+        }
+        Optional<Reminder> optReminder = reminderRepository.findById(id);
+        if (optReminder.isPresent() && optReminder.get().getUserId().equals(username)) {
+            Reminder r = optReminder.get();
+            r.setSnoozed(true);
+            r.setTime("Snoozed (10 mins)");
+            reminderRepository.save(r);
+        }
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/dashboard/toggle-reminder")
+    public String toggleReminder(@RequestParam("id") Integer id, HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return "redirect:/login";
+        }
+        Optional<Reminder> optReminder = reminderRepository.findById(id);
+        if (optReminder.isPresent() && optReminder.get().getUserId().equals(username)) {
+            Reminder r = optReminder.get();
+            if ("Active".equalsIgnoreCase(r.getStatus())) {
+                r.setStatus("Disabled");
+            } else {
+                r.setStatus("Active");
+            }
+            reminderRepository.save(r);
+        }
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/dashboard/log-mood")
+    public String logMood(
+            @RequestParam("mood") String mood,
+            @RequestParam(value = "notes", required = false) String notes,
+            HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return "redirect:/login";
+        }
+        if (mood != null && !mood.trim().isEmpty()) {
+            LocalDate today = LocalDate.now();
+            List<MoodLog> existing = moodLogRepository.findByUserIdAndDate(username, today);
+            moodLogRepository.deleteAll(existing);
+
+            MoodLog moodLog = new MoodLog(username, today, mood, notes == null ? "" : notes);
+            moodLogRepository.save(moodLog);
+
+            // Force regeneration of notifications due to mood update
+            LocalDateTime startOfDay = today.atStartOfDay();
+            List<NotificationHistory> todayNotifs = notificationHistoryRepository.findByUserIdAndDateAfterOrderByDateDesc(username, startOfDay);
+            notificationHistoryRepository.deleteAll(todayNotifs);
+        }
+        return "redirect:/dashboard";
+    }
+
+    @PostMapping("/dashboard/update-preferences")
+    public String updatePreferences(
+            @RequestParam("reminderFrequency") String reminderFrequency,
+            @RequestParam("smartNotifIntensity") String smartNotifIntensity,
+            @RequestParam("quietHoursStart") String quietHoursStart,
+            @RequestParam("quietHoursEnd") String quietHoursEnd,
+            @RequestParam(value = "soundEnabled", required = false, defaultValue = "false") boolean soundEnabled,
+            @RequestParam(value = "vibrationEnabled", required = false, defaultValue = "false") boolean vibrationEnabled,
+            @RequestParam(value = "moodSupportEnabled", required = false, defaultValue = "false") boolean moodSupportEnabled,
+            @RequestParam(value = "wellnessSuggestionsEnabled", required = false, defaultValue = "false") boolean wellnessSuggestionsEnabled,
+            HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return "redirect:/login";
+        }
+
+        UserPreference prefs = userPreferenceRepository.findById(username)
+                .orElse(new UserPreference(username));
+        prefs.setReminderFrequency(reminderFrequency);
+        prefs.setSmartNotifIntensity(smartNotifIntensity);
+        prefs.setQuietHoursStart(quietHoursStart);
+        prefs.setQuietHoursEnd(quietHoursEnd);
+        prefs.setSoundEnabled(soundEnabled);
+        prefs.setVibrationEnabled(vibrationEnabled);
+        prefs.setMoodSupportEnabled(moodSupportEnabled);
+        prefs.setWellnessSuggestionsEnabled(wellnessSuggestionsEnabled);
+
+        userPreferenceRepository.save(prefs);
+
+        // Force regeneration of notifications due to settings change
+        LocalDate today = LocalDate.now();
+        LocalDateTime startOfDay = today.atStartOfDay();
+        List<NotificationHistory> todayNotifs = notificationHistoryRepository.findByUserIdAndDateAfterOrderByDateDesc(username, startOfDay);
+        notificationHistoryRepository.deleteAll(todayNotifs);
+
+        return "redirect:/dashboard";
+    }
+
+    private String calculateCyclePhase(LocalDate today, LocalDate latestPeriod, LocalDate nextPeriod, LocalDate ovulationDate) {
+        if (latestPeriod == null || nextPeriod == null) {
+            return "Follicular";
+        }
+        if (!today.isBefore(latestPeriod) && today.isBefore(latestPeriod.plusDays(5))) {
+            return "Period";
+        }
+        if (!today.isBefore(nextPeriod.minusDays(7)) && today.isBefore(nextPeriod)) {
+            return "PMS";
+        }
+        if (ovulationDate != null && !today.isBefore(ovulationDate.minusDays(2)) && today.isBefore(ovulationDate.plusDays(2))) {
+            return "Ovulation";
+        }
+        return "Follicular";
     }
 
     @PostMapping("/dashboard/delete-reminder")

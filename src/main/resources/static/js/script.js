@@ -220,3 +220,142 @@ function renderDashboardCalendar(lastPeriodStr, cycleLen, nextPeriodStr, fertile
 
     container.innerHTML = calendarHTML;
 }
+
+// --- 🌸 Premium Calm Mode & Smart Comfort JavaScript Helpers ---
+
+// Log Mood button helper
+function selectMood(btn, moodValue) {
+    document.querySelectorAll('.mood-btn').forEach(b => {
+        b.classList.remove('btn-brand');
+        b.classList.add('btn-outline-secondary');
+    });
+    btn.classList.add('btn-brand');
+    btn.classList.remove('btn-outline-secondary');
+    
+    const moodInput = document.getElementById('mood-input');
+    if (moodInput) {
+        moodInput.value = moodValue;
+    }
+}
+
+// Affirmations rotation lists for Calm Mode
+const CALM_AFFIRMATIONS = [
+    "I am safe, and this feeling will pass. 🤍",
+    "My body is strong, resilient, and doing its best. 🌸",
+    "I give myself permission to rest and heal. 🌙",
+    "Inhale peace, exhale tension. Let it all go. ✨",
+    "It's okay to feel overwhelmed. I am kind to myself. 🌷",
+    "I am surrounded by support and warmth. 💕",
+    "My peace is worth protecting today. 🍃"
+];
+let affirmationIndex = 0;
+
+function rotateAffirmation() {
+    const textEl = document.getElementById('calm-affirmation-text');
+    if (textEl) {
+        affirmationIndex = (affirmationIndex + 1) % CALM_AFFIRMATIONS.length;
+        textEl.style.transition = "opacity 0.3s ease";
+        textEl.style.opacity = 0;
+        setTimeout(() => {
+            textEl.textContent = CALM_AFFIRMATIONS[affirmationIndex];
+            textEl.style.opacity = 1;
+        }, 300);
+    }
+}
+
+// Ambient Sound Player handler
+function changeAmbientSound(selectElement) {
+    const player = document.getElementById('ambient-audio-player');
+    if (player) {
+        const selectedUrl = selectElement.value;
+        if (selectedUrl) {
+            player.src = selectedUrl;
+            player.load();
+            player.play().catch(e => console.log("Audio playback waiting for user interaction."));
+        } else {
+            player.pause();
+        }
+    }
+}
+
+// Emergency contact notification simulation
+function simulateNotifyTrustedContact() {
+    const btn = document.getElementById('notify-contact-btn');
+    const status = document.getElementById('notify-contact-status');
+    if (btn && status) {
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Notifying Contact...`;
+        
+        setTimeout(() => {
+            btn.innerHTML = `<i class="fa-solid fa-check me-2"></i>Contact Alerted`;
+            btn.className = "btn btn-success w-100 py-3 rounded-pill fw-bold";
+            status.style.display = "block";
+            status.innerHTML = `
+                <div class="alert alert-success mt-3 text-xs p-3 border-0 rounded-3 text-start" style="background-color: rgba(46, 204, 113, 0.1); color: #27ae60; border-left: 4px solid #2ecc71 !important;">
+                    <i class="fa-solid fa-circle-check me-2"></i><strong>Alert Sent!</strong> A simulated SMS alert has been dispatched to your emergency contact (Sisterhood Network). They have been requested to check in on you. 🌸
+                </div>
+            `;
+        }, 1500);
+    }
+}
+
+// Attach Calm Mode modal events
+document.addEventListener("DOMContentLoaded", () => {
+    const calmModal = document.getElementById('calmModeModal');
+    if (calmModal) {
+        let affirmationTimer = null;
+        let breathingTimer = null;
+        
+        calmModal.addEventListener('show.bs.modal', () => {
+            // Reset contact alert button state
+            const btn = document.getElementById('notify-contact-btn');
+            const status = document.getElementById('notify-contact-status');
+            if (btn && status) {
+                btn.disabled = false;
+                btn.className = "btn btn-brand-outline w-100 py-3 rounded-pill fw-bold";
+                btn.innerHTML = `<i class="fa-solid fa-paper-plane me-2"></i>Simulate Alert to Trusted Contact`;
+                status.style.display = "none";
+            }
+            
+            // Set first affirmation
+            const textEl = document.getElementById('calm-affirmation-text');
+            if (textEl) {
+                textEl.textContent = CALM_AFFIRMATIONS[0];
+                textEl.style.opacity = 1;
+                affirmationIndex = 0;
+            }
+            
+            // Start rotating affirmations every 5 seconds
+            affirmationTimer = setInterval(rotateAffirmation, 5000);
+            
+            // Initialize breathing guide in modal
+            const modalBreathText = document.getElementById('modal-breathing-instruction');
+            if (modalBreathText) {
+                const states = ["Inhale deeply...", "Hold...", "Exhale slowly...", "Hold..."];
+                let index = 0;
+                modalBreathText.textContent = states[0];
+                breathingTimer = setInterval(() => {
+                    index = (index + 1) % states.length;
+                    modalBreathText.textContent = states[index];
+                }, 2000); // Syncs with 8s keyframe
+            }
+        });
+        
+        calmModal.addEventListener('hidden.bs.modal', () => {
+            // Stop timers
+            if (affirmationTimer) clearInterval(affirmationTimer);
+            if (breathingTimer) clearInterval(breathingTimer);
+            
+            // Pause ambient sound
+            const player = document.getElementById('ambient-audio-player');
+            const selectEl = document.getElementById('ambient-sound-select');
+            if (player) {
+                player.pause();
+            }
+            if (selectEl) {
+                selectEl.value = "";
+            }
+        });
+    }
+});
+

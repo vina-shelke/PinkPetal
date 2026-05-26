@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SymptomRepository extends JpaRepository<Symptom, Integer> {
     List<Symptom> findByUserIdOrderByDateDesc(String userId);
+    List<Symptom> findByUserIdAndDate(String userId, java.time.LocalDate date);
 }

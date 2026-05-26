@@ -10,6 +10,32 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link th:href="@{/css/style.css}" href="../static/css/style.css" rel="stylesheet">
+    <style>
+        .video-tabs .nav-link {
+            color: var(--muted-text) !important;
+            border-radius: var(--border-radius-sm) !important;
+            transition: all 0.3s ease;
+            background: transparent;
+            border: none;
+        }
+        .video-tabs .nav-link.active {
+            background: var(--gradient-brand) !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(255, 133, 162, 0.2);
+        }
+        .video-card {
+            transition: all 0.3s ease;
+            border-radius: 16px;
+        }
+        .video-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-pink) !important;
+            box-shadow: var(--shadow-heavy);
+        }
+        .text-pink {
+            color: var(--primary-pink) !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -96,23 +122,133 @@
                     </div>
                 </div>
 
-                <!-- Yoga Videos for Cramps -->
+                <!-- Relief & Calmness Video Sanctuary -->
                 <div class="pink-card">
-                    <div class="pink-card-header">
-                        <i class="fa-brands fa-youtube" style="color: #ff0000"></i>
-                        Yoga & Stretches for Cramp Relief
+                    <div class="pink-card-header justify-content-between align-items-center">
+                        <div>
+                            <i class="fa-solid fa-circle-play me-2 text-pink"></i>
+                            Period Relief & Calmness Videos
+                        </div>
+                        <span class="badge-pink py-1 px-2 text-xs">Yoga, Meditation & Exercise</span>
                     </div>
-                    <p class="text-sm text-muted">Curated gentle menstrual yoga exercises to reduce muscle tension and soothe painful cramps.</p>
+                    <p class="text-sm text-muted">Curated gentle exercises, guided meditations, and calming yoga stretches designed to reduce muscle tension and soothe cramps.</p>
                     
-                    <!-- Video Embed -->
-                    <div class="ratio ratio-16x9 border border-light-pink rounded-3 overflow-hidden shadow-sm">
-                        <!-- Gentle Yoga for Period Cramps -->
-                        <iframe src="https://www.youtube.com/embed/8J7mS9uLwT4" title="Yoga for Period Pain" allowfullscreen></iframe>
+                    <!-- Tabs Navigation -->
+                    <ul class="nav nav-pills nav-fill mb-4 bg-light p-1 rounded-3 gap-1 video-tabs" id="reliefVideoTabs" role="tablist" style="border: 1px solid var(--border-pink);">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active py-2 text-sm fw-semibold" id="yoga-video-tab" data-bs-toggle="tab" data-bs-target="#yoga-video-panel" type="button" role="tab">
+                                <i class="fa-solid fa-spa me-1"></i>Yoga
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link py-2 text-sm fw-semibold" id="meditation-video-tab" data-bs-toggle="tab" data-bs-target="#meditation-video-panel" type="button" role="tab">
+                                <i class="fa-solid fa-heart me-1"></i>Meditation
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link py-2 text-sm fw-semibold" id="exercise-video-tab" data-bs-toggle="tab" data-bs-target="#exercise-video-panel" type="button" role="tab">
+                                <i class="fa-solid fa-person-running me-1"></i>Exercise
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab Content Panels -->
+                    <div class="tab-content" id="reliefVideoTabsContent">
+                        
+                        <!-- TAB 1: YOGA FOR CRAMPS -->
+                        <div class="tab-pane fade show active" id="yoga-video-panel" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
+                                        <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
+                                            <iframe src="https://www.youtube.com/embed/08sB7y_b3P0" title="Yoga for Cramps and PMS - Yoga with Adriene" allowfullscreen></iframe>
+                                        </div>
+                                        <div class="px-1">
+                                            <span class="text-xs fw-bold text-pink">Yoga With Adriene</span>
+                                            <h6 class="fw-bold mb-1 text-sm">Yoga For Cramps & PMS (20 Mins)</h6>
+                                            <p class="text-xs text-muted mb-0">Restorative home practice to soothe the nervous system and relieve cramps.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
+                                        <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
+                                            <iframe src="https://www.youtube.com/embed/8J7mS9uLwT4" title="Gentle Yoga for Period Pain" allowfullscreen></iframe>
+                                        </div>
+                                        <div class="px-1">
+                                            <span class="text-xs fw-bold text-pink">Gentle Flow</span>
+                                            <h6 class="fw-bold mb-1 text-sm">Gentle Stretches for Period Pain Relief</h6>
+                                            <p class="text-xs text-muted mb-0">Easy poses like child's pose and reclining bound angle to release pelvic floor tension.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 2: GUIDED MEDITATION -->
+                        <div class="tab-pane fade" id="meditation-video-panel" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
+                                        <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
+                                            <iframe src="https://www.youtube.com/embed/u1712QGgZ1U" title="Meditation for Period Cramps Relief" allowfullscreen></iframe>
+                                        </div>
+                                        <div class="px-1">
+                                            <span class="text-xs fw-bold text-pink">Womb Soothing</span>
+                                            <h6 class="fw-bold mb-1 text-sm">10 Min Meditation for Period Cramps</h6>
+                                            <p class="text-xs text-muted mb-0">Focuses on softening the belly, calming breathwork, and releasing physical holding.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
+                                        <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
+                                            <iframe src="https://www.youtube.com/embed/rC7T579aDPM" title="Meditation for Your Period" allowfullscreen></iframe>
+                                        </div>
+                                        <div class="px-1">
+                                            <span class="text-xs fw-bold text-pink">Mindfulness Meditation</span>
+                                            <h6 class="fw-bold mb-1 text-sm">10 Min Meditation for Period Calmness</h6>
+                                            <p class="text-xs text-muted mb-0">Helps soothe severe menstrual mood swings, physical anxiety, and mental stress.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 3: GENTLE EXERCISE -->
+                        <div class="tab-pane fade" id="exercise-video-panel" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
+                                        <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
+                                            <iframe src="https://www.youtube.com/embed/kYJjO_kY3r4" title="12 Min Slow Workout for Period - MadFit" allowfullscreen></iframe>
+                                        </div>
+                                        <div class="px-1">
+                                            <span class="text-xs fw-bold text-pink">MadFit Workout</span>
+                                            <h6 class="fw-bold mb-1 text-sm">12 Min Slow Workout for Period/PMS</h6>
+                                            <p class="text-xs text-muted mb-0">Low-intensity standing/mat exercises to boost blood circulation and release endorphins gently.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
+                                        <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
+                                            <iframe src="https://www.youtube.com/embed/s5R-d55z0Ew" title="15 Min Period Friendly Pilates - Sweaty Studio" allowfullscreen></iframe>
+                                        </div>
+                                        <div class="px-1">
+                                            <span class="text-xs fw-bold text-pink">Sweaty Studio</span>
+                                            <h6 class="fw-bold mb-1 text-sm">15 Min Chill & Gentle Pilates Flow</h6>
+                                            <p class="text-xs text-muted mb-0">No planks, no jumping. A soft routine designed to reduce period bloating and cramps.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="mt-3 text-xs text-muted">
-                        <i class="fa-solid fa-circle-info me-1"></i>
-                        <strong>Tip:</strong> Always focus on slow, steady chest breathing. Try child's pose, cat-cow, and reclining bound angle stretches for best results.
+
+                    <div class="mt-4 text-xs text-muted">
+                        <i class="fa-solid fa-circle-info me-1 text-pink"></i>
+                        <strong>Exercise Tip:</strong> Always listen to your body. Avoid inverted postures, heavy lifting, or strenuous cardio. Gentle movements and deep breathing help naturally block pain receptors.
                     </div>
                 </div>
             </div>
