@@ -27,8 +27,7 @@
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item"><a class="nav-link active" th:href="@{/dashboard}"><i class="fa-solid fa-chart-line me-1"></i>Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/education}"><i class="fa-solid fa-book-open me-1"></i>Know Your Body</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/selfcare}"><i class="fa-solid fa-spa me-1"></i>Self-Care</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/compassion}"><i class="fa-solid fa-heart me-1"></i>Affirmations</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/selfcare}"><i class="fa-solid fa-spa me-1"></i>Self-Care &amp; Affirmations</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/community}"><i class="fa-solid fa-users me-1"></i>Community</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/chatbot}"><i class="fa-solid fa-robot me-1"></i>Support Bot</a></li>
                     <li class="nav-item ms-2">
@@ -50,6 +49,26 @@
                     </div>
                     <div class="mt-2 mt-md-0">
                         <span class="badge-pink"><i class="fa-solid fa-calendar-day me-2"></i>Today is <span th:text="${#temporals.format(#temporals.createNow(), 'MMMM dd, yyyy')}">May 21, 2026</span></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wellness Tip of the Day Banner -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="wellness-tip-banner mb-0">
+                    <div style="font-size: 1.8rem;" class="text-pink">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    </div>
+                    <div>
+                        <span class="badge-pink py-0 px-2 text-xxs fw-semibold mb-1">Wellness Tip of the Day</span>
+                        <p class="mb-0 text-sm fw-medium text-dark">
+                            <span th:if="${cyclePhase == 'Period'}"><strong>Active Flow Tip:</strong> Avoid cold water and beverages. Warm herbal tea (like ginger or chamomile) helps relax uterine muscles and soothe cramps naturally. 🍵</span>
+                            <span th:if="${cyclePhase == 'PMS'}"><strong>PMS Comfort Tip:</strong> Hormone shifts can increase sensitivity. Give yourself grace, reduce heavy tasks, and try a 10-minute relaxation walk in nature. 🚶‍♀️</span>
+                            <span th:if="${cyclePhase == 'Ovulation'}"><strong>Ovulation Energy Tip:</strong> Estrogen is high, boosting your energy levels! This is a great window for a fun workout or starting a new project. 🌟</span>
+                            <span th:if="${cyclePhase == 'Follicular'}"><strong>Follicular Phase Tip:</strong> Your cycle is starting fresh. Replenish iron levels by eating iron-rich leafy greens, seeds, or lentils. 🥗</span>
+                        </p>
                     </div>
                 </div>
             </div>

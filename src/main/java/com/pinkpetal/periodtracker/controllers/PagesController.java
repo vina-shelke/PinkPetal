@@ -35,6 +35,9 @@ public class PagesController {
     @Autowired
     private TrackingService trackingService;
 
+    @Autowired
+    private LearningProgressRepository learningProgressRepository;
+
     @GetMapping("/")
     public String showLandingPage(HttpSession session) {
         if (session.getAttribute("user") != null) {
@@ -55,20 +58,111 @@ public class PagesController {
     }
 
     @GetMapping("/education")
-    public String showEducation(HttpSession session) {
-        if (session.getAttribute("user") == null && session.getAttribute("admin") == null) {
+    public String showEducation(
+            @RequestParam(value = "activeTopic", required = false, defaultValue = "uterus-structure") String activeTopic,
+            HttpSession session,
+            Model model) {
+        String username = (String) session.getAttribute("user");
+        if (username == null && session.getAttribute("admin") == null) {
             return "redirect:/login";
         }
+
+        model.addAttribute("activeTopic", activeTopic);
+
+        if (username != null) {
+            // Fetch logged symptoms
+            List<Symptom> symptoms = symptomRepository.findByUserIdOrderByDateDesc(username);
+            List<Cycle> cycles = cycleRepository.findByUserIdOrderByPeriodStartDateDesc(username);
+
+            java.util.Set<String> loggedSymptoms = new java.util.HashSet<>();
+            for (Symptom s : symptoms) {
+                if (s.getSymptoms() != null) {
+                    for (String part : s.getSymptoms().split(",")) {
+                        loggedSymptoms.add(part.trim().toLowerCase());
+                    }
+                }
+            }
+            for (Cycle c : cycles) {
+                if (c.getSymptoms() != null) {
+                    for (String part : c.getSymptoms().split(",")) {
+                        loggedSymptoms.add(part.trim().toLowerCase());
+                    }
+                }
+            }
+
+            model.addAttribute("loggedSymptoms", loggedSymptoms);
+
+            // Fetch saved and completed progress
+            List<LearningProgress> progressList = learningProgressRepository.findByUserId(username);
+
+            java.util.Set<String> savedTopics = new java.util.HashSet<>();
+            java.util.Set<String> completedTopics = new java.util.HashSet<>();
+            for (LearningProgress lp : progressList) {
+                if (lp.isSaved()) {
+                    savedTopics.add(lp.getTopicId());
+                }
+                if (lp.isCompleted()) {
+                    completedTopics.add(lp.getTopicId());
+                }
+            }
+            model.addAttribute("savedTopics", savedTopics);
+            model.addAttribute("completedTopics", completedTopics);
+            model.addAttribute("progressCount", completedTopics.size());
+        } else {
+            // For admin
+            model.addAttribute("loggedSymptoms", new java.util.HashSet<String>());
+            model.addAttribute("savedTopics", new java.util.HashSet<String>());
+            model.addAttribute("completedTopics", new java.util.HashSet<String>());
+            model.addAttribute("progressCount", 0);
+        }
+
         return "education";
     }
 
-    @GetMapping("/compassion")
-    public String showCompassion(HttpSession session) {
-        if (session.getAttribute("user") == null && session.getAttribute("admin") == null) {
+    @PostMapping("/education/toggle-save")
+    public String toggleSave(
+            @RequestParam("topicId") String topicId,
+            HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
             return "redirect:/login";
         }
-        return "compassion";
+
+        Optional<LearningProgress> opt = learningProgressRepository.findByUserIdAndTopicId(username, topicId);
+        LearningProgress progress;
+        if (opt.isPresent()) {
+            progress = opt.get();
+            progress.setSaved(!progress.isSaved());
+        } else {
+            progress = new LearningProgress(username, topicId, true, false);
+        }
+        learningProgressRepository.save(progress);
+
+        return "redirect:/education?activeTopic=" + topicId;
     }
+
+    @PostMapping("/education/toggle-complete")
+    public String toggleComplete(
+            @RequestParam("topicId") String topicId,
+            HttpSession session) {
+        String username = (String) session.getAttribute("user");
+        if (username == null) {
+            return "redirect:/login";
+        }
+
+        Optional<LearningProgress> opt = learningProgressRepository.findByUserIdAndTopicId(username, topicId);
+        LearningProgress progress;
+        if (opt.isPresent()) {
+            progress = opt.get();
+            progress.setCompleted(!progress.isCompleted());
+        } else {
+            progress = new LearningProgress(username, topicId, false, true);
+        }
+        learningProgressRepository.save(progress);
+
+        return "redirect:/education?activeTopic=" + topicId;
+    }
+
 
     @GetMapping("/admin")
     public String showAdminPanel(

@@ -357,5 +357,424 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // Initialize swipe cards deck if present
+    const swipeDeck = document.querySelector('.swipe-deck-container');
+    if (swipeDeck) {
+        updateSwipeDeckLayout();
+    }
+    
+    // Initialize community facts if present
+    const factTextEl = document.getElementById('community-fact-text');
+    if (factTextEl) {
+        factTextEl.textContent = DID_YOU_KNOW_FACTS[0];
+        currentFactIndex = 0;
+    }
+
+    // Initialize daily affirmation if present
+    const affirmationOutput = document.getElementById('affirmation-output');
+    if (affirmationOutput) {
+        affirmationOutput.textContent = POSITIVE_AFFIRMATIONS[0];
+    }
 });
+
+// --- 🌸 Did You Know? Facts Rotation ---
+const DID_YOU_KNOW_FACTS = [
+    "Did you know? Sleep quality can affect period cramps. Poor sleep makes your body more sensitive to pain! 🌙",
+    "Your resting heart rate actually fluctuates during your cycle, peaking during the luteal phase! 💓",
+    "Craving chocolate? Cocoa contains magnesium, which helps relax uterine muscles and ease cramps! 🍫",
+    "A warm bath doesn't just feel good; it increases blood flow and relaxes pelvic muscles. 🛁",
+    "Hormones like progesterone can affect your vocal cords, making your voice sound slightly lower or raspy! 🗣️",
+    "Mild aerobic exercise releases endorphins, which act as natural painkillers to relieve period discomfort. 🏃‍♀️",
+    "During ovulation, high estrogen levels can boost your mood, energy, and social confidence! 🌟"
+];
+let currentFactIndex = 0;
+
+function rotateCommunityFact() {
+    const factTextEl = document.getElementById('community-fact-text');
+    const factCardEl = document.getElementById('community-fact-card');
+    if (factTextEl && factCardEl) {
+        let nextIndex;
+        do {
+            nextIndex = Math.floor(Math.random() * DID_YOU_KNOW_FACTS.length);
+        } while (nextIndex === currentFactIndex);
+        
+        currentFactIndex = nextIndex;
+        
+        // Soft fade animation
+        factCardEl.style.opacity = 0;
+        factCardEl.style.transform = "scale(0.98)";
+        
+        setTimeout(() => {
+            factTextEl.textContent = DID_YOU_KNOW_FACTS[currentFactIndex];
+            factCardEl.style.opacity = 1;
+            factCardEl.style.transform = "scale(1)";
+        }, 300);
+    }
+}
+
+// --- 🎴 Comfort Swipe Cards Deck Controller ---
+let activeCardIndex = 0;
+
+function swipeComfortCard(direction) {
+    const activeCard = document.querySelector(`.swipe-card.card-0`);
+    if (!activeCard) return;
+    
+    // Add animation classes
+    if (direction === 'left') {
+        activeCard.classList.add('swipe-left');
+    } else {
+        activeCard.classList.add('swipe-right');
+    }
+    
+    activeCardIndex++;
+    
+    // Stagger deck update
+    setTimeout(() => {
+        updateSwipeDeckLayout();
+    }, 200);
+}
+
+function updateSwipeDeckLayout() {
+    const cards = document.querySelectorAll('.swipe-card:not(.swipe-left):not(.swipe-right):not(.reset-card)');
+    
+    cards.forEach((card, idx) => {
+        // Clear old stacking classes
+        card.classList.remove('card-0', 'card-1', 'card-2', 'card-hidden');
+        
+        if (idx === 0) {
+            card.classList.add('card-0');
+        } else if (idx === 1) {
+            card.classList.add('card-1');
+        } else if (idx === 2) {
+            card.classList.add('card-2');
+        } else {
+            card.classList.add('card-hidden');
+        }
+    });
+    
+    // If no regular cards left (all swiped)
+    const activeCards = document.querySelectorAll('.swipe-card:not(.swipe-left):not(.swipe-right):not(.reset-card)');
+    const resetCard = document.querySelector('.swipe-card.reset-card');
+    if (activeCards.length === 0 && resetCard) {
+        resetCard.classList.remove('card-hidden');
+        resetCard.classList.add('card-0');
+    }
+}
+
+function resetComfortSwipeDeck() {
+    activeCardIndex = 0;
+    const cards = document.querySelectorAll('.swipe-card');
+    
+    cards.forEach((card) => {
+        card.classList.remove('swipe-left', 'swipe-right', 'card-0', 'card-1', 'card-2', 'card-hidden');
+    });
+    
+    const resetCard = document.querySelector('.swipe-card.reset-card');
+    if (resetCard) {
+        resetCard.classList.add('card-hidden');
+    }
+    
+    // Re-initialize standard layout
+    updateSwipeDeckLayout();
+}
+
+// --- 🧠 Wellness Mini Quiz Controller ---
+const QUIZ_QUESTIONS = [
+    {
+        title: "Which hormone is dominant during the PMS phase?",
+        options: ["Estrogen 🧬", "Progesterone 🌸", "Testosterone 🩸", "Oxytocin 💕"],
+        correctIndex: 1,
+        explanation: "Progesterone peaks during the Luteal/PMS phase. Its subsequent drop triggers your period! Progesterone supports mood, but fluctuations can cause sensitivity. 🌸"
+    },
+    {
+        title: "What type of heat is best for easing period cramps?",
+        options: ["Dry heat (air blower) 💨", "Moist heat (warm bath/pack) 🛁", "Cold compress (ice pack) ❄️", "Warm ambient room temperature ☀️"],
+        correctIndex: 1,
+        explanation: "Moist heat from warm baths or moist heating pads penetrates tissues deeper, enhancing blood flow and relaxing pelvic muscle cramps more effectively! 🛁"
+    },
+    {
+        title: "How does dehydration affect your menstrual symptoms?",
+        options: ["It eases active cramps 💧", "It worsens bloating & cramps 😰", "It has no physical impact 🤷‍♀️", "It reduces fluid retention 🍉"],
+        correctIndex: 1,
+        explanation: "Dehydration signals the body to conserve water, which worsens bloating. Additionally, low hydration intensifies muscle spasms, making cramps more painful. Keep sipping! 💧"
+    }
+];
+
+let quizCurrentIndex = 0;
+let quizScore = 0;
+
+function startQuiz() {
+    quizCurrentIndex = 0;
+    quizScore = 0;
+    
+    const introScreen = document.getElementById('quiz-intro-screen');
+    const questionScreen = document.getElementById('quiz-question-screen');
+    const scoreScreen = document.getElementById('quiz-score-screen');
+    
+    if (introScreen) introScreen.style.display = 'none';
+    if (scoreScreen) scoreScreen.style.display = 'none';
+    if (questionScreen) questionScreen.style.display = 'block';
+    
+    renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+    const q = QUIZ_QUESTIONS[quizCurrentIndex];
+    if (!q) return;
+    
+    // Update progress bar
+    const progressPercent = (quizCurrentIndex / QUIZ_QUESTIONS.length) * 100;
+    const progressBar = document.getElementById('quiz-progress-bar');
+    if (progressBar) progressBar.style.width = `${progressPercent}%`;
+    
+    // Update title
+    const qTitle = document.getElementById('quiz-q-title');
+    if (qTitle) qTitle.textContent = q.title;
+    
+    // Render options
+    const optionsContainer = document.getElementById('quiz-options-container');
+    if (optionsContainer) {
+        optionsContainer.innerHTML = '';
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'quiz-option btn text-start';
+            btn.textContent = opt;
+            btn.onclick = () => checkQuizAnswer(btn, idx);
+            optionsContainer.appendChild(btn);
+        });
+    }
+    
+    // Hide explanation and Next button initially
+    const explanationBlock = document.getElementById('quiz-explanation-block');
+    if (explanationBlock) explanationBlock.style.display = 'none';
+    
+    const nextBtn = document.getElementById('quiz-next-btn');
+    if (nextBtn) {
+        nextBtn.style.display = 'none';
+        nextBtn.textContent = (quizCurrentIndex === QUIZ_QUESTIONS.length - 1) ? 'See Results 📊' : 'Next Question ➡️';
+    }
+}
+
+function checkQuizAnswer(selectedBtn, selectedIndex) {
+    const q = QUIZ_QUESTIONS[quizCurrentIndex];
+    if (!q) return;
+    
+    // Disable all options
+    const allOptions = document.querySelectorAll('.quiz-option');
+    allOptions.forEach(btn => {
+        btn.disabled = true;
+        btn.onclick = null;
+    });
+    
+    const explanationText = document.getElementById('quiz-explanation-text');
+    const explanationBlock = document.getElementById('quiz-explanation-block');
+    
+    if (selectedIndex === q.correctIndex) {
+        selectedBtn.classList.add('correct');
+        quizScore++;
+        if (explanationText) {
+            explanationText.innerHTML = `<strong>Correct! 🎉</strong> ${q.explanation}`;
+        }
+    } else {
+        selectedBtn.classList.add('incorrect');
+        // Highlight correct one
+        if (allOptions[q.correctIndex]) {
+            allOptions[q.correctIndex].classList.add('correct');
+        }
+        if (explanationText) {
+            explanationText.innerHTML = `<strong>Not quite. 🌸</strong> ${q.explanation}`;
+        }
+    }
+    
+    if (explanationBlock) explanationBlock.style.display = 'block';
+    
+    const nextBtn = document.getElementById('quiz-next-btn');
+    if (nextBtn) nextBtn.style.display = 'block';
+}
+
+function handleQuizNext() {
+    quizCurrentIndex++;
+    if (quizCurrentIndex < QUIZ_QUESTIONS.length) {
+        renderQuizQuestion();
+    } else {
+        showQuizResults();
+    }
+}
+
+function showQuizResults() {
+    const questionScreen = document.getElementById('quiz-question-screen');
+    const scoreScreen = document.getElementById('quiz-score-screen');
+    
+    if (questionScreen) questionScreen.style.display = 'none';
+    if (scoreScreen) scoreScreen.style.display = 'block';
+    
+    // Update progress bar to 100%
+    const progressBar = document.getElementById('quiz-progress-bar');
+    if (progressBar) progressBar.style.width = `100%`;
+    
+    const scoreText = document.getElementById('quiz-score-text');
+    const scoreAdvice = document.getElementById('quiz-score-advice');
+    
+    if (scoreText) {
+        scoreText.textContent = `You scored ${quizScore} / ${QUIZ_QUESTIONS.length}!`;
+    }
+    
+    if (scoreAdvice) {
+        if (quizScore === QUIZ_QUESTIONS.length) {
+            scoreAdvice.textContent = "Amazing! You have deep knowledge of your cycle and wellness. Keep up this beautiful care for your body! 💖";
+        } else if (quizScore >= 1) {
+            scoreAdvice.textContent = "Great job! Taking quizzes helps build solid wellness awareness. Continue listening to your body every single day. 🌸";
+        } else {
+            scoreAdvice.textContent = "No worries at all! Cycle wellness is a journey of continuous learning. Your body will guide you as you track and read more! 🤍";
+        }
+    }
+}
+
+// --- 💖 Daily Affirmations Draw Controller ---
+const POSITIVE_AFFIRMATIONS = [
+    "You are strong 💕",
+    "Rest is productive too.",
+    "Your emotions are valid and normal.",
+    "You are doing your best, and that is enough.",
+    "Be gentle with your body today.",
+    "This phase will pass, take it one day at a time.",
+    "You deserve peace, comfort, and kindness.",
+    "It is okay to put yourself first today.",
+    "You are beautiful and capable inside and out.",
+    "Your body knows how to heal and cycle. Trust it."
+];
+
+function drawNewAffirmation() {
+    const textEl = document.getElementById('affirmation-output');
+    if (textEl) {
+        const index = Math.floor(Math.random() * POSITIVE_AFFIRMATIONS.length);
+        textEl.style.transition = "opacity 0.25s ease";
+        textEl.style.opacity = 0;
+        setTimeout(() => {
+            textEl.textContent = POSITIVE_AFFIRMATIONS[index];
+            textEl.style.opacity = 1;
+        }, 250);
+    }
+}
+
+// ==========================================================================
+// 🌸 Know Your Body - Educational Wellness Section JavaScript Helpers
+// ==========================================================================
+
+// Interactive Anatomy Info Switching
+function showAnatomyInfo(partId) {
+    // Remove active class from all SVG parts
+    document.querySelectorAll('.anatomy-part').forEach(p => p.classList.remove('active'));
+    
+    // Add active class to corresponding SVG part
+    const svgPart = document.getElementById('path-' + partId);
+    if (svgPart) {
+        svgPart.classList.add('active');
+    }
+    
+    // Update detail text
+    const details = {
+        'ovaries': {
+            title: "Ovaries 🌸",
+            desc: "The ovaries are small, oval-shaped glands located on either side of the uterus. They house your eggs and produce critical hormones: Estrogen and Progesterone. Each month, during ovulation, one ovary releases a mature egg."
+        },
+        'tubes': {
+            title: "Fallopian Tubes 🧬",
+            desc: "These are two thin tubes that connect the ovaries to the uterus. When an egg is released, it travels down the fallopian tube, where fertilization by sperm typically occurs."
+        },
+        'uterus': {
+            title: "Uterus (Womb) 🤰",
+            desc: "A hollow, muscular, pear-shaped organ where a fetus develops during pregnancy. The inner lining, called the endometrium, thickens each month in preparation for a fertilized egg. If pregnancy does not occur, this lining sheds as your period."
+        },
+        'cervix': {
+            title: "Cervix 🔒",
+            desc: "The lower, narrow neck of the uterus that connects to the vagina. It acts as a gateway and produces cervical mucus, which changes in texture and thickness throughout your cycle to facilitate or block sperm entry."
+        },
+        'vagina': {
+            title: "Vagina 🌷",
+            desc: "A flexible, muscular canal connecting the cervix to the outside of the body. It serves as the passageway for menstrual flow to exit, and is the birth canal during delivery."
+        }
+    };
+    
+    const info = details[partId];
+    if (info) {
+        const titleEl = document.getElementById('anatomy-detail-title');
+        const descEl = document.getElementById('anatomy-detail-desc');
+        if (titleEl && descEl) {
+            titleEl.textContent = info.title;
+            descEl.textContent = info.desc;
+        }
+    }
+}
+
+// Menstrual cycle phase switcher
+function selectCyclePhase(phaseId) {
+    document.querySelectorAll('.phase-step').forEach(step => step.classList.remove('active'));
+    document.querySelectorAll('.phase-detail-pane').forEach(pane => pane.style.display = 'none');
+    
+    const activeStep = document.getElementById('step-' + phaseId);
+    const activePane = document.getElementById('pane-' + phaseId);
+    
+    if (activeStep && activePane) {
+        activeStep.classList.add('active');
+        activePane.style.display = 'block';
+    }
+}
+
+// Myth flip card toggle
+function toggleMythCard(cardElement) {
+    cardElement.classList.toggle('flipped');
+}
+
+// Breathing coach helper for Emotional Wellness page
+let eduBreathingTimer = null;
+function startEduBreathingCoach() {
+    const coachBox = document.getElementById('edu-breathing-box');
+    const breathText = document.getElementById('edu-breath-text');
+    if (!coachBox || !breathText) return;
+    
+    // Clear any existing intervals
+    if (eduBreathingTimer) clearInterval(eduBreathingTimer);
+    
+    const states = [
+        { text: "Inhale deeply...", class: "breathing-in", duration: 4000 },
+        { text: "Hold...", class: "breathing-hold", duration: 2000 },
+        { text: "Exhale slowly...", class: "breathing-out", duration: 4000 },
+        { text: "Hold...", class: "breathing-hold", duration: 2000 }
+    ];
+    
+    let currentStateIndex = 0;
+    
+    function runState() {
+        const state = states[currentStateIndex];
+        breathText.textContent = state.text;
+        
+        // Update classes
+        coachBox.classList.remove('breathing-in', 'breathing-hold', 'breathing-out');
+        coachBox.classList.add(state.class);
+        
+        currentStateIndex = (currentStateIndex + 1) % states.length;
+        
+        // Schedule next state
+        eduBreathingTimer = setTimeout(runState, state.duration);
+    }
+    
+    runState();
+}
+
+// Initialize on load
+document.addEventListener("DOMContentLoaded", () => {
+    // Start the breathing coach if element is present
+    if (document.getElementById('edu-breathing-box')) {
+        startEduBreathingCoach();
+    }
+    
+    // Load default anatomy details
+    if (document.getElementById('anatomy-detail-title')) {
+        showAnatomyInfo('uterus');
+    }
+});
+
 

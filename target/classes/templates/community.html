@@ -27,8 +27,7 @@
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}"><i class="fa-solid fa-chart-line me-1"></i>Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/education}"><i class="fa-solid fa-book-open me-1"></i>Know Your Body</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/selfcare}"><i class="fa-solid fa-spa me-1"></i>Self-Care</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/compassion}"><i class="fa-solid fa-heart me-1"></i>Affirmations</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/selfcare}"><i class="fa-solid fa-spa me-1"></i>Self-Care &amp; Affirmations</a></li>
                     <li class="nav-item"><a class="nav-link active" th:href="@{/community}"><i class="fa-solid fa-users me-1"></i>Community</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/chatbot}"><i class="fa-solid fa-robot me-1"></i>Support Bot</a></li>
                     <li class="nav-item ms-2">
@@ -74,6 +73,19 @@
                             <i class="fa-regular fa-lightbulb me-2"></i>Myths vs Facts
                         </a>
                     </div>
+                </div>
+
+                <!-- Did You Know Fact Card -->
+                <div class="pink-card p-3 mt-3 fact-card text-center" id="community-fact-card" style="background: linear-gradient(135deg, rgba(255, 133, 162, 0.03) 0%, rgba(157, 141, 241, 0.03) 100%);">
+                    <h6 class="fw-bold mb-3 border-bottom pb-2 text-pink text-start">
+                        <i class="fa-regular fa-lightbulb me-2"></i>Did You Know? 💡
+                    </h6>
+                    <p class="fact-text text-xs mb-3 text-start" id="community-fact-text" style="min-height: 50px;">
+                        Did you know? Sleep quality can affect period cramps 🌙
+                    </p>
+                    <button type="button" class="btn btn-brand-outline btn-sm w-100 py-1" onclick="rotateCommunityFact()">
+                        <i class="fa-solid fa-wand-magic-sparkles me-1"></i>Shuffle Fact 🔮
+                    </button>
                 </div>
             </div>
 

@@ -106,3 +106,14 @@ CREATE TABLE IF NOT EXISTS notification_history (
     read_status BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
+
+-- 11. Learning Progress Table
+CREATE TABLE IF NOT EXISTS learning_progress (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(50) NOT NULL,
+    topic_id VARCHAR(50) NOT NULL,
+    saved BOOLEAN DEFAULT FALSE,
+    completed BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_topic (user_id, topic_id)
+);

@@ -27,8 +27,7 @@
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item"><a class="nav-link" th:href="@{/dashboard}"><i class="fa-solid fa-chart-line me-1"></i>Dashboard</a></li>
                     <li class="nav-item"><a class="nav-link active" th:href="@{/education}"><i class="fa-solid fa-book-open me-1"></i>Know Your Body</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/selfcare}"><i class="fa-solid fa-spa me-1"></i>Self-Care</a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/compassion}"><i class="fa-solid fa-heart me-1"></i>Affirmations</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/selfcare}"><i class="fa-solid fa-spa me-1"></i>Self-Care &amp; Affirmations</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/community}"><i class="fa-solid fa-users me-1"></i>Community</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/chatbot}"><i class="fa-solid fa-robot me-1"></i>Support Bot</a></li>
                     <li class="nav-item ms-2">
@@ -43,168 +42,975 @@
         <!-- Header -->
         <div class="row mb-4">
             <div class="col-12 text-center">
-                <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-book-open-reader me-2"></i>Educational Health Center</span>
+                <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-graduation-cap me-2"></i>🌸 Know Your Body</span>
                 <h3 class="fw-bold" style="color: var(--primary-pink)">Know Your Body</h3>
-                <p class="text-muted">Understand your anatomy, hormones, and conditions. Knowledge is empowerment. 🌸</p>
+                <p class="text-muted">“Understand your anatomy, hormones, and health. Knowledge is empowerment.” 🌸</p>
             </div>
         </div>
 
-        <div class="row">
-            <!-- Navigation Tabs for Articles -->
-            <div class="col-12 mb-4">
-                <div class="edu-nav justify-content-center">
-                    <button id="btn-uterus" class="edu-btn active" onclick="switchEduTab('uterus')">
-                        <i class="fa-solid fa-person-breastfeeding me-2"></i>Uterus Structure
-                    </button>
-                    <button id="btn-hormones" class="edu-btn" onclick="switchEduTab('hormones')">
-                        <i class="fa-solid fa-chart-line me-2"></i>Hormonal Changes
-                    </button>
-                    <button id="btn-pcos" class="edu-btn" onclick="switchEduTab('pcos')">
-                        <i class="fa-solid fa-virus me-2"></i>PCOS Insights
-                    </button>
-                    <button id="btn-endo" class="edu-btn" onclick="switchEduTab('endo')">
-                        <i class="fa-solid fa-circle-exclamation me-2"></i>Endometriosis
-                    </button>
+        <div class="edu-layout">
+            <!-- Sidebar with Progress & Topics list -->
+            <div class="edu-sidebar-card">
+                <h5 class="fw-bold text-dark mb-2"><i class="fa-solid fa-bars-progress me-2 text-pink"></i>Learning Progress</h5>
+                <div class="d-flex justify-content-between text-xs text-muted">
+                    <span th:text="${progressCount + ' / 14 Completed'}">0 / 14 Completed</span>
+                    <span th:text="${(progressCount * 100 / 14) + '%'}">0%</span>
+                </div>
+                <div class="edu-progress-bar-container">
+                    <div class="edu-progress-bar-fill" th:style="'width: ' + (${progressCount} * 100 / 14) + '%'"></div>
+                </div>
+
+                <h6 class="text-uppercase text-xs fw-bold text-muted tracking-wider mb-3 mt-4">Learning Guide</h6>
+                <div class="edu-topic-list">
+                    <!-- Anatomy -->
+                    <a th:href="@{/education(activeTopic='uterus-structure')}" th:classappend="${activeTopic == 'uterus-structure' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-baby-carriage"></i>
+                            <span class="text-sm">Uterus Structure</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('uterus-structure')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('uterus-structure')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- Hormonal Changes -->
+                    <a th:href="@{/education(activeTopic='hormonal-changes')}" th:classappend="${activeTopic == 'hormonal-changes' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-dna"></i>
+                            <span class="text-sm">Hormonal Changes</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('hormonal-changes')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('hormonal-changes')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- Cycle Phases -->
+                    <a th:href="@{/education(activeTopic='cycle-phases')}" th:classappend="${activeTopic == 'cycle-phases' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-rotate"></i>
+                            <span class="text-sm">Menstrual Cycle Phases</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('cycle-phases')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('cycle-phases')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- Symptoms Guide -->
+                    <a th:href="@{/education(activeTopic='symptoms-guide')}" th:classappend="${activeTopic == 'symptoms-guide' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-briefcase-medical"></i>
+                            <span class="text-sm">Period Symptoms Guide</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('symptoms-guide')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('symptoms-guide')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- PMS & Mood Changes -->
+                    <a th:href="@{/education(activeTopic='pms-mood')}" th:classappend="${activeTopic == 'pms-mood' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                            <span class="text-sm">PMS & Mood Changes</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('pms-mood')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('pms-mood')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- PCOS Insights -->
+                    <a th:href="@{/education(activeTopic='pcos-insights')}" th:classappend="${activeTopic == 'pcos-insights' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-hand-holding-heart"></i>
+                            <span class="text-sm">PCOS Insights</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('pcos-insights')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('pcos-insights')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- Endometriosis -->
+                    <a th:href="@{/education(activeTopic='endometriosis')}" th:classappend="${activeTopic == 'endometriosis' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span class="text-sm">Endometriosis</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('endometriosis')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('endometriosis')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- Vaginal Health -->
+                    <a th:href="@{/education(activeTopic='vaginal-health')}" th:classappend="${activeTopic == 'vaginal-health' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-certificate"></i>
+                            <span class="text-sm">Vaginal Health</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('vaginal-health')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('vaginal-health')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- Nutrition During Periods -->
+                    <a th:href="@{/education(activeTopic='nutrition-periods')}" th:classappend="${activeTopic == 'nutrition-periods' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-utensils"></i>
+                            <span class="text-sm">Nutrition During Periods</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('nutrition-periods')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('nutrition-periods')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- Cycle-Based Self Care -->
+                    <a th:href="@{/education(activeTopic='cycle-selfcare')}" th:classappend="${activeTopic == 'cycle-selfcare' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-spa"></i>
+                            <span class="text-sm">Cycle-Based Self Care</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('cycle-selfcare')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('cycle-selfcare')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- Emotional Wellness -->
+                    <a th:href="@{/education(activeTopic='emotional-wellness')}" th:classappend="${activeTopic == 'emotional-wellness' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span class="text-sm">Emotional Wellness</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('emotional-wellness')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('emotional-wellness')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- Fertility & Ovulation -->
+                    <a th:href="@{/education(activeTopic='fertility-ovulation')}" th:classappend="${activeTopic == 'fertility-ovulation' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-seedling"></i>
+                            <span class="text-sm">Fertility & Ovulation</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('fertility-ovulation')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('fertility-ovulation')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- Myths vs Facts -->
+                    <a th:href="@{/education(activeTopic='myths-facts')}" th:classappend="${activeTopic == 'myths-facts' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-question-circle"></i>
+                            <span class="text-sm">Myths vs Facts</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('myths-facts')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('myths-facts')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
+
+                    <!-- When to consult doctor -->
+                    <a th:href="@{/education(activeTopic='consult-doctor')}" th:classappend="${activeTopic == 'consult-doctor' ? 'active' : ''}" class="edu-topic-item">
+                        <div class="edu-topic-item-left">
+                            <i class="fa-solid fa-user-doctor"></i>
+                            <span class="text-sm">When To Consult a Doctor</span>
+                        </div>
+                        <div class="edu-topic-item-icons text-xs text-muted">
+                            <i th:if="${savedTopics.contains('consult-doctor')}" class="fa-solid fa-heart text-pink"></i>
+                            <i th:if="${completedTopics.contains('consult-doctor')}" class="fa-solid fa-circle-check text-success"></i>
+                        </div>
+                    </a>
                 </div>
             </div>
 
-            <!-- Article Panels -->
-            <div class="col-lg-10 mx-auto">
-                <!-- Panel 1: Uterus Structure -->
-                <div id="panel-uterus" class="edu-content-panel active pink-card">
-                    <h4 class="fw-bold mb-4" style="color: var(--primary-pink); border-bottom: 2px solid var(--light-pink); padding-bottom: 10px;">
-                        <i class="fa-solid fa-person-breastfeeding me-2"></i>Uterus Anatomy & Structure
-                    </h4>
-                    <p class="mb-4">The female reproductive system is complex, beautiful, and highly synchronized. Here is a breakdown of the key anatomical structures:</p>
+            <!-- Content Area -->
+            <div class="edu-content-area">
+                <!-- Personalized recommendations feed -->
+                <div class="reco-banner shadow-sm" th:if="${loggedSymptoms != null && not #lists.isEmpty(loggedSymptoms)}">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="fa-solid fa-wand-magic-sparkles" style="color: var(--primary-pink); font-size: 1.3rem;"></i>
+                        <h5 class="fw-bold mb-0" style="color: var(--primary-pink);">Suggested for You today 🌟</h5>
+                    </div>
+                    <p class="text-muted text-sm mb-2">Based on your recent symptom log history, we recommend checking out these custom guides:</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a th:if="${loggedSymptoms.contains('cramps')}" th:href="@{/education(activeTopic='symptoms-guide')}" class="badge bg-white py-2 px-3 rounded-pill text-pink border border-pink text-decoration-none">
+                            <i class="fa-solid fa-notes-medical me-1"></i> Cramps Relief Guide
+                        </a>
+                        <a th:if="${loggedSymptoms.contains('cramps')}" th:href="@{/education(activeTopic='nutrition-periods')}" class="badge bg-white py-2 px-3 rounded-pill text-pink border border-pink text-decoration-none">
+                            <i class="fa-solid fa-apple-whole me-1"></i> Cramp-reducing Foods
+                        </a>
+                        <a th:if="${loggedSymptoms.contains('bloating')}" th:href="@{/education(activeTopic='nutrition-periods')}" class="badge bg-white py-2 px-3 rounded-pill text-pink border border-pink text-decoration-none">
+                            <i class="fa-solid fa-droplet-slash me-1"></i> Bloating & Nutrition
+                        </a>
+                        <a th:if="${loggedSymptoms.contains('fatigue') || loggedSymptoms.contains('mood swings')}" th:href="@{/education(activeTopic='pms-mood')}" class="badge bg-white py-2 px-3 rounded-pill text-pink border border-pink text-decoration-none">
+                            <i class="fa-solid fa-heart me-1"></i> PMS & Mood Swings
+                        </a>
+                        <a th:if="${loggedSymptoms.contains('fatigue') || loggedSymptoms.contains('mood swings')}" th:href="@{/education(activeTopic='emotional-wellness')}" class="badge bg-white py-2 px-3 rounded-pill text-pink border border-pink text-decoration-none">
+                            <i class="fa-solid fa-spa me-1"></i> Emotional Health Sanctuary
+                        </a>
+                        <a th:if="${loggedSymptoms.contains('acne')}" th:href="@{/education(activeTopic='cycle-selfcare')}" class="badge bg-white py-2 px-3 rounded-pill text-pink border border-pink text-decoration-none">
+                            <i class="fa-solid fa-face-smile me-1"></i> Cycle-based Skincare
+                        </a>
+                        <a th:if="${loggedSymptoms.contains('food cravings')}" th:href="@{/education(activeTopic='nutrition-periods')}" class="badge bg-white py-2 px-3 rounded-pill text-pink border border-pink text-decoration-none">
+                            <i class="fa-solid fa-cookie-bite me-1"></i> Managing Cravings
+                        </a>
+                        <a th:if="${loggedSymptoms.contains('backache')}" th:href="@{/education(activeTopic='cycle-selfcare')}" class="badge bg-white py-2 px-3 rounded-pill text-pink border border-pink text-decoration-none">
+                            <i class="fa-solid fa-child-reaching me-1"></i> Back Pain Comfort Stretches
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 1. UTERUS STRUCTURE PANEL -->
+                <div th:if="${activeTopic == 'uterus-structure'}" class="pink-card active">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-baby-carriage me-1"></i>Anatomy Education</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink);">Uterus Structure & Anatomy</h4>
+                    <p class="text-muted text-sm mb-4">Click on the soft hotspot dots in the interactive anatomical diagram below to explore the reproductive system organs and understand how they work.</p>
                     
-                    <div class="row align-items-center mb-4">
-                        <div class="col-md-7">
-                            <ul class="list-group list-group-flush" style="background: transparent">
-                                <li class="list-group-item bg-transparent border-0 py-2"><i class="fa-regular fa-star me-2 text-danger"></i><strong>Ovaries:</strong> Two small glands that house and release eggs (ovum) and produce essential sex hormones (estrogen and progesterone).</li>
-                                <li class="list-group-item bg-transparent border-0 py-2"><i class="fa-regular fa-star me-2 text-danger"></i><strong>Fallopian Tubes:</strong> Narrow ducts connecting ovaries to the uterus, where egg fertilization normally occurs.</li>
-                                <li class="list-group-item bg-transparent border-0 py-2"><i class="fa-regular fa-star me-2 text-danger"></i><strong>Uterus (Womb):</strong> A pear-shaped, muscular organ where a fetus grows. Its inner lining, the endometrium, thickens and sheds during each cycle.</li>
-                                <li class="list-group-item bg-transparent border-0 py-2"><i class="fa-regular fa-star me-2 text-danger"></i><strong>Cervix:</strong> The lower, narrow canal connecting the uterus body with the vagina.</li>
+                    <div class="anatomy-box">
+                        <div class="anatomy-svg-wrapper">
+                            <!-- Beautiful inline responsive SVG diagram of female anatomy -->
+                            <svg class="anatomy-svg" viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Fallopian Tubes -->
+                                <path id="path-tubes" class="anatomy-part" d="M 50 90 Q 100 50 130 90 M 250 90 Q 200 50 170 90" fill="none" stroke="#e8c1c5" stroke-width="4" onclick="showAnatomyInfo('tubes')"/>
+                                
+                                <!-- Ovaries -->
+                                <circle id="path-ovaries" class="anatomy-part" cx="50" cy="90" r="14" fill="#ffe8d6" stroke="#f7a8b8" stroke-width="2" onclick="showAnatomyInfo('ovaries')"/>
+                                <circle class="anatomy-part" cx="250" cy="90" r="14" fill="#ffe8d6" stroke="#f7a8b8" stroke-width="2" onclick="showAnatomyInfo('ovaries')"/>
+                                
+                                <!-- Uterus Body -->
+                                <path id="path-uterus" class="anatomy-part" d="M 120 100 Q 150 70 180 100 Q 170 160 150 190 Q 130 160 120 100 Z" fill="#ffdbe3" stroke="#ff85a2" stroke-width="2" onclick="showAnatomyInfo('uterus')"/>
+                                
+                                <!-- Cervix -->
+                                <path id="path-cervix" class="anatomy-part" d="M 140 190 H 160 V 210 H 140 Z" fill="#f0e6ef" stroke="#a48ef2" stroke-width="2" onclick="showAnatomyInfo('cervix')"/>
+                                
+                                <!-- Vagina -->
+                                <path id="path-vagina" class="anatomy-part" d="M 135 210 H 165 V 240 H 135 Z" fill="#e8dbec" stroke="#a48ef2" stroke-width="2" onclick="showAnatomyInfo('vagina')"/>
+
+                                <!-- Interactive Hotspots with pulse circles -->
+                                <!-- Uterus -->
+                                <g class="anatomy-hotspot" onclick="showAnatomyInfo('uterus')">
+                                    <circle class="pulse" cx="150" cy="120" r="7"/>
+                                    <circle class="core" cx="150" cy="120" r="4.5"/>
+                                </g>
+                                <!-- Left Ovary -->
+                                <g class="anatomy-hotspot" onclick="showAnatomyInfo('ovaries')">
+                                    <circle class="pulse" cx="50" cy="90" r="7"/>
+                                    <circle class="core" cx="50" cy="90" r="4.5"/>
+                                </g>
+                                <!-- Right Ovary -->
+                                <g class="anatomy-hotspot" onclick="showAnatomyInfo('ovaries')">
+                                    <circle class="pulse" cx="250" cy="90" r="7"/>
+                                    <circle class="core" cx="250" cy="90" r="4.5"/>
+                                </g>
+                                <!-- Fallopian Tubes -->
+                                <g class="anatomy-hotspot" onclick="showAnatomyInfo('tubes')">
+                                    <circle class="pulse" cx="95" cy="72" r="7"/>
+                                    <circle class="core" cx="95" cy="72" r="4.5"/>
+                                </g>
+                                <!-- Cervix -->
+                                <g class="anatomy-hotspot" onclick="showAnatomyInfo('cervix')">
+                                    <circle class="pulse" cx="150" cy="200" r="7"/>
+                                    <circle class="core" cx="150" cy="200" r="4.5"/>
+                                </g>
+                                <!-- Vagina -->
+                                <g class="anatomy-hotspot" onclick="showAnatomyInfo('vagina')">
+                                    <circle class="pulse" cx="150" cy="225" r="7"/>
+                                    <circle class="core" cx="150" cy="225" r="4.5"/>
+                                </g>
+                            </svg>
+                        </div>
+                        
+                        <div class="anatomy-detail-panel shadow-sm">
+                            <h5 id="anatomy-detail-title" class="fw-bold mb-2 text-pink">Uterus (Womb) 🤰</h5>
+                            <p id="anatomy-detail-desc" class="text-muted text-sm mb-0">A hollow, muscular, pear-shaped organ where a fetus develops during pregnancy. The inner lining, called the endometrium, thickens each month in preparation for a fertilized egg. If pregnancy does not occur, this lining sheds as your period.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. HORMONAL CHANGES PANEL -->
+                <div th:if="${activeTopic == 'hormonal-changes'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-dna me-1"></i>Hormones 101</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Understanding Your Hormones</h4>
+                    <p class="text-muted text-sm mb-4">Hormones are the chemical messengers driving your menstrual cycle. They affect far more than reproduction; they shape your skin, sleep, energy, emotions, and appetite. 🌸</p>
+                    
+                    <div class="hormone-grid">
+                        <div class="hormone-card hormone-estrogen">
+                            <h6 class="fw-bold mb-2 text-pink"><i class="fa-solid fa-circle-dot me-2"></i>Estrogen ✨</h6>
+                            <p class="text-xs text-muted mb-2"><strong>Role:</strong> Develops egg follicles and rebuilds the uterine lining.</p>
+                            <p class="text-xs text-muted mb-2"><strong>Effects:</strong> Estrogen boosts mood, skin glow, and energy levels during the follicular phase.</p>
+                            <span class="badge bg-light text-pink text-xxs">Balance tip: Stay active</span>
+                        </div>
+                        <div class="hormone-card hormone-progesterone">
+                            <h6 class="fw-bold mb-2 text-lavender"><i class="fa-solid fa-circle-dot me-2"></i>Progesterone 🧘‍♀️</h6>
+                            <p class="text-xs text-muted mb-2"><strong>Role:</strong> Prepares the uterus for implantation and maintains lining.</p>
+                            <p class="text-xs text-muted mb-2"><strong>Effects:</strong> Promotes calm, sleep, and appetite, but drops trigger PMS and cramps.</p>
+                            <span class="badge bg-light text-lavender text-xxs">Balance tip: Prioritize rest</span>
+                        </div>
+                        <div class="hormone-card hormone-lh">
+                            <h6 class="fw-bold mb-2" style="color: #ffbe86"><i class="fa-solid fa-circle-dot me-2"></i>Luteinizing (LH) ⚡</h6>
+                            <p class="text-xs text-muted mb-2"><strong>Role:</strong> Triggers the release of a mature egg from the ovary.</p>
+                            <p class="text-xs text-muted mb-2"><strong>Effects:</strong> The LH surge acts as the final trigger for ovulation. Energy is at its peak!</p>
+                            <span class="badge bg-light text-warning text-xxs">Balance tip: Stay hydrated</span>
+                        </div>
+                        <div class="hormone-card hormone-fsh">
+                            <h6 class="fw-bold mb-2" style="color: #85c7f2"><i class="fa-solid fa-circle-dot me-2"></i>FSH 🌀</h6>
+                            <p class="text-xs text-muted mb-2"><strong>Role:</strong> Stimulates egg follicle growth in the ovaries at start of cycle.</p>
+                            <p class="text-xs text-muted mb-2"><strong>Effects:</strong> Gently wakes the reproductive system, starting the follicular phase energy curve.</p>
+                            <span class="badge bg-light text-info text-xxs">Balance tip: Nourishing food</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. MENSTRUAL CYCLE PHASES -->
+                <div th:if="${activeTopic == 'cycle-phases'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-rotate me-1"></i>Cycle Phases</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Menstrual Cycle Phases</h4>
+                    <p class="text-muted text-sm mb-4">Click through each phase below to explore what happens inside your body, how hormones shift, and how to practice personalized self-care.</p>
+                    
+                    <div class="phases-timeline">
+                        <div id="step-menstrual" class="phase-step phase-step-menstrual active" onclick="selectCyclePhase('menstrual')">1. Menstrual Phase</div>
+                        <div id="step-follicular" class="phase-step phase-step-follicular" onclick="selectCyclePhase('follicular')">2. Follicular Phase</div>
+                        <div id="step-ovulation" class="phase-step phase-step-ovulation" onclick="selectCyclePhase('ovulation')">3. Ovulation Phase</div>
+                        <div id="step-luteal" class="phase-step phase-step-luteal" onclick="selectCyclePhase('luteal')">4. Luteal Phase</div>
+                    </div>
+
+                    <div class="phase-content-box">
+                        <!-- Menstrual -->
+                        <div id="pane-menstrual" class="phase-detail-pane">
+                            <h5 class="fw-bold text-pink mb-3"><i class="fa-solid fa-tint me-2"></i>Menstrual Phase (Days 1-5)</h5>
+                            <p class="text-sm text-muted"><strong>What happens:</strong> Low levels of estrogen and progesterone cause the uterine lining to break down and shed, resulting in period bleeding.</p>
+                            <ul class="text-sm text-muted ps-3">
+                                <li><strong>Hormones:</strong> Low Estrogen &amp; Progesterone</li>
+                                <li><strong>Mood:</strong> Introspective, quiet, nesting instinct, may feel fatigue</li>
+                                <li><strong>Common symptoms:</strong> Cramping, lower back ache, mild fatigue</li>
+                                <li><strong>Self-care tip:</strong> Keep warm, drink iron-rich teas, and choose light walking or gentle yoga. 🧘‍♀️</li>
                             </ul>
                         </div>
-                        <div class="col-md-5 text-center mt-3 mt-md-0">
-                            <!-- Schematic Diagram placeholder using elegant CSS details -->
-                            <div class="p-4 bg-white border border-light-pink rounded-3 d-flex flex-column align-items-center shadow-sm">
-                                <div class="rounded-circle bg-light-pink d-flex align-items-center justify-content-center" style="width: 100px; height: 100px; border: 2px solid var(--primary-pink)">
-                                    <i class="fa-solid fa-baby-carriage text-danger" style="font-size: 2.5rem;"></i>
+                        
+                        <!-- Follicular -->
+                        <div id="pane-follicular" class="phase-detail-pane" style="display: none;">
+                            <h5 class="fw-bold text-warning mb-3"><i class="fa-solid fa-seedling me-2"></i>Follicular Phase (Days 6-13)</h5>
+                            <p class="text-sm text-muted"><strong>What happens:</strong> The brain releases FSH to stimulate follicles in the ovaries to mature an egg. Estrogen rises, rebuilding the lining.</p>
+                            <ul class="text-sm text-muted ps-3">
+                                <li><strong>Hormones:</strong> Rising Estrogen</li>
+                                <li><strong>Mood:</strong> Energized, social, confident, clear-headed</li>
+                                <li><strong>Common symptoms:</strong> Energy boost, glowing skin, rising libido</li>
+                                <li><strong>Self-care tip:</strong> Excellent time for higher-intensity workouts, social activities, and starting new projects! ☀️</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Ovulation -->
+                        <div id="pane-ovulation" class="phase-detail-pane" style="display: none;">
+                            <h5 class="fw-bold text-success mb-3"><i class="fa-solid fa-sun me-2"></i>Ovulation Phase (Day 14)</h5>
+                            <p class="text-sm text-muted"><strong>What happens:</strong> An LH surge triggers the release of the dominant egg from the ovary. The egg travels down the fallopian tube (fertile peak).</p>
+                            <ul class="text-sm text-muted ps-3">
+                                <li><strong>Hormones:</strong> Peak Estrogen &amp; LH Surge</li>
+                                <li><strong>Mood:</strong> Peak confidence, social drive, high libido, feeling radiant</li>
+                                <li><strong>Common symptoms:</strong> Slippery cervical mucus, light twinges on one side of abdomen</li>
+                                <li><strong>Self-care tip:</strong> Nourish with fresh salads, channel creative energies, and enjoy active workouts. 🌸</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Luteal -->
+                        <div id="pane-luteal" class="phase-detail-pane" style="display: none;">
+                            <h5 class="fw-bold text-lavender mb-3"><i class="fa-solid fa-moon me-2"></i>Luteal Phase (Days 15-28)</h5>
+                            <p class="text-sm text-muted"><strong>What happens:</strong> The empty follicle turns into the corpus luteum, producing progesterone. Progesterone thickens the lining. If no fertilization occurs, hormones drop, causing shedding.</p>
+                            <ul class="text-sm text-muted ps-3">
+                                <li><strong>Hormones:</strong> High Progesterone, dropping Estrogen</li>
+                                <li><strong>Mood:</strong> Calm initially, transitioning to sensitivity, irritability, nesting</li>
+                                <li><strong>Common symptoms:</strong> Bloating, acne, cravings, breast tenderness, mood swings</li>
+                                <li><strong>Self-care tip:</strong> During the luteal phase, bloating and mood changes may happen due to hormonal shifts. Prioritize comforting herbal teas, warm baths, and warm stretching. tulip</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. PERIOD SYMPTOMS GUIDE -->
+                <div th:if="${activeTopic == 'symptoms-guide'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-briefcase-medical me-1"></i>Symptom Education</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Period Symptoms Guide</h4>
+                    <p class="text-muted text-sm mb-4">Learn about common menstrual symptoms, why they happen, and gentle wellness relief methods.</p>
+                    
+                    <div class="symptom-grid">
+                        <!-- Cramps -->
+                        <div class="symptom-detail-card" th:classappend="${loggedSymptoms.contains('cramps') ? 'highlighted' : ''}">
+                            <div>
+                                <h6 class="fw-bold text-pink mb-2"><i class="fa-solid fa-triangle-exclamation me-2"></i>Cramps (Dysmenorrhea)</h6>
+                                <p class="text-xs text-muted mb-2"><strong>Why it happens:</strong> Hormones called prostaglandins cause the uterus muscles to contract to shed its lining.</p>
+                                <p class="text-xs text-muted mb-2"><strong>Wellness tips:</strong> Use a warm heating pad, drink warm chamomile/ginger tea, and practice gentle pelvis stretches.</p>
+                            </div>
+                            <span th:if="${loggedSymptoms.contains('cramps')}" class="badge bg-light text-pink text-xxs align-self-start mt-2">Frequently Logged by You 🌸</span>
+                        </div>
+
+                        <!-- Bloating -->
+                        <div class="symptom-detail-card" th:classappend="${loggedSymptoms.contains('bloating') ? 'highlighted' : ''}">
+                            <div>
+                                <h6 class="fw-bold text-pink mb-2"><i class="fa-solid fa-droplet me-2"></i>Bloating</h6>
+                                <p class="text-xs text-muted mb-2"><strong>Why it happens:</strong> Progesterone fluctuations cause mild water and sodium retention, slowing digestion.</p>
+                                <p class="text-xs text-muted mb-2"><strong>Wellness tips:</strong> Stay hydrated (signals body to release fluids), avoid salty snacks, and drink peppermint tea.</p>
+                            </div>
+                            <span th:if="${loggedSymptoms.contains('bloating')}" class="badge bg-light text-pink text-xxs align-self-start mt-2">Frequently Logged by You 🌸</span>
+                        </div>
+
+                        <!-- Acne -->
+                        <div class="symptom-detail-card" th:classappend="${loggedSymptoms.contains('acne') ? 'highlighted' : ''}">
+                            <div>
+                                <h6 class="fw-bold text-pink mb-2"><i class="fa-solid fa-face-smile-wink me-2"></i>Hormonal Acne</h6>
+                                <p class="text-xs text-muted mb-2"><strong>Why it happens:</strong> Falling estrogen and rising progesterone trigger excess sebum production, clogging pores.</p>
+                                <p class="text-xs text-muted mb-2"><strong>Wellness tips:</strong> Keep skin clean, apply soothing salicylic acid/tea tree oil, and limit processed sugar.</p>
+                            </div>
+                            <span th:if="${loggedSymptoms.contains('acne')}" class="badge bg-light text-pink text-xxs align-self-start mt-2">Frequently Logged by You 🌸</span>
+                        </div>
+
+                        <!-- Fatigue -->
+                        <div class="symptom-detail-card" th:classappend="${loggedSymptoms.contains('fatigue') ? 'highlighted' : ''}">
+                            <div>
+                                <h6 class="fw-bold text-pink mb-2"><i class="fa-solid fa-battery-empty me-2"></i>Fatigue</h6>
+                                <p class="text-xs text-muted mb-2"><strong>Why it happens:</strong> Energy levels drop because progesterone and estrogen levels fall rapidly before bleeding.</p>
+                                <p class="text-xs text-muted mb-2"><strong>Wellness tips:</strong> Honor your body's request for rest, sleep 8+ hours, and drink nourishing hot broths.</p>
+                            </div>
+                            <span th:if="${loggedSymptoms.contains('fatigue')}" class="badge bg-light text-pink text-xxs align-self-start mt-2">Frequently Logged by You 🌸</span>
+                        </div>
+
+                        <!-- Headaches -->
+                        <div class="symptom-detail-card" th:classappend="${loggedSymptoms.contains('headache') ? 'highlighted' : ''}">
+                            <div>
+                                <h6 class="fw-bold text-pink mb-2"><i class="fa-solid fa-head-side-virus me-2"></i>Headaches &amp; Migraines</h6>
+                                <p class="text-xs text-muted mb-2"><strong>Why it happens:</strong> Triggered by the sharp drop in estrogen levels just before bleeding begins.</p>
+                                <p class="text-xs text-muted mb-2"><strong>Wellness tips:</strong> Sip electrolyte drinks, rest in a dark quiet room, and apply peppermint oil to temples.</p>
+                            </div>
+                            <span th:if="${loggedSymptoms.contains('headache')}" class="badge bg-light text-pink text-xxs align-self-start mt-2">Frequently Logged by You 🌸</span>
+                        </div>
+
+                        <!-- Mood swings -->
+                        <div class="symptom-detail-card" th:classappend="${loggedSymptoms.contains('mood swings') || loggedSymptoms.contains('mood') ? 'highlighted' : ''}">
+                            <div>
+                                <h6 class="fw-bold text-pink mb-2"><i class="fa-solid fa-face-sad-tear me-2"></i>Mood Swings</h6>
+                                <p class="text-xs text-muted mb-2"><strong>Why it happens:</strong> Hormonal shifts affect neurotransmitters like serotonin, which regulate happiness.</p>
+                                <p class="text-xs text-muted mb-2"><strong>Wellness tips:</strong> Practice self-compassion, write down journal notes, and do gentle box breathing.</p>
+                            </div>
+                            <span th:if="${loggedSymptoms.contains('mood swings') || loggedSymptoms.contains('mood')}" class="badge bg-light text-pink text-xxs align-self-start mt-2">Frequently Logged by You 🌸</span>
+                        </div>
+
+                        <!-- Food cravings -->
+                        <div class="symptom-detail-card" th:classappend="${loggedSymptoms.contains('food cravings') || loggedSymptoms.contains('cravings') ? 'highlighted' : ''}">
+                            <div>
+                                <h6 class="fw-bold text-pink mb-2"><i class="fa-solid fa-cookie-bite me-2"></i>Food Cravings</h6>
+                                <p class="text-xs text-muted mb-2"><strong>Why it happens:</strong> Metabolic rate increases slightly during luteal phase; body craves quick glucose.</p>
+                                <p class="text-xs text-muted mb-2"><strong>Wellness tips:</strong> Enjoy high-quality dark chocolate (magnesium-rich) or complex carbs like sweet potato.</p>
+                            </div>
+                            <span th:if="${loggedSymptoms.contains('food cravings') || loggedSymptoms.contains('cravings')}" class="badge bg-light text-pink text-xxs align-self-start mt-2">Frequently Logged by You 🌸</span>
+                        </div>
+
+                        <!-- Back pain -->
+                        <div class="symptom-detail-card" th:classappend="${loggedSymptoms.contains('backache') ? 'highlighted' : ''}">
+                            <div>
+                                <h6 class="fw-bold text-pink mb-2"><i class="fa-solid fa-person-falling-burst me-2"></i>Lower Back Pain</h6>
+                                <p class="text-xs text-muted mb-2"><strong>Why it happens:</strong> Prostaglandins and pelvic muscle spasms radiate pain into the lower back nerves.</p>
+                                <p class="text-xs text-muted mb-2"><strong>Wellness tips:</strong> Try child's pose stretches, use lower back heat patches, and do warm Epsom salt baths.</p>
+                            </div>
+                            <span th:if="${loggedSymptoms.contains('backache')}" class="badge bg-light text-pink text-xxs align-self-start mt-2">Frequently Logged by You 🌸</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. PMS & MOOD CHANGES -->
+                <div th:if="${activeTopic == 'pms-mood'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-heart-pulse me-1"></i>Emotional Support</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">PMS &amp; Mood Changes</h4>
+                    <p class="text-muted text-sm mb-4">Fluctuations in estrogen and progesterone during your luteal phase can affect serotonin and other feel-good chemicals. It is natural to feel more sensitive. You are completely valid.</p>
+                    
+                    <div class="row align-items-center">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-check text-pink me-2"></i>Calming Your Mind</h6>
+                            <ul class="text-sm text-muted ps-3 mb-4">
+                                <li><strong>Validate your feelings:</strong> Remind yourself: "My sensitivity is a biological shift. I am safe."</li>
+                                <li><strong>Set soft boundaries:</strong> It is okay to say no to social events when your energy is low.</li>
+                                <li><strong>Avoid caffeine:</strong> Caffeine can raise stress levels and worsen irritability.</li>
+                                <li><strong>Breathing space:</strong> Follow the interactive breathing coach box to slow your heart rate.</li>
+                            </ul>
+                            <div class="alert alert-info text-xs border-0 rounded-3" style="background: var(--light-pink); color: var(--dark-text)">
+                                <i class="fa-solid fa-quote-left me-2 text-pink"></i>“PMS is not a weakness; it is a time when our bodies ask us to slow down, listen, and turn our care inward.”
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <!-- Interactive breathing coach box -->
+                            <div id="edu-breathing-box" class="breathing-coach-box shadow-sm">
+                                <h6 class="fw-bold text-pink mb-1">Mindful Breathing Guide</h6>
+                                <p class="text-xxs text-muted mb-3">Sync your inhale and exhale with the circle animation</p>
+                                <div class="breathing-circle-outer">
+                                    <div class="breathing-circle-inner text-center">
+                                        <span id="edu-breath-text">Inhale...</span>
+                                    </div>
                                 </div>
-                                <span class="d-block mt-3 fw-bold text-sm" style="color: var(--primary-pink)">The Womb & Ovaries</span>
-                                <span class="text-xs text-muted">Core reproductive anatomy details</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Panel 2: Hormonal Changes -->
-                <div id="panel-hormones" class="edu-content-panel pink-card">
-                    <h4 class="fw-bold mb-4" style="color: var(--primary-pink); border-bottom: 2px solid var(--light-pink); padding-bottom: 10px;">
-                        <i class="fa-solid fa-chart-line me-2"></i>Hormonal Cycles & Phases
-                    </h4>
-                    <p class="mb-4">The menstrual cycle is driven by cyclical fluctuations in four key hormones: Estrogen, Progesterone, LH, and FSH. The cycle has 4 distinct phases:</p>
+                <!-- 6. PCOS INSIGHTS -->
+                <div th:if="${activeTopic == 'pcos-insights'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block bg-danger-subtle text-danger border border-danger-subtle"><i class="fa-solid fa-hand-holding-heart me-1"></i>Hormonal Conditions</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Understanding PCOS</h4>
+                    <p class="text-muted text-sm mb-4">Polycystic Ovary Syndrome (PCOS) is a common condition linked to hormone balance. It affects how the ovaries develop and release eggs, often caused by insulin resistance. 🌸</p>
                     
-                    <div class="table-responsive">
-                        <table class="table table-hover text-sm border">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Phase Name</th>
-                                    <th>Estimated Days</th>
-                                    <th>Hormone Profile</th>
-                                    <th>What Happens in Your Body</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="fw-bold text-danger">Menstrual Phase</td>
-                                    <td>Days 1 - 5</td>
-                                    <td>Low Estrogen & Progesterone</td>
-                                    <td>The thickened endometrium lining sheds, causing menstrual bleeding.</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold text-warning">Follicular Phase</td>
-                                    <td>Days 6 - 13</td>
-                                    <td>Rising Estrogen</td>
-                                    <td>Estrogen thickens the lining again. Ovarian follicles mature an egg.</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold text-success">Ovulatory Phase</td>
-                                    <td>Day 14</td>
-                                    <td>LH Surge, Peak Estrogen</td>
-                                    <td>The ovary releases the mature egg into the fallopian tube. Fertile peak.</td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-bold text-primary">Luteal Phase</td>
-                                    <td>Days 15 - 28</td>
-                                    <td>Peak Progesterone</td>
-                                    <td>Progesterone maintains lining for potential pregnancy. Drops if no fertilization occurs.</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
+                                <h6 class="fw-bold text-pink"><i class="fa-solid fa-magnifying-glass me-2"></i>Common Indicators</h6>
+                                <ul class="text-xs text-muted mb-0 ps-3">
+                                    <li>Irregular periods or complete absence of menstrual cycles</li>
+                                    <li>Hormonal acne, excess facial/body hair (hirsutism)</li>
+                                    <li>Mild weight gain or difficulty regulating metabolism</li>
+                                    <li>Ovaries containing small follicles (fluid sacs)</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
+                                <h6 class="fw-bold text-lavender"><i class="fa-solid fa-spa me-2"></i>Empowering Lifestyle Tips</h6>
+                                <ul class="text-xs text-muted mb-0 ps-3">
+                                    <li><strong>Nutrition:</strong> Eat complex carbs, protein, and healthy fats to support insulin levels.</li>
+                                    <li><strong>Movement:</strong> Focus on strength training and moderate walking over exhaustive cardio.</li>
+                                    <li><strong>Sleep:</strong> Prioritize quality rest to regulate stress hormones.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="warning-box mt-3 mb-0">
+                        <div class="warning-item mb-0">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <div>
+                                <strong class="text-danger text-sm">Please Note:</strong>
+                                <p class="text-xs text-muted mb-0">This information is educational and not a medical diagnosis. Talk to a trusted doctor if you suspect PCOS.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Panel 3: PCOS -->
-                <div id="panel-pcos" class="edu-content-panel pink-card">
-                    <h4 class="fw-bold mb-4" style="color: var(--primary-pink); border-bottom: 2px solid var(--light-pink); padding-bottom: 10px;">
-                        <i class="fa-solid fa-virus me-2"></i>Understanding PCOS
-                    </h4>
-                    <p><strong>Polycystic Ovary Syndrome (PCOS)</strong> is a highly common hormonal condition that affects 1 in 10 women of reproductive age. It is characterized by imbalances in reproductive hormones.</p>
+                <!-- 7. ENDOMETRIOSIS -->
+                <div th:if="${activeTopic == 'endometriosis'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block bg-danger-subtle text-danger border border-danger-subtle"><i class="fa-solid fa-circle-exclamation me-1"></i>Pain Awareness</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Endometriosis Awareness</h4>
+                    <p class="text-muted text-sm mb-4">Endometriosis is a condition where tissue similar to the uterus lining grows outside of it (such as on ovaries or bowels). This tissue swells and sheds, causing severe localized inflammation and discomfort.</p>
                     
+                    <div class="row">
+                        <div class="col-md-7 mb-3">
+                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-star text-pink me-2"></i>Understanding the Symptoms</h6>
+                            <ul class="text-sm text-muted ps-3 mb-3">
+                                <li><strong>Severe pelvic pain:</strong> Discomfort that is much stronger than normal period cramps and interferes with daily tasks.</li>
+                                <li><strong>Intercourse pain:</strong> Deep pain felt during or after sex.</li>
+                                <li><strong>Heavy flow:</strong> Excessive bleeding, spotting, or large clots.</li>
+                                <li><strong>Digestion pain:</strong> Pain when urinating or during bowel movements during your period.</li>
+                            </ul>
+                            <p class="text-xs text-muted">Many women suffer for years before getting diagnosed. If your pain does not respond to painkillers or heating pads, seek professional help. Your pain is real and deserves treatment.</p>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="p-3 bg-white border border-light-pink rounded-3 shadow-sm text-center">
+                                <i class="fa-solid fa-user-doctor text-danger mb-2" style="font-size: 2.2rem;"></i>
+                                <h6 class="fw-bold mb-1">Advocate for Yourself</h6>
+                                <p class="text-xs text-muted mb-0">Keep a detailed log of your symptoms and pain score in PinkPetal. Print it or show it to your doctor during consultations to speed up your diagnosis.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. VAGINAL HEALTH -->
+                <div th:if="${activeTopic == 'vaginal-health'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-certificate me-1"></i>Hygiene &amp; Balance</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Vaginal Health &amp; Hygiene</h4>
+                    <p class="text-muted text-sm mb-4">Maintaining a healthy vaginal microbiome is essential for comfort and avoiding infections. Here's what you need to know about pH balance and hygiene.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-heart text-pink me-2"></i>Normal Discharge Guide</h6>
+                            <ul class="text-sm text-muted ps-3 mb-4">
+                                <li><strong>Clear &amp; stretchy:</strong> Occurs during ovulation. Represents peak fertility.</li>
+                                <li><strong>White &amp; thick:</strong> Normal at start/end of cycle, as long as it has no smell.</li>
+                                <li><strong>Watery &amp; clear:</strong> Common after exercise or during high estrogen phases.</li>
+                            </ul>
+                            <div class="alert alert-warning text-xs border-0 rounded-3 mb-0" style="background-color: #fffaf0; color: #b7791f">
+                                <i class="fa-solid fa-circle-info me-2"></i><strong>Warning:</strong> Thick white, clumpy (cottage-cheese-like) or gray-green discharge with strong odor may indicate a yeast or bacterial infection.
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-gauge me-2 text-pink"></i>pH Scale &amp; Vaginal Flora</h6>
+                            <p class="text-xs text-muted mb-2">A healthy vagina has an acidic pH (between 3.8 and 4.5). This acidity protects against bad bacteria.</p>
+                            <div class="ph-scale-wrapper shadow-xs">
+                                <div class="ph-scale-bar">
+                                    <div class="ph-marker" style="left: 30%"></div>
+                                    <div class="ph-normal-zone"></div>
+                                </div>
+                                <div class="ph-labels">
+                                    <span>Acidic (3.0)</span>
+                                    <span class="text-success fw-bold">Normal (3.8-4.5)</span>
+                                    <span>Alkaline (7.0+)</span>
+                                </div>
+                            </div>
+                            <h6 class="fw-bold text-dark text-xs"><i class="fa-solid fa-circle-check text-success me-2"></i>Safe Hygiene Practices</h6>
+                            <p class="text-xs text-muted mb-0">Use only warm water or soft, unfragranced wash for the external area (vulva). Avoid douching, as the vagina is self-cleaning and douching disrupts its natural pH balance.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 9. NUTRITION DURING PERIODS -->
+                <div th:if="${activeTopic == 'nutrition-periods'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-utensils me-1"></i>Nutrition Guide</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Nutrition During Your Period</h4>
+                    <p class="text-muted text-sm mb-4">Fueling your body with the right nutrients can dramatically ease bloating, fatigue, and cramping. Learn what foods to add and which ones to skip.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
+                                <h6 class="fw-bold text-pink"><i class="fa-solid fa-circle-check me-2"></i>Nourishing Foods to Add</h6>
+                                <ul class="text-xs text-muted mb-0 ps-3">
+                                    <li><strong>Iron-Rich:</strong> Spinach, beans, lentils, and red meat to replenish iron lost from bleeding.</li>
+                                    <li><strong>Magnesium:</strong> Dark chocolate, almonds, and pumpkin seeds to relax pelvic muscles and ease cramps.</li>
+                                    <li><strong>Hydration:</strong> Warm water, cucumber, and watermelon to reduce water retention and bloating.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
+                                <h6 class="fw-bold text-lavender"><i class="fa-solid fa-circle-xmark me-2"></i>Foods to Limit</h6>
+                                <ul class="text-xs text-muted mb-0 ps-3">
+                                    <li><strong>Salty Snacks:</strong> Chips and processed foods increase water retention and worsen bloating.</li>
+                                    <li><strong>Refined Sugar:</strong> Sweets and soda lead to sharp insulin spikes, worsening mood swings and energy drops.</li>
+                                    <li><strong>Excess Caffeine:</strong> Coffee can constrict blood vessels, which may increase cramps.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 10. CYCLE-BASED SELF CARE -->
+                <div th:if="${activeTopic == 'cycle-selfcare'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-spa me-1"></i>Wellness Habits</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Cycle-Based Self Care</h4>
+                    <p class="text-muted text-sm mb-4">Your body changes throughout the month. Aligning your exercise, skincare, and sleep routines with your cycle phases helps protect your energy. 🌸</p>
+                    
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent py-3 border-light">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="badge bg-pink text-white rounded-pill text-xxs">Menstrual Phase</span>
+                                <strong class="text-sm">Rest &amp; Nourish</strong>
+                            </div>
+                            <p class="text-xs text-muted mb-0">Choose gentle walking, slow stretching, or restorative yin yoga. Focus on keeping warm, hydrating, and sleeping 8-9 hours.</p>
+                        </li>
+                        <li class="list-group-item bg-transparent py-3 border-light">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="badge bg-warning text-dark rounded-pill text-xxs">Follicular Phase</span>
+                                <strong class="text-sm">Build &amp; Explore</strong>
+                            </div>
+                            <p class="text-xs text-muted mb-0">Your energy rises. Focus on strength training, aerobics, or high-intensity interval training (HIIT). Try new active skincare serums.</p>
+                        </li>
+                        <li class="list-group-item bg-transparent py-3 border-light">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="badge bg-success text-white rounded-pill text-xxs">Ovulation Phase</span>
+                                <strong class="text-sm">Shine &amp; Connect</strong>
+                            </div>
+                            <p class="text-xs text-muted mb-0">Ovulation phase brings high energy levels 🌸. Take advantage of this with challenging exercises or group workouts. Keep your skincare light and simple.</p>
+                        </li>
+                        <li class="list-group-item bg-transparent py-3 border-light">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="badge bg-lavender text-white rounded-pill text-xxs">Luteal Phase</span>
+                                <strong class="text-sm">Slow Down &amp; Protect</strong>
+                            </div>
+                            <p class="text-xs text-muted mb-0">Reduce high-intensity workouts and focus on pilates, moderate walking, or gentle swimming. Avoid harsh skincare products; focus on calming clay masks.</p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 11. EMOTIONAL WELLNESS -->
+                <div th:if="${activeTopic == 'emotional-wellness'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-heart me-1"></i>Mental Wellness</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Emotional Health &amp; Compassion</h4>
+                    <p class="text-muted text-sm mb-4">Emotional shifts are a natural part of hormonal cycles. Being kind to yourself during high-stress phases is the best form of self-care.</p>
+                    
+                    <div class="affirmation-text-box shadow-xs">
+                        “You deserve rest and kindness too 🤍”
+                    </div>
+
                     <div class="row mt-4">
                         <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-feather-pointed me-2 text-pink"></i>Journaling Prompts</h6>
+                            <ul class="text-xs text-muted ps-3 mb-0">
+                                <li>What is my body asking for today? (Rest, movement, quiet, nourishment)</li>
+                                <li>Which emotions am I feeling, and can I let them exist without judgment?</li>
+                                <li>Write down 3 things I appreciate about my body's strength.</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-dark"><i class="fa-solid fa-leaf me-2 text-pink"></i>Stress Relief Tips</h6>
+                            <ul class="text-xs text-muted ps-3 mb-0">
+                                <li>Take a 10-minute warm footbath with Epsom salts.</li>
+                                <li>Do a 4-7-8 breathing session: inhale for 4s, hold for 7s, exhale for 8s.</li>
+                                <li>Turn off screens 1 hour before bed to support natural melatonin production.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 12. FERTILITY & OVULATION -->
+                <div th:if="${activeTopic == 'fertility-ovulation'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-seedling me-1"></i>Fertility Science</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Fertility &amp; Ovulation Basics</h4>
+                    <p class="text-muted text-sm mb-4">Understanding ovulation is key to fertility management, whether you are trying to conceive or learning to track your cycle signals.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
                             <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
-                                <h6 class="fw-bold" style="color: var(--primary-pink)"><i class="fa-solid fa-triangle-exclamation me-2"></i>Common Symptoms</h6>
-                                <ul class="text-xs text-muted mb-0 ps-3">
-                                    <li>Irregular or missing periods</li>
-                                    <li>High levels of androgen hormones (excess facial/body hair, severe acne)</li>
-                                    <li>Enlarged ovaries containing fluid-filled sacs (follicles)</li>
-                                    <li>Weight gain and difficulty losing weight</li>
-                                </ul>
+                                <h6 class="fw-bold text-pink"><i class="fa-solid fa-calendar-days me-2"></i>The Fertile Window</h6>
+                                <p class="text-xs text-muted mb-0">Sperm can survive in the body for up to 5 days, while an egg lives for 12-24 hours after release. This creates a 6-day fertile window: the 5 days before ovulation and ovulation day.</p>
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
-                                <h6 class="fw-bold" style="color: var(--primary-lavender)"><i class="fa-solid fa-hand-holding-heart me-2"></i>Management & Care</h6>
-                                <ul class="text-xs text-muted mb-0 ps-3">
-                                    <li>Balanced diet targeting insulin sensitivity</li>
-                                    <li>Regular moderate exercises</li>
-                                    <li>Medications (metformin or contraceptives prescribed by gynecologist)</li>
-                                    <li>Support and stress management</li>
-                                </ul>
+                                <h6 class="fw-bold text-lavender"><i class="fa-solid fa-droplet me-2"></i>Cervical Mucus Signals</h6>
+                                <p class="text-xs text-muted mb-0">As estrogen levels rise, cervical discharge changes in texture. When it resembles raw egg whites (clear, slippery, and stretchy), it indicates peak fertility and helps sperm travel safely.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-white border border-light-pink rounded-3 mt-3 shadow-sm">
+                        <h6 class="fw-bold text-pink"><i class="fa-solid fa-temperature-half me-2"></i>Basal Body Temperature (BBT)</h6>
+                        <p class="text-xs text-muted mb-0">Your resting body temperature rises slightly (about 0.5°F) immediately after ovulation occurs, caused by the surge in progesterone. Tracking BBT daily before getting out of bed helps confirm that ovulation has happened.</p>
+                    </div>
+                </div>
+
+                <!-- 13. MYTHS VS FACTS -->
+                <div th:if="${activeTopic == 'myths-facts'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block"><i class="fa-solid fa-circle-question me-1"></i>Myth Buster</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">Myths vs Facts</h4>
+                    <p class="text-muted text-sm mb-4">Let's clarify common misconceptions about periods and hormonal health. Click on each card to reveal the truth!</p>
+                    
+                    <div class="myths-grid">
+                        <!-- Myth 1 -->
+                        <div class="myth-card-container" onclick="toggleMythCard(this)">
+                            <div class="myth-card-inner">
+                                <div class="myth-card-front text-center">
+                                    <span class="text-danger fw-bold text-lg mb-2">❌ Myth</span>
+                                    <p class="text-sm fw-bold mb-0">“Painful periods are always normal.”</p>
+                                    <span class="text-xxs text-muted mt-3">Click to reveal fact</span>
+                                </div>
+                                <div class="myth-card-back text-center">
+                                    <span class="text-success fw-bold text-lg mb-2">✅ Fact</span>
+                                    <p class="text-xs text-muted mb-0">Mild cramps are common, but severe pain that disrupts daily life may need medical attention and could be linked to conditions like endometriosis or PCOS.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Myth 2 -->
+                        <div class="myth-card-container" onclick="toggleMythCard(this)">
+                            <div class="myth-card-inner">
+                                <div class="myth-card-front text-center">
+                                    <span class="text-danger fw-bold text-lg mb-2">❌ Myth</span>
+                                    <p class="text-sm fw-bold mb-0">“You should completely avoid exercise during periods.”</p>
+                                    <span class="text-xxs text-muted mt-3">Click to reveal fact</span>
+                                </div>
+                                <div class="myth-card-back text-center">
+                                    <span class="text-success fw-bold text-lg mb-2">✅ Fact</span>
+                                    <p class="text-xs text-muted mb-0">Light exercise such as walking, stretching, or yoga may help reduce cramps and improve mood by increasing blood circulation and releasing endorphins.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Myth 3 -->
+                        <div class="myth-card-container" onclick="toggleMythCard(this)">
+                            <div class="myth-card-inner">
+                                <div class="myth-card-front text-center">
+                                    <span class="text-danger fw-bold text-lg mb-2">❌ Myth</span>
+                                    <p class="text-sm fw-bold mb-0">“PCOS always causes infertility.”</p>
+                                    <span class="text-xxs text-muted mt-3">Click to reveal fact</span>
+                                </div>
+                                <div class="myth-card-back text-center">
+                                    <span class="text-success fw-bold text-lg mb-2">✅ Fact</span>
+                                    <p class="text-xs text-muted mb-0">Many people with PCOS can conceive naturally or with medical support. Lifestyle management and treatment may help regulate ovulation.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Myth 4 -->
+                        <div class="myth-card-container" onclick="toggleMythCard(this)">
+                            <div class="myth-card-inner">
+                                <div class="myth-card-front text-center">
+                                    <span class="text-danger fw-bold text-lg mb-2">❌ Myth</span>
+                                    <p class="text-sm fw-bold mb-0">“Irregular periods are never important.”</p>
+                                    <span class="text-xxs text-muted mt-3">Click to reveal fact</span>
+                                </div>
+                                <div class="myth-card-back text-center">
+                                    <span class="text-success fw-bold text-lg mb-2">✅ Fact</span>
+                                    <p class="text-xs text-muted mb-0">Occasional irregular cycles can happen due to stress, sleep changes, diet, or hormones. Frequent irregular periods should be evaluated by a healthcare professional.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Myth 5 -->
+                        <div class="myth-card-container" onclick="toggleMythCard(this)">
+                            <div class="myth-card-inner">
+                                <div class="myth-card-front text-center">
+                                    <span class="text-danger fw-bold text-lg mb-2">❌ Myth</span>
+                                    <p class="text-sm fw-bold mb-0">“Periods are dirty or impure.”</p>
+                                    <span class="text-xxs text-muted mt-3">Click to reveal fact</span>
+                                </div>
+                                <div class="myth-card-back text-center">
+                                    <span class="text-success fw-bold text-lg mb-2">✅ Fact</span>
+                                    <p class="text-xs text-muted mb-0">Periods are a natural biological process where the uterus sheds its lining. Menstruation is a normal part of reproductive health.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Myth 6 -->
+                        <div class="myth-card-container" onclick="toggleMythCard(this)">
+                            <div class="myth-card-inner">
+                                <div class="myth-card-front text-center">
+                                    <span class="text-danger fw-bold text-lg mb-2">❌ Myth</span>
+                                    <p class="text-sm fw-bold mb-0">“You cannot get pregnant during your period.”</p>
+                                    <span class="text-xxs text-muted mt-3">Click to reveal fact</span>
+                                </div>
+                                <div class="myth-card-back text-center">
+                                    <span class="text-success fw-bold text-lg mb-2">✅ Fact</span>
+                                    <p class="text-xs text-muted mb-0">Pregnancy is still possible during periods, especially if ovulation happens early or cycles are shorter.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Myth 7 -->
+                        <div class="myth-card-container" onclick="toggleMythCard(this)">
+                            <div class="myth-card-inner">
+                                <div class="myth-card-front text-center">
+                                    <span class="text-danger fw-bold text-lg mb-2">❌ Myth</span>
+                                    <p class="text-sm fw-bold mb-0">“Mood swings during periods are fake or exaggerated.”</p>
+                                    <span class="text-xxs text-muted mt-3">Click to reveal fact</span>
+                                </div>
+                                <div class="myth-card-back text-center">
+                                    <span class="text-success fw-bold text-lg mb-2">✅ Fact</span>
+                                    <p class="text-xs text-muted mb-0">Hormonal changes during the menstrual cycle can genuinely affect mood, emotions, sleep, and energy levels.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Myth 8 -->
+                        <div class="myth-card-container" onclick="toggleMythCard(this)">
+                            <div class="myth-card-inner">
+                                <div class="myth-card-front text-center">
+                                    <span class="text-danger fw-bold text-lg mb-2">❌ Myth</span>
+                                    <p class="text-sm fw-bold mb-0">“White vaginal discharge is always unhealthy.”</p>
+                                    <span class="text-xxs text-muted mt-3">Click to reveal fact</span>
+                                </div>
+                                <div class="myth-card-back text-center">
+                                    <span class="text-success fw-bold text-lg mb-2">✅ Fact</span>
+                                    <p class="text-xs text-muted mb-0">Normal vaginal discharge helps clean and protect the vagina. Changes in smell, color, or discomfort may need medical attention.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Myth 9 -->
+                        <div class="myth-card-container" onclick="toggleMythCard(this)">
+                            <div class="myth-card-inner">
+                                <div class="myth-card-front text-center">
+                                    <span class="text-danger fw-bold text-lg mb-2">❌ Myth</span>
+                                    <p class="text-sm fw-bold mb-0">“Skipping meals helps reduce bloating during periods.”</p>
+                                    <span class="text-xxs text-muted mt-3">Click to reveal fact</span>
+                                </div>
+                                <div class="myth-card-back text-center">
+                                    <span class="text-success fw-bold text-lg mb-2">✅ Fact</span>
+                                    <p class="text-xs text-muted mb-0">Balanced meals and proper hydration may actually help reduce bloating and fatigue during periods.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Myth 10 -->
+                        <div class="myth-card-container" onclick="toggleMythCard(this)">
+                            <div class="myth-card-inner">
+                                <div class="myth-card-front text-center">
+                                    <span class="text-danger fw-bold text-lg mb-2">❌ Myth</span>
+                                    <p class="text-sm fw-bold mb-0">“Only overweight people get PCOS.”</p>
+                                    <span class="text-xxs text-muted mt-3">Click to reveal fact</span>
+                                </div>
+                                <div class="myth-card-back text-center">
+                                    <span class="text-success fw-bold text-lg mb-2">✅ Fact</span>
+                                    <p class="text-xs text-muted mb-0">PCOS can affect people of different body types. Hormones, genetics, and insulin resistance all play a role.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Panel 4: Endometriosis -->
-                <div id="panel-endo" class="edu-content-panel pink-card">
-                    <h4 class="fw-bold mb-4" style="color: var(--primary-pink); border-bottom: 2px solid var(--light-pink); padding-bottom: 10px;">
-                        <i class="fa-solid fa-circle-exclamation me-2"></i>Understanding Endometriosis
-                    </h4>
-                    <p><strong>Endometriosis</strong> is a condition where tissue similar to the lining of the uterus (endometrium) grows outside the womb. This tissue behaves like endometrium—it thickens, breaks down, and bleeds with each menstrual cycle, but has no way to exit the body, causing pain and inflammation.</p>
+                <!-- 14. WHEN TO CONSULT A DOCTOR -->
+                <div th:if="${activeTopic == 'consult-doctor'}" class="pink-card">
+                    <span class="badge-pink mb-2 d-inline-block bg-danger-subtle text-danger border border-danger-subtle"><i class="fa-solid fa-triangle-exclamation me-1"></i>Health Safety</span>
+                    <h4 class="fw-bold mb-3" style="color: var(--primary-pink)">When to Consult a Doctor</h4>
+                    <p class="text-muted text-sm mb-4">While periods bring normal discomfort, severe pain or irregular bleeding is not something you have to live with. Listen to your body and consult a medical professional if you notice these warning signs.</p>
                     
-                    <div class="row mt-4">
-                        <div class="col-md-6 mb-3">
-                            <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
-                                <h6 class="fw-bold text-danger"><i class="fa-solid fa-crutch me-2"></i>Key Warning Signs</h6>
-                                <ul class="text-xs text-muted mb-0 ps-3">
-                                    <li>Extremely painful cramps (dysmenorrhea)</li>
-                                    <li>Chronic pelvic pain throughout the month</li>
-                                    <li>Pain during or after sexual intercourse</li>
-                                    <li>Excessive bleeding or spot bleeding between cycles</li>
-                                </ul>
-                            </div>
+                    <div class="warning-box">
+                        <h6 class="fw-bold text-danger mb-3"><i class="fa-solid fa-triangle-exclamation me-2"></i>Warning Signs checklist:</h6>
+                        <div class="warning-item">
+                            <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                            <span class="text-sm text-muted"><strong>Extremely painful periods:</strong> Pain that is debilitating or doesn't improve with heating pads or common painkillers.</span>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <div class="p-3 bg-white border border-light-pink rounded-3 h-100 shadow-sm">
-                                <h6 class="fw-bold text-success"><i class="fa-solid fa-stethoscope me-2"></i>When to see a Doctor</h6>
-                                <p class="text-xs text-muted mb-0">If your menstrual cycle pain is so severe that it prevents you from doing daily activities, or if pain does not respond to common heating pad and OTC remedies, seek professional consultation. Early diagnosis helps manage pelvic scar tissue.</p>
-                            </div>
+                        <div class="warning-item">
+                            <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                            <span class="text-sm text-muted"><strong>Excessive bleeding:</strong> Soaking through a pad or tampon in less than an hour for several hours in a row.</span>
+                        </div>
+                        <div class="warning-item">
+                            <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                            <span class="text-sm text-muted"><strong>Missed periods:</strong> Not bleeding for 3 consecutive months when you are not pregnant or going through menopause.</span>
+                        </div>
+                        <div class="warning-item">
+                            <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                            <span class="text-sm text-muted"><strong>Severe fatigue or dizziness:</strong> Feeling faint, short of breath, or constantly exhausted, which may indicate anemia.</span>
+                        </div>
+                        <div class="warning-item">
+                            <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                            <span class="text-sm text-muted"><strong>Unusual discharge:</strong> Gray, green, or thick clumpy discharge with a strong odor or accompanied by itching/burning.</span>
+                        </div>
+                        <div class="warning-item">
+                            <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                            <span class="text-sm text-muted"><strong>Persistent pelvic pain:</strong> Discomfort in the lower abdomen that continues throughout the month outside of your period.</span>
                         </div>
                     </div>
+
+                    <div class="alert alert-warning text-xs border-0 rounded-3 mt-3 mb-0" style="background-color: #fff8f8; color: #cc3333">
+                        <i class="fa-solid fa-shield-halved me-2"></i><strong>Disclaimer:</strong> This section is educational and not a replacement for professional medical advice. Always speak to a gynecologist or qualified healthcare provider for personal health concerns.
+                    </div>
+                </div>
+
+                <!-- Save and Complete Actions bar -->
+                <div class="edu-action-bar">
+                    <!-- Bookmark Action -->
+                    <form th:action="@{/education/toggle-save}" method="POST" class="d-inline">
+                        <input type="hidden" name="topicId" th:value="${activeTopic}">
+                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-4">
+                            <span th:if="${savedTopics.contains(activeTopic)}">
+                                <i class="fa-solid fa-heart me-1"></i> Remove from Saved
+                            </span>
+                            <span th:if="${!savedTopics.contains(activeTopic)}">
+                                <i class="fa-regular fa-heart me-1"></i> Save to Favorites
+                            </span>
+                        </button>
+                    </form>
+
+                    <!-- Completed Action -->
+                    <form th:action="@{/education/toggle-complete}" method="POST" class="d-inline">
+                        <input type="hidden" name="topicId" th:value="${activeTopic}">
+                        <button type="submit" class="btn btn-sm btn-nav-logout rounded-pill px-4">
+                            <span th:if="${completedTopics.contains(activeTopic)}">
+                                <i class="fa-solid fa-circle-xmark me-1"></i> Mark as Unread
+                            </span>
+                            <span th:if="${!completedTopics.contains(activeTopic)}">
+                                <i class="fa-solid fa-circle-check me-1"></i> Mark as Completed
+                            </span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

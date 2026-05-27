@@ -6,6 +6,7 @@ E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\controllers\PagesControll
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\models\Admin.java
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\models\Comment.java
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\models\Cycle.java
+E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\models\LearningProgress.java
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\models\MoodLog.java
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\models\NotificationHistory.java
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\models\Post.java
@@ -17,6 +18,7 @@ E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\PeriodTrackerApplication.
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\repositories\AdminRepository.java
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\repositories\CommentRepository.java
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\repositories\CycleRepository.java
+E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\repositories\LearningProgressRepository.java
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\repositories\MoodLogRepository.java
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\repositories\NotificationHistoryRepository.java
 E:\PinkPetal\src\main\java\com\pinkpetal\periodtracker\repositories\PostRepository.java
