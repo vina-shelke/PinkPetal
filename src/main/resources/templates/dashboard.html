@@ -81,8 +81,12 @@
                 <div class="pink-card d-flex align-items-center justify-content-between py-3 px-4 mb-0" style="border-left: 5px solid var(--primary-lavender); min-height: 110px;">
                     <div>
                         <p class="text-muted text-sm mb-1 fw-bold">AVERAGE CYCLE LENGTH</p>
-                        <h3 class="fw-bold mb-0" style="color: var(--primary-lavender)"><span th:text="${avgCycleLength != null ? avgCycleLength : 28}">28</span> Days</h3>
-                        <p class="text-muted text-xs mb-0 mt-1">Calculated across your historical cycle entries.</p>
+                        <h3 class="fw-bold mb-0" style="color: var(--primary-lavender)">
+                            <span th:if="${#lists.isEmpty(cycles)}">No data yet</span>
+                            <span th:if="${not #lists.isEmpty(cycles)}"><span th:text="${avgCycleLength}">28</span> Days</span>
+                        </h3>
+                        <p class="text-muted text-xs mb-0 mt-1" th:if="${#lists.isEmpty(cycles)}">Log your first period to start calculating.</p>
+                        <p class="text-muted text-xs mb-0 mt-1" th:if="${not #lists.isEmpty(cycles)}">Calculated across your historical cycle entries.</p>
                     </div>
                     <div style="font-size: 2.2rem; color: var(--primary-lavender); opacity: 0.85;">
                         <i class="fa-solid fa-arrows-spin"></i>
@@ -91,14 +95,28 @@
             </div>
             <!-- Cycle Irregularity Card -->
             <div class="col-md-6">
-                <div class="pink-card d-flex align-items-center justify-content-between py-3 px-4 mb-0" th:style="${isIrregular} ? 'border-left: 5px solid var(--accent-pink); min-height: 110px;' : 'border-left: 5px solid #2ecc71; min-height: 110px;'">
+                <!-- If fewer than 2 cycles exist, display a pending message with neutral warning/gray color -->
+                <div th:if="${cycles.size() < 2}" class="pink-card d-flex align-items-center justify-content-between py-3 px-4 mb-0" style="border-left: 5px solid #bdc3c7; min-height: 110px;">
+                    <div>
+                        <p class="text-muted text-sm mb-1 fw-bold">CYCLE REGULARITY STATUS</p>
+                        <h4 class="fw-bold mb-0" style="color: #7f8c8d;">
+                            <i class="fa-solid fa-circle-question me-1"></i> Pending Logs
+                        </h4>
+                        <p class="text-muted text-xs mb-0 mt-1">Log at least 2 periods to calculate regularity.</p>
+                    </div>
+                    <div style="font-size: 2.2rem; opacity: 0.85; color: #95a5a6;">
+                        <i class="fa-solid fa-hourglass-half"></i>
+                    </div>
+                </div>
+                <!-- If 2 or more cycles exist, display calculated regularity status -->
+                <div th:if="${cycles.size() >= 2}" class="pink-card d-flex align-items-center justify-content-between py-3 px-4 mb-0" th:style="${isIrregular} ? 'border-left: 5px solid var(--accent-pink); min-height: 110px;' : 'border-left: 5px solid #2ecc71; min-height: 110px;'">
                     <div>
                         <p class="text-muted text-sm mb-1 fw-bold">CYCLE REGULARITY STATUS</p>
                         <h4 class="fw-bold mb-0">
                             <span th:if="${isIrregular}" class="text-danger"><i class="fa-solid fa-triangle-exclamation me-1"></i> Irregular</span>
                             <span th:if="${!isIrregular}" class="text-success"><i class="fa-solid fa-circle-check me-1"></i> Regular</span>
                         </h4>
-                        <p class="text-muted text-xs mb-0 mt-1" th:if="${isIrregular}">Cycle variance exceeds 5 days. Consider speaking with a doctor.</p>
+                        <p class="text-muted text-xs mb-0 mt-1" th:if="${isIrregular}">Cycle variance exceeds 7 days. Consider speaking with a doctor.</p>
                         <p class="text-muted text-xs mb-0 mt-1" th:if="${!isIrregular}">Cycle length is stable and within regular variation.</p>
                     </div>
                     <div style="font-size: 2.2rem; opacity: 0.85;">

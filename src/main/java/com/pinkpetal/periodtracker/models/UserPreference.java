@@ -23,16 +23,16 @@ public class UserPreference {
     private String quietHoursEnd = "08:00";
 
     @Column(name = "sound_enabled")
-    private boolean soundEnabled = true;
+    private Boolean soundEnabled = true;
 
     @Column(name = "vibration_enabled")
-    private boolean vibrationEnabled = true;
+    private Boolean vibrationEnabled = true;
 
     @Column(name = "mood_support_enabled")
-    private boolean moodSupportEnabled = true;
+    private Boolean moodSupportEnabled = true;
 
     @Column(name = "wellness_suggestions_enabled")
-    private boolean wellnessSuggestionsEnabled = true;
+    private Boolean wellnessSuggestionsEnabled = true;
 
     public UserPreference() {}
 
@@ -93,7 +93,7 @@ public class UserPreference {
     }
 
     public boolean isSoundEnabled() {
-        return soundEnabled;
+        return soundEnabled != null ? soundEnabled : true;
     }
 
     public void setSoundEnabled(boolean soundEnabled) {
@@ -101,7 +101,7 @@ public class UserPreference {
     }
 
     public boolean isVibrationEnabled() {
-        return vibrationEnabled;
+        return vibrationEnabled != null ? vibrationEnabled : true;
     }
 
     public void setVibrationEnabled(boolean vibrationEnabled) {
@@ -109,7 +109,7 @@ public class UserPreference {
     }
 
     public boolean isMoodSupportEnabled() {
-        return moodSupportEnabled;
+        return moodSupportEnabled != null ? moodSupportEnabled : true;
     }
 
     public void setMoodSupportEnabled(boolean moodSupportEnabled) {
@@ -117,7 +117,7 @@ public class UserPreference {
     }
 
     public boolean isWellnessSuggestionsEnabled() {
-        return wellnessSuggestionsEnabled;
+        return wellnessSuggestionsEnabled != null ? wellnessSuggestionsEnabled : true;
     }
 
     public void setWellnessSuggestionsEnabled(boolean wellnessSuggestionsEnabled) {

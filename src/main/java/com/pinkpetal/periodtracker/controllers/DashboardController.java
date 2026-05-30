@@ -77,14 +77,19 @@ public class DashboardController {
         int avgCycleLength = trackingService.calculateAverageCycleLength(cycles, user.getCycleLength() != null ? user.getCycleLength() : 28);
         boolean isIrregular = trackingService.detectIrregularity(cycles);
         LocalDate latestPeriodDate = trackingService.getLatestPeriodDate(cycles, user.getLastPeriodDate());
+        int confidenceScore = trackingService.calculateConfidenceScore(cycles);
 
         model.addAttribute("avgCycleLength", avgCycleLength);
         model.addAttribute("isIrregular", isIrregular);
         model.addAttribute("latestPeriodDate", latestPeriodDate);
+        model.addAttribute("confidenceScore", confidenceScore);
 
         // Core Predictions using calculated metrics
         if (latestPeriodDate != null) {
             TrackingService.CycleForecast forecast = trackingService.calculateForecast(latestPeriodDate, avgCycleLength);
+            if (forecast != null) {
+                forecast.setConfidenceScore(confidenceScore);
+            }
             model.addAttribute("forecast", forecast);
 
             List<LocalDate> nextPeriods = trackingService.getHistoryPredictions(latestPeriodDate, avgCycleLength, 6);
@@ -171,17 +176,8 @@ public class DashboardController {
             Cycle cycle = new Cycle(username, startDate, cycleLength, symptoms == null ? "" : symptoms);
             cycleRepository.save(cycle);
 
-            // Synchronize User profile lastPeriodDate & cycleLength
-            Optional<User> optUser = userRepository.findById(username);
-            if (optUser.isPresent()) {
-                User user = optUser.get();
-                List<Cycle> cycles = cycleRepository.findByUserIdOrderByPeriodStartDateDesc(username);
-                int avgLength = trackingService.calculateAverageCycleLength(cycles, cycleLength);
-                LocalDate latestPeriod = trackingService.getLatestPeriodDate(cycles, startDate);
-                user.setLastPeriodDate(latestPeriod);
-                user.setCycleLength(avgLength);
-                userRepository.save(user);
-            }
+            // Automatically recalculate and store cycle lengths for all records of this user
+            trackingService.recalculateAndStoreCycleLengths(username);
         }
         return "redirect:/dashboard";
     }
@@ -199,22 +195,8 @@ public class DashboardController {
         if (optCycle.isPresent() && optCycle.get().getUserId().equals(username)) {
             cycleRepository.delete(optCycle.get());
 
-            // Synchronize User profile
-            Optional<User> optUser = userRepository.findById(username);
-            if (optUser.isPresent()) {
-                User user = optUser.get();
-                List<Cycle> cycles = cycleRepository.findByUserIdOrderByPeriodStartDateDesc(username);
-                if (cycles.isEmpty()) {
-                    user.setLastPeriodDate(null);
-                    user.setCycleLength(28);
-                } else {
-                    int avgLength = trackingService.calculateAverageCycleLength(cycles, 28);
-                    LocalDate latestPeriod = trackingService.getLatestPeriodDate(cycles, null);
-                    user.setLastPeriodDate(latestPeriod);
-                    user.setCycleLength(avgLength);
-                }
-                userRepository.save(user);
-            }
+            // Automatically recalculate and store cycle lengths for all records of this user
+            trackingService.recalculateAndStoreCycleLengths(username);
         }
         return "redirect:/dashboard";
     }

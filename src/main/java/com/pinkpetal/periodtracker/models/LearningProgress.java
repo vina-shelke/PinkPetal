@@ -22,10 +22,10 @@ public class LearningProgress {
     private String topicId;
 
     @Column(nullable = false)
-    private boolean saved = false;
+    private Boolean saved = false;
 
     @Column(nullable = false)
-    private boolean completed = false;
+    private Boolean completed = false;
 
     public LearningProgress() {}
 
@@ -61,7 +61,7 @@ public class LearningProgress {
     }
 
     public boolean isSaved() {
-        return saved;
+        return saved != null ? saved : false;
     }
 
     public void setSaved(boolean saved) {
@@ -69,7 +69,7 @@ public class LearningProgress {
     }
 
     public boolean isCompleted() {
-        return completed;
+        return completed != null ? completed : false;
     }
 
     public void setCompleted(boolean completed) {

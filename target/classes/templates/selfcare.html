@@ -142,17 +142,38 @@
                             
                             <!-- Calming Sound Player -->
                             <div class="p-3 bg-white border border-light-pink rounded-3 d-flex flex-column gap-3">
+                                <!-- Stream selection header and info -->
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
-                                        <span class="fw-bold d-block">Soft Rainfall &amp; Calming Music</span>
-                                        <span class="text-xs text-muted"><i class="fa-solid fa-compact-disc fa-spin me-2 text-danger"></i>Relaxation Loop</span>
+                                        <span class="fw-bold text-sm d-block">Select Ambient Stream</span>
+                                        <span class="text-xs text-muted"><i class="fa-solid fa-wave-square me-2 text-pink"></i>Healing Frequencies</span>
                                     </div>
-                                    <span class="badge-pink py-1 px-2 text-xs">Audio Stream</span>
+                                    <span class="badge-pink py-1 px-2 text-xs">YouTube Stream</span>
                                 </div>
-                                <audio controls class="w-100" style="border-radius: var(--border-radius-sm);">
-                                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-                                    Your browser does not support the audio element.
-                                </audio>
+
+                                <!-- Selection buttons -->
+                                <div class="row g-2">
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-brand-outline w-100 py-2 px-1 text-xs rounded-2 active" onclick="switchAmbientStream('5jca-sWgemI', this)">
+                                            <i class="fa-solid fa-spa me-1 text-pink"></i>Cramp Relief (528Hz)
+                                        </button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-brand-outline w-100 py-2 px-1 text-xs rounded-2" onclick="switchAmbientStream('ZWM4KGyTYlQ', this)">
+                                            <i class="fa-solid fa-water me-1 text-lavender"></i>Period Pain Relief
+                                        </button>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-brand-outline w-100 py-2 px-1 text-xs rounded-2" onclick="switchAmbientStream('4UC2mlZt8IY', this)">
+                                            <i class="fa-solid fa-tree me-1 text-pink"></i>Deep Healing Nature
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Embed Container -->
+                                <div class="ratio ratio-21x9 rounded-3 overflow-hidden shadow-sm" style="border: 1px solid var(--border-pink);">
+                                    <iframe id="ambient-player-iframe" src="https://www.youtube.com/embed/5jca-sWgemI" title="Ambient Soundscape Stream" allowfullscreen></iframe>
+                                </div>
                             </div>
                         </div>
 
@@ -193,7 +214,7 @@
                                         <div class="col-md-6">
                                             <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
                                                 <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
-                                                    <iframe src="https://www.youtube.com/embed/08sB7y_b3P0" title="Yoga for Cramps and PMS - Yoga with Adriene" allowfullscreen></iframe>
+                                                    <iframe src="https://www.youtube.com/embed/FtQb7XLBYBY" title="Yoga for Cramps and PMS - Yoga with Adriene" allowfullscreen></iframe>
                                                 </div>
                                                 <div class="px-1">
                                                     <span class="text-xs fw-bold text-pink">Yoga With Adriene</span>
@@ -205,7 +226,7 @@
                                         <div class="col-md-6">
                                             <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
                                                 <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
-                                                    <iframe src="https://www.youtube.com/embed/8J7mS9uLwT4" title="Gentle Yoga for Period Pain" allowfullscreen></iframe>
+                                                    <iframe src="https://www.youtube.com/embed/dtklY0Uy0Lo" title="Gentle Yoga for Period Pain" allowfullscreen></iframe>
                                                 </div>
                                                 <div class="px-1">
                                                     <span class="text-xs fw-bold text-pink">Gentle Flow</span>
@@ -221,24 +242,24 @@
                                         <div class="col-md-6">
                                             <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
                                                 <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
-                                                    <iframe src="https://www.youtube.com/embed/u1712QGgZ1U" title="Meditation for Period Cramps Relief" allowfullscreen></iframe>
+                                                    <iframe src="https://www.youtube.com/embed/ZToicYcHIOU" title="Headspace Guided Meditation" allowfullscreen></iframe>
                                                 </div>
                                                 <div class="px-1">
-                                                    <span class="text-xs fw-bold text-pink">Womb Soothing</span>
-                                                    <h6 class="fw-bold mb-1 text-sm">10 Min Meditation for Period Cramps</h6>
-                                                    <p class="text-xs text-muted mb-0">Focuses on softening the belly, calming breathwork, and releasing physical holding.</p>
+                                                    <span class="text-xs fw-bold text-pink">Headspace</span>
+                                                    <h6 class="fw-bold mb-1 text-sm">10 Min Guided Meditation</h6>
+                                                    <p class="text-xs text-muted mb-0">Official Headspace guided session to calm the mind and soothe physical tension.</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
                                                 <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
-                                                    <iframe src="https://www.youtube.com/embed/rC7T579aDPM" title="Meditation for Your Period" allowfullscreen></iframe>
+                                                    <iframe src="https://www.youtube.com/embed/inpok4MKVLM" title="5 Minute Breathing Meditation" allowfullscreen></iframe>
                                                 </div>
                                                 <div class="px-1">
-                                                    <span class="text-xs fw-bold text-pink">Mindfulness Meditation</span>
-                                                    <h6 class="fw-bold mb-1 text-sm">10 Min Meditation for Period Calmness</h6>
-                                                    <p class="text-xs text-muted mb-0">Helps soothe severe menstrual mood swings, physical anxiety, and mental stress.</p>
+                                                    <span class="text-xs fw-bold text-pink">Mindful Breath</span>
+                                                    <h6 class="fw-bold mb-1 text-sm">5 Min Breathing &amp; Pain Relief Meditation</h6>
+                                                    <p class="text-xs text-muted mb-0">Short, effective session focusing on diaphragmatic breathing to release stress and cramping.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -249,24 +270,24 @@
                                         <div class="col-md-6">
                                             <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
                                                 <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
-                                                    <iframe src="https://www.youtube.com/embed/kYJjO_kY3r4" title="12 Min Slow Workout for Period - MadFit" allowfullscreen></iframe>
+                                                    <iframe src="https://www.youtube.com/embed/Eml2xnoLpYE" title="10 Min Gentle Stretch - MadFit" allowfullscreen></iframe>
                                                 </div>
                                                 <div class="px-1">
                                                     <span class="text-xs fw-bold text-pink">MadFit Workout</span>
-                                                    <h6 class="fw-bold mb-1 text-sm">12 Min Slow Workout for Period/PMS</h6>
-                                                    <p class="text-xs text-muted mb-0">Low-intensity standing/mat exercises to boost blood circulation and release endorphins gently.</p>
+                                                    <h6 class="fw-bold mb-1 text-sm">10 Min Full Body Gentle Stretch</h6>
+                                                    <p class="text-xs text-muted mb-0">Low-intensity standing/mat stretches to safely increase blood flow and relax muscles.</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="video-card bg-white p-2 border border-light-pink rounded-3 h-100">
                                                 <div class="ratio ratio-16x9 rounded-2 overflow-hidden mb-2 shadow-sm">
-                                                    <iframe src="https://www.youtube.com/embed/s5R-d55z0Ew" title="15 Min Period Friendly Pilates - Sweaty Studio" allowfullscreen></iframe>
+                                                    <iframe src="https://www.youtube.com/embed/COp7BR_Dvps" title="Yoga With Adriene - 10 Min Stress Relief" allowfullscreen></iframe>
                                                 </div>
                                                 <div class="px-1">
-                                                    <span class="text-xs fw-bold text-pink">Sweaty Studio</span>
-                                                    <h6 class="fw-bold mb-1 text-sm">15 Min Chill &amp; Gentle Period Pilates</h6>
-                                                    <p class="text-xs text-muted mb-0">No planks, no jumping. A soft routine designed to reduce period bloating and cramps.</p>
+                                                    <span class="text-xs fw-bold text-pink">Yoga With Adriene</span>
+                                                    <h6 class="fw-bold mb-1 text-sm">10 Min Gentle Stretch &amp; Stress Relief</h6>
+                                                    <p class="text-xs text-muted mb-0">Soft movement routine designed to reduce period bloating and muscular soreness.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -288,44 +309,69 @@
                 <div class="row">
                     <!-- Left Column: Swipe Cards -->
                     <div class="col-lg-6 mb-4">
-                        <div class="pink-card text-center d-flex flex-column justify-content-between" style="min-height: 480px; background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,245,247,0.95) 100%);">
+                        <div class="pink-card text-center d-flex flex-column justify-content-between" style="min-height: 440px; background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,245,247,0.95) 100%);">
                             <div>
-                                <div class="pink-card-header justify-content-center">
+                                <div class="pink-card-header justify-content-center mb-2">
                                     <i class="fa-solid fa-clone text-pink"></i>
                                     Comfort Swipe Cards
                                 </div>
-                                <p class="text-sm text-muted mb-4">Swipe or click through these supportive comfort cards for quick wellness actions to soothe physical and emotional symptoms.</p>
+                                <p class="text-xs text-muted mb-3">Swipe or click through these supportive comfort cards for quick wellness actions to soothe physical and emotional symptoms.</p>
                                 
-                                <div class="swipe-deck-container mb-4">
+                                <div class="swipe-deck-container mb-3">
                                     <div class="swipe-card card-0">
-                                        <span style="font-size: 2.5rem; margin-bottom: 12px;">💧</span>
-                                        <h5 class="fw-bold mb-2 text-pink">Hydration Boost</h5>
+                                        <span style="font-size: 2.2rem; margin-bottom: 8px;">💧</span>
+                                        <h6 class="fw-bold mb-2 text-pink text-sm">Hydration Boost</h6>
                                         <p class="text-xs text-muted mb-0">Drink a glass of warm lemon water right now. Keeping hydrated reduces water retention and relieves cramps.</p>
                                     </div>
                                     <div class="swipe-card card-1">
-                                        <span style="font-size: 2.5rem; margin-bottom: 12px;">🧘‍♀️</span>
-                                        <h5 class="fw-bold mb-2 text-lavender">Gentle Child's Pose</h5>
+                                        <span style="font-size: 2.2rem; margin-bottom: 8px;">🧘‍♀️</span>
+                                        <h6 class="fw-bold mb-2 text-lavender text-sm">Gentle Child's Pose</h6>
                                         <p class="text-xs text-muted mb-0">Rest on your shins, bring your forehead to the floor, and stretch your arms forward. Hold for 5 deep breaths to release pelvic pressure.</p>
                                     </div>
                                     <div class="swipe-card card-2">
-                                        <span style="font-size: 2.5rem; margin-bottom: 12px;">🍵</span>
-                                        <h5 class="fw-bold mb-2 text-pink">Ginger Infusion</h5>
+                                        <span style="font-size: 2.2rem; margin-bottom: 8px;">🍵</span>
+                                        <h6 class="fw-bold mb-2 text-pink text-sm">Ginger Infusion</h6>
                                         <p class="text-xs text-muted mb-0">Warm ginger tea contains natural compounds that block inflammatory prostaglandins to calm cramps.</p>
                                     </div>
                                     <div class="swipe-card card-hidden">
-                                        <span style="font-size: 2.5rem; margin-bottom: 12px;">💤</span>
-                                        <h5 class="fw-bold mb-2 text-lavender">10-Minute Power Nap</h5>
+                                        <span style="font-size: 2.2rem; margin-bottom: 8px;">💤</span>
+                                        <h6 class="fw-bold mb-2 text-lavender text-sm">10-Minute Power Nap</h6>
                                         <p class="text-xs text-muted mb-0">Step away and rest. A short nap relaxes your muscles, lowers cortisol levels, and boosts your pain tolerance.</p>
                                     </div>
                                     <div class="swipe-card card-hidden">
-                                        <span style="font-size: 2.5rem; margin-bottom: 12px;">🛁</span>
-                                        <h5 class="fw-bold mb-2 text-pink">Epsom Salt Soak</h5>
+                                        <span style="font-size: 2.2rem; margin-bottom: 8px;">🛁</span>
+                                        <h6 class="fw-bold mb-2 text-pink text-sm">Epsom Salt Soak</h6>
                                         <p class="text-xs text-muted mb-0">A warm bath with Epsom salts absorbs magnesium through your skin, directly relaxing spasms and muscle tension.</p>
+                                    </div>
+                                    <div class="swipe-card card-hidden">
+                                        <span style="font-size: 2.2rem; margin-bottom: 8px;">🔥</span>
+                                        <h6 class="fw-bold mb-2 text-pink text-sm">Heating Pad Comfort</h6>
+                                        <p class="text-xs text-muted mb-0">Place a warm heating pad or warm compress on your lower back or pelvis. Heat increases blood flow to relax uterine contractions.</p>
+                                    </div>
+                                    <div class="swipe-card card-hidden">
+                                        <span style="font-size: 2.2rem; margin-bottom: 8px;">🍫</span>
+                                        <h6 class="fw-bold mb-2 text-lavender text-sm">Magnesium Nibble</h6>
+                                        <p class="text-xs text-muted mb-0">Have a small piece of dark chocolate or some almonds. Magnesium helps relax smooth muscles, naturally easing cramps.</p>
+                                    </div>
+                                    <div class="swipe-card card-hidden">
+                                        <span style="font-size: 2.2rem; margin-bottom: 8px;">🌼</span>
+                                        <h6 class="fw-bold mb-2 text-pink text-sm">Chamomile Soothe</h6>
+                                        <p class="text-xs text-muted mb-0">Sip warm chamomile tea. It contains glycine, an amino acid that relaxes uterine spasms and acts as a mild natural sedative.</p>
+                                    </div>
+                                    <div class="swipe-card card-hidden">
+                                        <span style="font-size: 2.2rem; margin-bottom: 8px;">🧘‍♀️</span>
+                                        <h6 class="fw-bold mb-2 text-lavender text-sm">Legs-Up-The-Wall Pose</h6>
+                                        <p class="text-xs text-muted mb-0">Lie on your back with your legs resting vertically against the wall. This improves circulation and relieves lower back pressure.</p>
+                                    </div>
+                                    <div class="swipe-card card-hidden">
+                                        <span style="font-size: 2.2rem; margin-bottom: 8px;">🌿</span>
+                                        <h6 class="fw-bold mb-2 text-pink text-sm">Aromatherapy Calming</h6>
+                                        <p class="text-xs text-muted mb-0">Inhale a few drops of lavender or clary sage essential oil. Aromatherapy is proven to lower cortisol levels and calm physical spasms.</p>
                                     </div>
                                     
                                     <div class="swipe-card reset-card card-hidden">
-                                        <span style="font-size: 3rem; margin-bottom: 12px;">🌸</span>
-                                        <h5 class="fw-bold mb-2 text-pink">All Tips Completed!</h5>
+                                        <span style="font-size: 2.5rem; margin-bottom: 8px;">🌸</span>
+                                        <h6 class="fw-bold mb-2 text-pink text-sm">All Tips Completed!</h6>
                                         <p class="text-xs text-muted mb-3">You've swiped through all comfort tips for today. Keep taking good care of yourself!</p>
                                         <button type="button" class="btn btn-brand btn-sm px-4 rounded-pill" onclick="resetComfortSwipeDeck()">
                                             <i class="fa-solid fa-rotate-left me-2"></i>Reset Deck

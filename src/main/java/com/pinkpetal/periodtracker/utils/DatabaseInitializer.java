@@ -34,6 +34,9 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Autowired
     private SymptomRepository symptomRepository;
 
+    @Autowired
+    private com.pinkpetal.periodtracker.services.TrackingService trackingService;
+
     @Override
     public void run(String... args) throws Exception {
         // Clean up "admin" user from "users" table if it exists
@@ -167,6 +170,18 @@ public class DatabaseInitializer implements CommandLineRunner {
             commentRepository.save(new Comment(p6.getPostId(), "This is why tracking fertile windows dynamically is so important. PinkPetal does this very well!", LocalDateTime.now().minusHours(6), "User1234"));
 
             System.out.println("Forum posts and comments seeded.");
+        }
+
+        // Recalculate cycle lengths and sync predicted cycle length & latest period date for all users on startup
+        try {
+            for (User user : userRepository.findAll()) {
+                if (!"admin".equals(user.getUserId())) {
+                    trackingService.recalculateAndStoreCycleLengths(user.getUserId());
+                }
+            }
+            System.out.println("Cycle lengths recalculated and stored on startup for all users.");
+        } catch (Exception e) {
+            System.err.println("Error recalculating cycle lengths on startup: " + e.getMessage());
         }
     }
 }

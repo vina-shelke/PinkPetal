@@ -420,6 +420,9 @@ function swipeComfortCard(direction) {
     const activeCard = document.querySelector(`.swipe-card.card-0`);
     if (!activeCard) return;
     
+    // Remove positioning classes immediately so it does not match card-0 query anymore
+    activeCard.classList.remove('card-0', 'card-1', 'card-2', 'card-hidden');
+    
     // Add animation classes
     if (direction === 'left') {
         activeCard.classList.add('swipe-left');
@@ -481,24 +484,81 @@ function resetComfortSwipeDeck() {
 
 // --- 🧠 Wellness Mini Quiz Controller ---
 const QUIZ_QUESTIONS = [
-    {
-        title: "Which hormone is dominant during the PMS phase?",
-        options: ["Estrogen 🧬", "Progesterone 🌸", "Testosterone 🩸", "Oxytocin 💕"],
-        correctIndex: 1,
-        explanation: "Progesterone peaks during the Luteal/PMS phase. Its subsequent drop triggers your period! Progesterone supports mood, but fluctuations can cause sensitivity. 🌸"
-    },
-    {
-        title: "What type of heat is best for easing period cramps?",
-        options: ["Dry heat (air blower) 💨", "Moist heat (warm bath/pack) 🛁", "Cold compress (ice pack) ❄️", "Warm ambient room temperature ☀️"],
-        correctIndex: 1,
-        explanation: "Moist heat from warm baths or moist heating pads penetrates tissues deeper, enhancing blood flow and relaxing pelvic muscle cramps more effectively! 🛁"
-    },
-    {
-        title: "How does dehydration affect your menstrual symptoms?",
-        options: ["It eases active cramps 💧", "It worsens bloating & cramps 😰", "It has no physical impact 🤷‍♀️", "It reduces fluid retention 🍉"],
-        correctIndex: 1,
-        explanation: "Dehydration signals the body to conserve water, which worsens bloating. Additionally, low hydration intensifies muscle spasms, making cramps more painful. Keep sipping! 💧"
-    }
+  {
+    "question": "Which hormone is dominant during the PMS phase?",
+    "options": ["Estrogen", "Progesterone", "Insulin", "Adrenaline"],
+    "answer": "Progesterone"
+  },
+  {
+    "question": "What type of heat is best for easing period cramps?",
+    "options": ["Cold pack", "Ice bath", "Heating pad or warm compress", "Fan cooling"],
+    "answer": "Heating pad or warm compress"
+  },
+  {
+    "question": "Which nutrient is especially important to replace during menstruation?",
+    "options": ["Iron", "Chlorine", "Sodium", "Fluoride"],
+    "answer": "Iron"
+  },
+  {
+    "question": "Which of the following may help reduce menstrual cramps?",
+    "options": ["Light exercise", "Skipping meals", "Avoiding water", "Staying inactive"],
+    "answer": "Light exercise"
+  },
+  {
+    "question": "How long is a typical menstrual cycle for most adults?",
+    "options": ["10–15 days", "21–35 days", "40–50 days", "60–90 days"],
+    "answer": "21–35 days"
+  },
+  {
+    "question": "Which symptom is commonly associated with PMS?",
+    "options": ["Mood swings", "Hearing loss", "Blurred vision", "Tooth pain"],
+    "answer": "Mood swings"
+  },
+  {
+    "question": "Why is staying hydrated important during periods?",
+    "options": ["It may help reduce bloating and fatigue", "It stops periods", "It increases bleeding", "It shortens the cycle"],
+    "answer": "It may help reduce bloating and fatigue"
+  },
+  {
+    "question": "Which phase occurs after ovulation?",
+    "options": ["Menstrual Phase", "Follicular Phase", "Luteal Phase", "Growth Phase"],
+    "answer": "Luteal Phase"
+  },
+  {
+    "question": "Which food is a good source of iron?",
+    "options": ["Spinach", "Candy", "Soft drink", "White bread"],
+    "answer": "Spinach"
+  },
+  {
+    "question": "What is considered a common sign of ovulation?",
+    "options": ["Fertile cervical mucus", "Frequent sneezing", "Dry skin", "Hair loss"],
+    "answer": "Fertile cervical mucus"
+  },
+  {
+    "question": "Which activity can help improve mood during periods?",
+    "options": ["Gentle yoga or walking", "Skipping sleep", "Excessive caffeine intake", "Avoiding movement"],
+    "answer": "Gentle yoga or walking"
+  },
+  {
+    "question": "About how many days before ovulation does the fertile window usually begin?",
+    "options": ["1 day", "2 days", "About 5 days", "10 days"],
+    "answer": "About 5 days"
+  },
+  {
+    "question": "Which vitamin helps the body absorb iron more effectively?",
+    "options": ["Vitamin C", "Vitamin D", "Vitamin K", "Vitamin B12"],
+    "answer": "Vitamin C"
+  },
+  {
+    "question": "Which menstrual product can typically be worn for up to 8–12 hours depending on flow?",
+    "options": ["Menstrual cup", "Tissue paper", "Cotton cloth only", "Heating pad"],
+    "answer": "Menstrual cup"
+  },
+  {
+    "question": "What should you do if your period suddenly becomes very irregular or unusually painful?",
+    "options": ["Ignore it", "Drink less water", "Track symptoms and consult a healthcare professional if it persists", "Stop eating iron-rich foods"],
+    "answer": "Track symptoms and consult a healthcare professional if it persists"
+  }
 ];
 
 let quizCurrentIndex = 0;
@@ -530,7 +590,7 @@ function renderQuizQuestion() {
     
     // Update title
     const qTitle = document.getElementById('quiz-q-title');
-    if (qTitle) qTitle.textContent = q.title;
+    if (qTitle) qTitle.textContent = q.question;
     
     // Render options
     const optionsContainer = document.getElementById('quiz-options-container');
@@ -561,6 +621,8 @@ function checkQuizAnswer(selectedBtn, selectedIndex) {
     const q = QUIZ_QUESTIONS[quizCurrentIndex];
     if (!q) return;
     
+    const correctIndex = q.options.indexOf(q.answer);
+    
     // Disable all options
     const allOptions = document.querySelectorAll('.quiz-option');
     allOptions.forEach(btn => {
@@ -571,20 +633,20 @@ function checkQuizAnswer(selectedBtn, selectedIndex) {
     const explanationText = document.getElementById('quiz-explanation-text');
     const explanationBlock = document.getElementById('quiz-explanation-block');
     
-    if (selectedIndex === q.correctIndex) {
+    if (selectedIndex === correctIndex) {
         selectedBtn.classList.add('correct');
         quizScore++;
         if (explanationText) {
-            explanationText.innerHTML = `<strong>Correct! 🎉</strong> ${q.explanation}`;
+            explanationText.innerHTML = `<strong>Correct! 🎉</strong> The correct answer is: <strong>${q.answer}</strong>.`;
         }
     } else {
         selectedBtn.classList.add('incorrect');
         // Highlight correct one
-        if (allOptions[q.correctIndex]) {
-            allOptions[q.correctIndex].classList.add('correct');
+        if (allOptions[correctIndex]) {
+            allOptions[correctIndex].classList.add('correct');
         }
         if (explanationText) {
-            explanationText.innerHTML = `<strong>Not quite. 🌸</strong> ${q.explanation}`;
+            explanationText.innerHTML = `<strong>Not quite. 🌸</strong> The correct answer is: <strong>${q.answer}</strong>.`;
         }
     }
     
@@ -764,6 +826,65 @@ function startEduBreathingCoach() {
     runState();
 }
 
+// --- 🌸 Ambient Soundscape Stream Switcher ---
+function switchAmbientStream(videoId, btnEl) {
+    const iframe = document.getElementById('ambient-player-iframe');
+    if (iframe) {
+        iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+    }
+    // Update active button state inside the card
+    const buttons = btnEl.closest('.row').querySelectorAll('button');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    btnEl.classList.add('active');
+}
+
+// --- 🌸 Animated Statistics Counters ---
+function runStatisticsCounters() {
+    const counters = document.querySelectorAll('.counter');
+    if (counters.length === 0) return;
+
+    const animate = (counter) => {
+        const target = +counter.getAttribute('data-target');
+        const duration = 1500; // total duration of animation in ms
+        const startTime = performance.now();
+
+        const updateCount = (currentTime) => {
+            const elapsedTime = currentTime - startTime;
+            const progress = Math.min(elapsedTime / duration, 1);
+            
+            // Easing function (easeOutQuad)
+            const easeProgress = progress * (2 - progress);
+            const currentVal = Math.floor(easeProgress * target);
+            
+            counter.textContent = currentVal;
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCount);
+            } else {
+                counter.textContent = target;
+            }
+        };
+
+        requestAnimationFrame(updateCount);
+    };
+
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animate(entry.target);
+                    obs.unobserve(entry.target); // Animate once
+                }
+            });
+        }, { threshold: 0.1 }); // Trigger as soon as the element is visible
+
+        counters.forEach(counter => observer.observe(counter));
+    } else {
+        // Fallback for older browsers
+        counters.forEach(counter => animate(counter));
+    }
+}
+
 // Initialize on load
 document.addEventListener("DOMContentLoaded", () => {
     // Start the breathing coach if element is present
@@ -775,6 +896,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById('anatomy-detail-title')) {
         showAnatomyInfo('uterus');
     }
+
+    // Run statistics counters animation
+    runStatisticsCounters();
 });
 
 

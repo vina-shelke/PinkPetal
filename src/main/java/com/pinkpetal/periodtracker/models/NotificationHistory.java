@@ -24,7 +24,7 @@ public class NotificationHistory {
     private String type; // e.g., "Emotional", "Hydration", "Hygiene", "Comfort", "Rest", "Nutrition"
 
     @Column(name = "read_status")
-    private boolean readStatus = false;
+    private Boolean readStatus = false;
 
     public NotificationHistory() {}
 
@@ -77,7 +77,7 @@ public class NotificationHistory {
     }
 
     public boolean isReadStatus() {
-        return readStatus;
+        return readStatus != null ? readStatus : false;
     }
 
     public void setReadStatus(boolean readStatus) {

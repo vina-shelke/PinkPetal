@@ -34,16 +34,16 @@ public class Reminder {
     private String repeatSchedule = "Once";
 
     @Column(name = "sound_enabled")
-    private boolean soundEnabled = true;
+    private Boolean soundEnabled = true;
 
     @Column(name = "vibration_enabled")
-    private boolean vibrationEnabled = true;
+    private Boolean vibrationEnabled = true;
 
     @Column(name = "interval_minutes")
     private Integer intervalMinutes = 0;
 
     @Column(name = "snoozed")
-    private boolean snoozed = false;
+    private Boolean snoozed = false;
 
     public Reminder() {}
 
@@ -124,7 +124,7 @@ public class Reminder {
     }
 
     public boolean isSoundEnabled() {
-        return soundEnabled;
+        return soundEnabled != null ? soundEnabled : true;
     }
 
     public void setSoundEnabled(boolean soundEnabled) {
@@ -132,7 +132,7 @@ public class Reminder {
     }
 
     public boolean isVibrationEnabled() {
-        return vibrationEnabled;
+        return vibrationEnabled != null ? vibrationEnabled : true;
     }
 
     public void setVibrationEnabled(boolean vibrationEnabled) {
@@ -148,7 +148,7 @@ public class Reminder {
     }
 
     public boolean isSnoozed() {
-        return snoozed;
+        return snoozed != null ? snoozed : false;
     }
 
     public void setSnoozed(boolean snoozed) {

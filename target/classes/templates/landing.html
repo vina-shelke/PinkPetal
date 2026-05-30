@@ -62,72 +62,360 @@
         </div>
     </section>
 
+    <!-- Why Choose Pink Petal Section -->
+    <section class="container py-5 border-top border-light-pink">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Why Women Choose Pink Petal</h2>
+            <p class="text-muted mx-auto text-sm" style="max-width: 650px;">
+                More than a period tracker — Pink Petal helps women understand, predict, and manage their menstrual health with confidence.
+            </p>
+        </div>
+        <div class="row">
+            <!-- Card 1 -->
+            <div class="col-md-4 mb-4">
+                <div class="pink-card text-center d-flex flex-column justify-content-between h-100 mb-0">
+                    <div>
+                        <div class="mb-3" style="color: var(--primary-pink); font-size: 2.2rem;">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Smart Predictions for Better Planning</h5>
+                        <p class="text-muted text-sm mb-4">
+                            Pink Petal uses a weighted cycle prediction algorithm that analyzes historical cycle data to estimate upcoming periods, ovulation dates, and fertile windows with improved accuracy over time.
+                        </p>
+                    </div>
+                    <div>
+                        <a th:href="@{/login}" class="btn btn-brand-outline btn-sm w-100 rounded-pill">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="col-md-4 mb-4">
+                <div class="pink-card text-center d-flex flex-column justify-content-between h-100 mb-0">
+                    <div>
+                        <div class="mb-3" style="color: var(--primary-lavender); font-size: 2.2rem;">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Personalized Health Insights</h5>
+                        <p class="text-muted text-sm mb-3">
+                            Track symptoms, cycle patterns, and wellness trends to receive meaningful insights tailored to your unique menstrual health journey.
+                        </p>
+                        
+                        <!-- Modern dashboard preview insights showcase -->
+                        <div class="text-start p-3 rounded-3 mb-3" style="background: rgba(255,133,162,0.04); border: 1px solid var(--border-pink); font-size: 0.8rem;">
+                            <div class="fw-bold text-pink mb-2 border-bottom pb-1 text-center" style="font-size: 0.85rem;">
+                                <i class="fa-solid fa-square-poll-vertical me-2"></i>Personalized Insights
+                            </div>
+                            <div class="d-flex align-items-center mb-1 text-muted">
+                                <i class="fa-solid fa-circle-exclamation text-pink me-2"></i>
+                                <span>Cramps usually occur 2 days before period.</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-1 text-muted">
+                                <i class="fa-solid fa-arrows-left-right text-lavender me-2"></i>
+                                <span>Average cycle length is 29 days.</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-1 text-muted">
+                                <i class="fa-solid fa-circle-check text-success me-2"></i>
+                                <span>Last 3 cycles were highly regular.</span>
+                            </div>
+                            <div class="d-flex align-items-center text-muted">
+                                <i class="fa-solid fa-bullseye text-pink me-2"></i>
+                                <span>Prediction confidence: <strong class="text-pink">92%</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <a th:href="@{/login}" class="btn btn-brand-outline btn-sm w-100 rounded-pill">View Insights</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="col-md-4 mb-4">
+                <div class="pink-card text-center d-flex flex-column justify-content-between h-100 mb-0">
+                    <div>
+                        <div class="mb-3" style="color: var(--primary-pink); font-size: 2.2rem;">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Private &amp; Secure Health Data</h5>
+                        <p class="text-muted text-sm mb-4">
+                            Your cycle records, symptoms, and wellness data are securely stored and protected to maintain privacy and confidentiality.
+                        </p>
+                    </div>
+                    <div>
+                        <a th:href="@{/login}" class="btn btn-brand-outline btn-sm w-100 rounded-pill">Privacy Policy</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 4 -->
+            <div class="col-md-4 mb-4">
+                <div class="pink-card text-center d-flex flex-column justify-content-between h-100 mb-0">
+                    <div>
+                        <div class="mb-3" style="color: var(--primary-lavender); font-size: 2.2rem;">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Smart Reminders &amp; Notifications</h5>
+                        <p class="text-muted text-sm mb-4">
+                            Get timely reminders for upcoming periods, fertile windows, symptom logging, hydration, and self-care activities.
+                        </p>
+                    </div>
+                    <div>
+                        <a th:href="@{/login}" class="btn btn-brand-outline btn-sm w-100 rounded-pill">Explore Reminders</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 5 -->
+            <div class="col-md-4 mb-4">
+                <div class="pink-card text-center d-flex flex-column justify-content-between h-100 mb-0">
+                    <div>
+                        <div class="mb-3" style="color: var(--primary-pink); font-size: 2.2rem;">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Wellness &amp; Care Resources</h5>
+                        <p class="text-muted text-sm mb-4">
+                            Access educational content, wellness quizzes, period care tips, nutrition guidance, and myth-versus-fact information.
+                        </p>
+                    </div>
+                    <div>
+                        <a th:href="@{/education}" class="btn btn-brand-outline btn-sm w-100 rounded-pill">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Card 6 -->
+            <div class="col-md-4 mb-4">
+                <div class="pink-card text-center d-flex flex-column justify-content-between h-100 mb-0">
+                    <div>
+                        <div class="mb-3" style="color: var(--primary-lavender); font-size: 2.2rem;">
+                            <i class="fa-solid fa-spa"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Built for Women's Wellness</h5>
+                        <p class="text-muted text-sm mb-4">
+                            Pink Petal combines cycle tracking, symptom management, wellness tools, and personalized support in one easy-to-use platform.
+                        </p>
+                    </div>
+                    <div>
+                        <a th:href="@{/selfcare}" class="btn btn-brand-outline btn-sm w-100 rounded-pill">Explore Features</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dedicated Personalized Insights Showcase -->
+    <section class="container py-5 border-top border-light-pink">
+        <div class="row align-items-center">
+            <div class="col-lg-5 mb-4 mb-lg-0">
+                <span class="badge-pink mb-2 d-inline-block">Smart Analysis</span>
+                <h2 class="fw-bold mb-3">Personalized Insights</h2>
+                <p class="text-muted text-sm mb-4">
+                    Our platform tracks your symptoms, cycle patterns, and wellness trends to give you meaningful, personalized insights. Experience an adaptive engine that knows your body and helps you predict your cycle phase and symptoms.
+                </p>
+                <div class="d-flex gap-3">
+                    <a th:href="@{/login}" class="btn btn-brand btn-sm text-white">Experience Demo Now <i class="fa-solid fa-circle-play ms-1"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <!-- Dedicated Showcase Card Styled as Modern Dashboard Preview -->
+                <div class="pink-card p-4 border border-light-pink shadow-soft mb-0 bg-white" style="border-radius: 20px;">
+                    <!-- Dashboard Header -->
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-pink-light p-2 me-2 text-pink d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                                <i class="fa-solid fa-user-doctor"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.95rem;">Personalized Insights</h6>
+                                <small class="text-muted text-xxs">AI-Powered Health Analysis</small>
+                            </div>
+                        </div>
+                        <span class="badge-lavender py-1 px-2 text-xxs fw-semibold"><i class="fa-solid fa-sparkles me-1 text-lavender"></i>Active Insights</span>
+                    </div>
+
+                    <!-- Dashboard Body/Metrics -->
+                    <div class="row g-3">
+                        <!-- Stat Item 1 -->
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3" style="background: rgba(255,133,162,0.03); border: 1px solid var(--border-pink);">
+                                <small class="text-muted fw-bold text-xxs d-block mb-1">AVERAGE CYCLE LENGTH</small>
+                                <span class="h4 fw-bold text-pink mb-0">29 Days</span>
+                            </div>
+                        </div>
+                        <!-- Stat Item 2 -->
+                        <div class="col-md-6">
+                            <div class="p-3 rounded-3" style="background: rgba(155,143,244,0.03); border: 1px solid rgba(155,143,244,0.15);">
+                                <small class="text-muted fw-bold text-xxs d-block mb-1">PREDICTION CONFIDENCE</small>
+                                <span class="h4 fw-bold text-lavender mb-0">92%</span>
+                            </div>
+                        </div>
+
+                        <!-- Main Insights list styled as dashboard feed -->
+                        <div class="col-12">
+                            <div class="p-3 rounded-3 bg-light border border-light-pink">
+                                <small class="text-muted fw-bold text-xxs d-block mb-2"><i class="fa-solid fa-list-check me-1 text-pink"></i>RECENT DIAGNOSTICS &amp; PATTERNS</small>
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="d-flex align-items-center p-2 rounded bg-white text-xs text-muted" style="border-left: 3px solid var(--primary-pink);">
+                                        <i class="fa-solid fa-circle-exclamation text-pink me-2"></i>
+                                        <span>You usually experience cramps 2 days before your period.</span>
+                                    </div>
+                                    <div class="d-flex align-items-center p-2 rounded bg-white text-xs text-muted" style="border-left: 3px solid var(--primary-lavender);">
+                                        <i class="fa-solid fa-arrows-left-right text-lavender me-2"></i>
+                                        <span>Your average cycle length is 29 days.</span>
+                                    </div>
+                                    <div class="d-flex align-items-center p-2 rounded bg-white text-xs text-muted" style="border-left: 3px solid #2ecc71;">
+                                        <i class="fa-solid fa-circle-check text-success me-2"></i>
+                                        <span>Your last 3 cycles were highly regular.</span>
+                                    </div>
+                                    <div class="d-flex align-items-center p-2 rounded bg-white text-xs text-muted" style="border-left: 3px solid var(--primary-pink);">
+                                        <i class="fa-solid fa-bullseye text-pink me-2"></i>
+                                        <span>Prediction confidence: <strong>92%</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Section -->
     <section class="container py-5">
         <div class="text-center mb-5">
             <span class="badge-lavender mb-2 d-inline-block">Features Designed For You</span>
-            <h2 class="fw-bold">Nurture Your Body & Mind</h2>
-            <p class="text-muted">Explore how PinkPetal guides you through every phase of your wellness journey</p>
+            <h2 class="fw-bold">Supporting Every Stage of Your Wellness Journey</h2>
+            <p class="text-muted mx-auto text-sm" style="max-width: 650px;">
+                Explore how Pink Petal supports your physical, emotional, and reproductive wellness through every phase of your cycle.
+            </p>
         </div>
         <div class="row">
             <!-- Feature 1 -->
-            <div class="col-md-4">
-                <div class="pink-card text-center">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="pink-card text-center h-100 mb-0">
                     <div class="mb-4" style="color: var(--primary-pink); font-size: 2.5rem;">
                         <i class="fa-regular fa-calendar-check"></i>
                     </div>
-                    <h4>Cycle Forecasts</h4>
-                    <p class="text-muted text-sm">Input your last cycle details to dynamically estimate your next period, ovulation day, and fertile windows.</p>
+                    <h4 class="fw-bold">Cycle Forecasts</h4>
+                    <p class="text-muted text-sm mb-0">Record your menstrual history and receive predictions for upcoming periods, ovulation dates, and fertile windows using intelligent cycle analysis.</p>
                 </div>
             </div>
             <!-- Feature 2 -->
-            <div class="col-md-4">
-                <div class="pink-card text-center">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="pink-card text-center h-100 mb-0">
                     <div class="mb-4" style="color: var(--primary-lavender); font-size: 2.5rem;">
                         <i class="fa-regular fa-bell"></i>
                     </div>
-                    <h4>Smart Reminders</h4>
-                    <p class="text-muted text-sm">Stay on top of medicine schedules, water intake, appointment schedules, and cycle updates with dynamic alerts.</p>
+                    <h4 class="fw-bold">Smart Reminders</h4>
+                    <p class="text-muted text-sm mb-0">Receive timely reminders for upcoming periods, symptom logging, hydration goals, medications, wellness activities, and important health events.</p>
                 </div>
             </div>
             <!-- Feature 3 -->
-            <div class="col-md-4">
-                <div class="pink-card text-center">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="pink-card text-center h-100 mb-0">
                     <div class="mb-4" style="color: var(--primary-pink); font-size: 2.5rem;">
                         <i class="fa-regular fa-comments"></i>
                     </div>
-                    <h4>Anonymous Forum</h4>
-                    <p class="text-muted text-sm">Share experiences, PCOS questions, myths vs facts, and support each other anonymously using dynamic pseudonyms.</p>
+                    <h4 class="fw-bold">Anonymous Forum</h4>
+                    <p class="text-muted text-sm mb-0">Share experiences, PCOS questions, myths vs facts, and support each other anonymously using dynamic pseudonyms.</p>
                 </div>
             </div>
             <!-- Feature 4 -->
-            <div class="col-md-4">
-                <div class="pink-card text-center">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="pink-card text-center h-100 mb-0">
                     <div class="mb-4" style="color: var(--primary-lavender); font-size: 2.5rem;">
-                        <i class="fa-solid fa-face-smile-beam"></i>
+                        <i class="fa-solid fa-heart-pulse"></i>
                     </div>
-                    <h4>Emotional Chatbot</h4>
-                    <p class="text-muted text-sm">Feeling sad, tired, or in pain? Talk to our rule-based chatbot for comforting words, affirmations, and calm breathing guidance.</p>
+                    <h4 class="fw-bold">Emotional Wellness Assistant</h4>
+                    <p class="text-muted text-sm mb-2"><strong>Feeling stressed, tired, or overwhelmed?</strong></p>
+                    <p class="text-muted text-sm mb-0">Chat with Pink Petal's wellness assistant for encouragement, self-care suggestions, emotional support resources, positive affirmations, and guided relaxation exercises.</p>
                 </div>
             </div>
             <!-- Feature 5 -->
-            <div class="col-md-4">
-                <div class="pink-card text-center">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="pink-card text-center h-100 mb-0">
                     <div class="mb-4" style="color: var(--primary-pink); font-size: 2.5rem;">
                         <i class="fa-solid fa-spa"></i>
                     </div>
-                    <h4>Self-Care Zone</h4>
-                    <p class="text-muted text-sm">Relax with breathing synchronization bubbles, calming audios, and curated yoga tutorials for cramp relief.</p>
+                    <h4 class="fw-bold">Self-Care Zone</h4>
+                    <p class="text-muted text-sm mb-0">Relax with breathing synchronization bubbles, calming audios, and curated yoga tutorials for cramp relief.</p>
                 </div>
             </div>
             <!-- Feature 6 -->
-            <div class="col-md-4">
-                <div class="pink-card text-center">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="pink-card text-center h-100 mb-0">
                     <div class="mb-4" style="color: var(--primary-lavender); font-size: 2.5rem;">
                         <i class="fa-solid fa-book-open"></i>
                     </div>
-                    <h4>Educational Guides</h4>
-                    <p class="text-muted text-sm">Understand your body. Learn about uterus layout, hormonal cycles, and medical conditions like PCOS & endometriosis.</p>
+                    <h4 class="fw-bold">Educational Guides</h4>
+                    <p class="text-muted text-sm mb-0">Understand your body. Learn about uterus layout, hormonal cycles, and medical conditions like PCOS & endometriosis.</p>
+                </div>
+            </div>
+            <!-- Feature 7 -->
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="pink-card text-center h-100 mb-0">
+                    <div class="mb-4" style="color: var(--primary-pink); font-size: 2.5rem;">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h4 class="fw-bold">Wellness &amp; Care Quiz</h4>
+                    <p class="text-muted text-sm mb-0">Test your knowledge through interactive quizzes covering menstrual health, hormones, nutrition, self-care, wellness practices, and common myths versus facts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="py-5 border-top border-light-pink" style="background: linear-gradient(135deg, rgba(255,245,247,0.5) 0%, rgba(240,237,246,0.5) 100%);">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="badge-pink mb-2 d-inline-block">System Dashboard</span>
+                <h2 class="fw-bold">Pink Petal in Action</h2>
+                <p class="text-muted">Demonstrating real-world wellness tracking metrics and system operations.</p>
+            </div>
+            <div class="row text-center">
+                <!-- Stat 1 -->
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="pink-card h-100 mb-0 py-4" style="background: var(--white); box-shadow: var(--shadow-soft);">
+                        <div class="display-5 fw-bold text-pink mb-2"><span class="counter" data-target="5">0</span></div>
+                        <h6 class="fw-bold text-dark text-sm">Active Demo Users</h6>
+                        <p class="text-xs text-muted mb-0">Registered system profiles</p>
+                    </div>
+                </div>
+                <!-- Stat 2 -->
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="pink-card h-100 mb-0 py-4" style="background: var(--white); box-shadow: var(--shadow-soft);">
+                        <div class="display-5 fw-bold text-lavender mb-2"><span class="counter" data-target="24">0</span></div>
+                        <h6 class="fw-bold text-dark text-sm">Cycles Tracked</h6>
+                        <p class="text-xs text-muted mb-0">Historical logs computed</p>
+                    </div>
+                </div>
+                <!-- Stat 3 -->
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="pink-card h-100 mb-0 py-4" style="background: var(--white); box-shadow: var(--shadow-soft);">
+                        <div class="display-5 fw-bold text-pink mb-2"><span class="counter" data-target="73">0</span></div>
+                        <h6 class="fw-bold text-dark text-sm">Smart Notifications Sent</h6>
+                        <p class="text-xs text-muted mb-0">Wellness triggers generated</p>
+                    </div>
+                </div>
+                <!-- Stat 4 -->
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="pink-card h-100 mb-0 py-4" style="background: var(--white); box-shadow: var(--shadow-soft);">
+                        <div class="display-5 fw-bold text-lavender mb-2"><span class="counter" data-target="85">0</span>%</div>
+                        <h6 class="fw-bold text-dark text-sm">Average Prediction Accuracy</h6>
+                        <p class="text-xs text-muted mb-0">Weighted algorithm precision</p>
+                    </div>
+                </div>
+                <!-- Stat 5 -->
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="pink-card h-100 mb-0 py-4" style="background: var(--white); box-shadow: var(--shadow-soft);">
+                        <div class="display-5 fw-bold text-pink mb-2"><span class="counter" data-target="120">0</span>+</div>
+                        <h6 class="fw-bold text-dark text-sm">Symptoms Logged</h6>
+                        <p class="text-xs text-muted mb-0">Cycle signals recorded</p>
+                    </div>
+                </div>
+                <!-- Stat 6 -->
+                <div class="col-md-4 col-sm-6 mb-4">
+                    <div class="pink-card h-100 mb-0 py-4" style="background: var(--white); box-shadow: var(--shadow-soft);">
+                        <div class="display-5 fw-bold text-lavender mb-2"><span class="counter" data-target="15">0</span></div>
+                        <h6 class="fw-bold text-dark text-sm">Wellness Quiz Questions</h6>
+                        <p class="text-xs text-muted mb-0">Interactive educational items</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -151,3 +439,4 @@
     <script th:src="@{/js/script.js}" src="../static/js/script.js"></script>
 </body>
 </html>
+
